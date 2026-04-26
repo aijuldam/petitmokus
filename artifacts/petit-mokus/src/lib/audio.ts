@@ -4,6 +4,7 @@ import horseNeighUrl from "@assets/18697_1517424136_1777221429193.mp3";
 import cowMooUrl from "@assets/18691_1517423527_1777221546285.mp3";
 import foxCallUrl from "@assets/Fox-calls_1777225514788.wav";
 import wolfHowlUrl from "@assets/wolf_1777225717457.mp3";
+import squirrelUrl from "@assets/squirrel_1777226634633.mp3";
 
 const MAX_SOUND_DURATION = 5;
 
@@ -58,15 +59,8 @@ export const playAnimalSound = (animal: string) => {
       playAudioFile(wolfHowlUrl);
       return;
     case 'squirrel':
-      osc.type = 'triangle';
-      osc.frequency.setValueAtTime(2000, now);
-      osc.frequency.linearRampToValueAtTime(1800, now + 0.05);
-      gain.gain.setValueAtTime(0, now);
-      gain.gain.linearRampToValueAtTime(0.3, now + 0.01);
-      gain.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
-      osc.start(now);
-      osc.stop(now + 0.1);
-      break;
+      playAudioFile(squirrelUrl);
+      return;
     case 'mouse':
       osc.type = 'sine';
       osc.frequency.setValueAtTime(3000, now);
