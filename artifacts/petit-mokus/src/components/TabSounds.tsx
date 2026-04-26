@@ -5,6 +5,7 @@ import { cn } from "../lib/utils";
 import dogPhoto from "@assets/fran-taylor-3VhTw1T0WwI-unsplash_1777220813646.jpg";
 import catPhoto from "@assets/animal-face_W8CE6CC9MP_1777221156438.jpg";
 import horsePhoto from "@assets/pieter-van-noorden-cjSUZMA2iW8-unsplash_1777221457619.jpg";
+import cowPhoto from "@assets/thomas-oldenburger-1SQFd9_zNW4-unsplash_(1)_1777221618899.jpg";
 
 interface TabSoundsProps {
   language: Language;
@@ -20,7 +21,7 @@ const animals: AnimalEntry[] = [
   { id: 'dog',      photo: dogPhoto,   color: 'bg-accent/20 text-accent-foreground',       objectPosition: 'center 25%' },
   { id: 'cat',      photo: catPhoto,   color: 'bg-primary/10 text-primary-foreground',      objectPosition: 'center 15%' },
   { id: 'horse',    photo: horsePhoto, color: 'bg-secondary/20 text-secondary-foreground',  objectPosition: 'center 40%' },
-  { id: 'cow',      emoji: '🐄',       color: 'bg-chart-3/50 text-foreground' },
+  { id: 'cow',      photo: cowPhoto,   color: 'bg-chart-3/50 text-foreground',              objectPosition: 'center 40%' },
   { id: 'fox',      emoji: '🦊',       color: 'bg-orange-100 text-orange-900' },
   { id: 'wolf',     emoji: '🐺',       color: 'bg-slate-100 text-slate-800' },
   { id: 'squirrel', emoji: '🐿️',       color: 'bg-primary/20 text-primary-foreground' },
