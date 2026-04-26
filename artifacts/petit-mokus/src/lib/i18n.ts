@@ -11,6 +11,7 @@ export const dictionary = {
     squirrel: { EN: 'Squirrel', FR: 'Écureuil', HU: 'Mókus' },
     pig: { EN: 'Pig', FR: 'Cochon', HU: 'Malac' },
     sheep: { EN: 'Sheep', FR: 'Mouton', HU: 'Juh' },
+    rooster: { EN: 'Rooster', FR: 'Coq', HU: 'Kakas' },
   },
   songs: {
     fr1: 'Pirouette, cacahuète',

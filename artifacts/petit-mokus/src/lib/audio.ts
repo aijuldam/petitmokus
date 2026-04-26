@@ -7,6 +7,7 @@ import wolfHowlUrl from "@assets/wolf_1777225717457.mp3";
 import squirrelUrl from "@assets/squirrel_1777226634633.mp3";
 import pigUrl from "@assets/schwein_1777226753094.mp3";
 import sheepUrl from "@assets/schafe_1777226874835.mp3";
+import roosterUrl from "@assets/hahn_kikeriki_1777226970579.mp3";
 
 const MAX_SOUND_DURATION = 5;
 
@@ -68,6 +69,9 @@ export const playAnimalSound = (animal: string) => {
       return;
     case 'sheep':
       playAudioFile(sheepUrl);
+      return;
+    case 'rooster':
+      playAudioFile(roosterUrl);
       return;
   }
 };
