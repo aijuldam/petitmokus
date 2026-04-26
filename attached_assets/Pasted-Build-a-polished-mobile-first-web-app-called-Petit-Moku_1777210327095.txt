@@ -1,0 +1,329 @@
+Build a polished, mobile-first web app called Petit Mokus for parents with young children.
+
+The app should feel soft, playful, premium, and calming, with a child-friendly pastel aesthetic inspired by the Little Dutch brand style: gentle pastel tones, cozy nursery energy, rounded shapes, soft illustrations, airy spacing, and a warm, elegant feel rather than loud cartoon chaos.
+ The design should feel modern and beautifully understated, with soft colors and playful details that appeal to both children and parents.
+
+Overall concept
+Petit Mokus is a multilingual listening app for small children with three tabs:
+
+Sounds — the main tab, where children tap animals and hear the sound the animal makes.
+
+Music — a tab with lullabies and folk songs in English, French, and Hungarian.
+
+Stories — for now this tab is not implemented; only create the tab icon, placeholder card, and a “Coming soon” treatment themed around bedtime stories.
+
+The app is for ages roughly 2–6 and should feel safe, magical, and very easy to use.
+
+Brand
+App name: Petit Mokus
+
+Logo: a squirrel mascot/logo
+
+The squirrel should feel cute, gentle, and premium, not hyper-cartoonish
+
+Use the squirrel mark in the header/app bar and as a recurring small decorative motif
+
+Keep the logo simple enough to work as an app icon
+
+Art direction
+Create a design system with a soft pastel nursery palette inspired by Little Dutch-style products and websites.
+
+Suggested palette direction:
+
+Dusty rose
+
+Soft sage green
+
+Warm beige
+
+Muted sky blue
+
+Pale peach
+
+Cream / off-white backgrounds
+
+Soft taupe for text accents
+
+Avoid:
+
+Bright primary colors
+
+Neon colors
+
+Hard black
+
+Busy gradients
+
+Flashy game-like UI
+
+The interface should feel:
+
+calm
+
+tactile
+
+sweet
+
+airy
+
+bedtime-friendly
+
+elegant enough that parents also love it
+
+Use rounded cards, soft shadows, illustrated details, and large touch targets.
+
+Platform and technical requirements
+Build this as a responsive web app using HTML, CSS, and JavaScript, or React if preferred.
+
+Requirements:
+
+Mobile-first layout
+
+Works beautifully on tablet and phone
+
+Fast loading
+
+No backend needed
+
+No login required
+
+Use static local data arrays for content
+
+Use semantic HTML and accessible buttons
+
+Include light animations on tap and hover
+
+Add subtle audio feedback and smooth transitions
+
+Navigation
+Use a 3-tab bottom navigation that feels clear and kid-friendly.
+
+Tabs:
+
+Sounds
+
+Music
+
+Stories
+
+Each tab should have a soft icon and a text label.
+
+The Stories tab must visibly show a "Coming soon" tag or pill.
+
+Header
+The top area should include:
+
+squirrel logo
+
+brand name “Petit Mokus”
+
+language toggle
+
+The header should feel premium and calm, with nursery-brand styling.
+
+Language support
+Support three languages across the interface:
+
+English
+
+French
+
+Hungarian
+
+Add a visible language toggle or segmented control in the header.
+
+The selected language should update:
+
+UI labels where appropriate
+
+animal names in the Sounds tab
+
+song titles or language tags in the Music tab where appropriate
+
+For now, the Stories tab can remain untranslated beyond a simple placeholder if needed.
+
+Tab 1: Sounds
+This is the main hero experience.
+
+Design it like a beautiful browse page with an Airbnb-style card grid, adapted for children:
+
+large animal image
+
+animal name below
+
+rounded card
+
+generous spacing
+
+very easy tap targets
+
+Animals to include:
+
+dog
+
+cat
+
+horse
+
+cow
+
+fox
+
+wolf
+
+squirrel
+
+mouse
+
+sheep
+
+Behavior:
+
+when the child taps an animal card, play the animal sound
+
+animate the card gently on tap
+
+optionally show a tiny ripple, bounce, or glow effect
+
+show the translated animal name based on the selected language
+
+Important:
+
+use friendly illustrated or soft realistic animal imagery
+
+keep it visually consistent
+
+make the squirrel especially charming because it ties to the brand
+
+Tab 2: Music
+This tab should feel calm and bedtime-friendly.
+
+Design:
+
+list or card layout
+
+each song gets cover art / illustration, title, language badge, and play button
+
+include a mini audio player area or inline play/pause state
+
+soft pastel backgrounds and cozy visuals
+
+Include music content grouped across the three languages.
+
+French songs
+Include:
+
+Pirouette, cacahuète
+​
+
+Pomme de reinette et pomme d’api
+​
+
+Promenons-nous dans les bois
+​
+
+Hungarian songs
+Include:
+
+Tente, baba, tente
+
+Bóbita
+
+English songs
+Include:
+
+Twinkle, Twinkle, Little Star
+​
+
+Hush Little Baby
+
+For now, use placeholder audio files or dummy audio URLs if needed, but structure the code clearly so real audio can be swapped in later.
+
+Tab 3: Stories
+Do not build the stories experience yet.
+
+Instead, create:
+
+the Stories tab in the bottom nav
+
+a bedtime-story-themed icon, such as a moon, little book, or sleeping star
+
+a soft placeholder page/card
+
+a visible badge that says Coming soon
+
+The placeholder should feel intentional and beautiful, not empty.
+
+Suggested content on that screen:
+
+title: “Bedtime Stories”
+
+short line like: “Soft little tales are on their way.”
+
+one cozy illustration, such as a moon, stars, book, or sleeping squirrel
+
+a pastel tag that says “Coming soon”
+
+Visual details
+Please make the app feel crafted and premium.
+
+Add:
+
+custom inline squirrel logo in SVG
+
+gentle card shadows
+
+rounded corners throughout
+
+subtle micro-interactions
+
+soft illustrated iconography
+
+child-safe spacing and layout
+
+cozy section headers
+
+Use typography that feels soft, editorial, and nursery-friendly.
+
+UX principles
+Everything should be understandable in one glance
+
+Young children should be able to tap without precision
+
+Parents should feel the app is tasteful and safe
+
+The app should not feel overstimulating
+
+The music and story areas should feel more calming than the sounds tab
+
+The sounds tab should still feel playful and delightful
+
+Content structure suggestion
+Use JavaScript arrays for content such as:
+
+animals with image, names in 3 languages, sound file
+
+songs with title, language, artwork, audio file
+
+stories placeholder metadata
+
+Deliverable
+Build a working front-end prototype of Petit Mokus with:
+
+responsive layout
+
+squirrel logo
+
+three-tab navigation
+
+multilingual toggle
+
+working Sounds tab
+
+working Music tab
+
+Stories placeholder with “Coming soon” tag
+
+Little Dutch-inspired pastel visual style.
+
+Make it look like a real launch-quality concept, not a wireframe.

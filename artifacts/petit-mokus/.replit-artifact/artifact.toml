@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "Petit Mokus"
+version = "1.0.0"
+id = "artifacts/petit-mokus"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 22701
+
+[services.development]
+run = "pnpm --filter @workspace/petit-mokus run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/petit-mokus", "run", "build" ]
+publicDir = "artifacts/petit-mokus/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "22701"
+BASE_PATH = "/"
