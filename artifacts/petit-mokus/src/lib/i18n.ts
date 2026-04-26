@@ -9,7 +9,7 @@ export const dictionary = {
     fox: { EN: 'Fox', FR: 'Renard', HU: 'Róka' },
     wolf: { EN: 'Wolf', FR: 'Loup', HU: 'Farkas' },
     squirrel: { EN: 'Squirrel', FR: 'Écureuil', HU: 'Mókus' },
-    mouse: { EN: 'Mouse', FR: 'Souris', HU: 'Egér' },
+    pig: { EN: 'Pig', FR: 'Cochon', HU: 'Malac' },
     sheep: { EN: 'Sheep', FR: 'Mouton', HU: 'Juh' },
   },
   songs: {
