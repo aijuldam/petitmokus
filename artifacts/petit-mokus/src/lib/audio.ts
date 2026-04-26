@@ -1,3 +1,5 @@
+import dogBarkUrl from "@assets/10243_1369416216_1777221073239.mp3";
+
 let audioCtx: AudioContext | null = null;
 
 const initAudio = () => {
@@ -21,16 +23,11 @@ export const playAnimalSound = (animal: string) => {
   const now = ctx.currentTime;
   
   switch (animal) {
-    case 'dog':
-      osc.type = 'sawtooth';
-      osc.frequency.setValueAtTime(150, now);
-      osc.frequency.exponentialRampToValueAtTime(100, now + 0.1);
-      gain.gain.setValueAtTime(0, now);
-      gain.gain.linearRampToValueAtTime(1, now + 0.05);
-      gain.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
-      osc.start(now);
-      osc.stop(now + 0.2);
-      break;
+    case 'dog': {
+      const audio = new Audio(dogBarkUrl);
+      audio.play().catch(() => {});
+      return;
+    }
     case 'cat':
       osc.type = 'sine';
       osc.frequency.setValueAtTime(400, now);

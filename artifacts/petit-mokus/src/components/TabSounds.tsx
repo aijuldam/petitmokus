@@ -2,13 +2,16 @@ import { motion } from "framer-motion";
 import { Language, dictionary } from "../lib/i18n";
 import { playAnimalSound } from "../lib/audio";
 import { cn } from "../lib/utils";
+import dogPhoto from "@assets/fran-taylor-3VhTw1T0WwI-unsplash_1777220813646.jpg";
 
 interface TabSoundsProps {
   language: Language;
 }
 
-const animals = [
-  { id: 'dog', emoji: '🐶', color: 'bg-accent/20 text-accent-foreground' },
+type AnimalEntry = { id: string; color: string } & ({ emoji: string; photo?: never } | { photo: string; emoji?: never });
+
+const animals: AnimalEntry[] = [
+  { id: 'dog', photo: dogPhoto, color: 'bg-accent/20 text-accent-foreground' },
   { id: 'cat', emoji: '🐱', color: 'bg-primary/10 text-primary-foreground' },
   { id: 'horse', emoji: '🐴', color: 'bg-secondary/20 text-secondary-foreground' },
   { id: 'cow', emoji: '🐄', color: 'bg-chart-3/50 text-foreground' },
@@ -30,8 +33,10 @@ export function TabSounds({ language }: TabSoundsProps) {
           onClick={() => playAnimalSound(animal.id)}
           className="flex flex-col items-center p-4 bg-card rounded-[1.5rem] shadow-sm border border-card-border overflow-hidden hover:shadow-md transition-shadow"
         >
-          <div className={cn("w-full aspect-square flex items-center justify-center text-6xl rounded-[1rem] mb-3", animal.color)}>
-            {animal.emoji}
+          <div className={cn("w-full aspect-square flex items-center justify-center text-6xl rounded-[1rem] mb-3 overflow-hidden", animal.color)}>
+            {animal.photo
+              ? <img src={animal.photo} alt={animal.id} className="w-full h-full object-cover" />
+              : animal.emoji}
           </div>
           <span className="font-bold text-lg text-foreground tracking-wide capitalize">
             {dictionary.animals[animal.id as keyof typeof dictionary.animals][language]}
