@@ -11,12 +11,30 @@ import roosterUrl from "@assets/hahn_kikeriki_1777226970579.mp3";
 
 const MAX_SOUND_DURATION = 5;
 
+let currentAnimalAudio: HTMLAudioElement | null = null;
+let currentAnimalTimeout: ReturnType<typeof setTimeout> | null = null;
+
+const stopCurrentAnimalSound = () => {
+  if (currentAnimalTimeout) {
+    clearTimeout(currentAnimalTimeout);
+    currentAnimalTimeout = null;
+  }
+  if (currentAnimalAudio) {
+    currentAnimalAudio.pause();
+    currentAnimalAudio.currentTime = 0;
+    currentAnimalAudio = null;
+  }
+};
+
 const playAudioFile = (url: string) => {
+  stopCurrentAnimalSound();
   const audio = new Audio(url);
+  currentAnimalAudio = audio;
   audio.play().catch(() => {});
-  setTimeout(() => {
+  currentAnimalTimeout = setTimeout(() => {
     audio.pause();
     audio.currentTime = 0;
+    currentAnimalAudio = null;
   }, MAX_SOUND_DURATION * 1000);
 };
 
