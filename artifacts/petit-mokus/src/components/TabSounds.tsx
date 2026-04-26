@@ -6,6 +6,8 @@ import dogPhoto from "@assets/fran-taylor-3VhTw1T0WwI-unsplash_1777220813646.jpg
 import catPhoto from "@assets/animal-face_W8CE6CC9MP_1777221156438.jpg";
 import horsePhoto from "@assets/luisa-peter-Olt577JtPM0-unsplash_(1)_1777223739525.jpg";
 import cowPhoto from "@assets/thomas-oldenburger-1SQFd9_zNW4-unsplash_(1)_1777221618899.jpg";
+import foxPhoto from "@assets/daniil-silantev-vdlKQXBwOWY-unsplash_1777224849185.jpg";
+import wolfPhoto from "@assets/reyk-odinson-mk2chAKaZR4-unsplash_1777225751422.jpg";
 
 interface TabSoundsProps {
   language: Language;
@@ -22,8 +24,8 @@ const animals: AnimalEntry[] = [
   { id: 'cat',      photo: catPhoto,   color: 'bg-primary/10 text-primary-foreground',      objectPosition: 'center 15%' },
   { id: 'horse',    photo: horsePhoto, color: 'bg-secondary/20 text-secondary-foreground',  objectPosition: 'center 30%' },
   { id: 'cow',      photo: cowPhoto,   color: 'bg-chart-3/50 text-foreground',              objectPosition: 'center 33%' },
-  { id: 'fox',      emoji: '🦊',       color: 'bg-orange-100 text-orange-900' },
-  { id: 'wolf',     emoji: '🐺',       color: 'bg-slate-100 text-slate-800' },
+  { id: 'fox',      photo: foxPhoto,   color: 'bg-orange-100 text-orange-900',  objectPosition: 'center 20%' },
+  { id: 'wolf',     photo: wolfPhoto,  color: 'bg-slate-100 text-slate-800',    objectPosition: 'center 25%' },
   { id: 'squirrel', emoji: '🐿️',       color: 'bg-primary/20 text-primary-foreground' },
   { id: 'mouse',    emoji: '🐭',       color: 'bg-gray-100 text-gray-800' },
   { id: 'sheep',    emoji: '🐑',       color: 'bg-blue-50 text-blue-900' },

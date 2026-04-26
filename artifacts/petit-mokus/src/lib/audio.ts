@@ -2,6 +2,8 @@ import dogBarkUrl from "@assets/10243_1369416216_1777221073239.mp3";
 import catMeowUrl from "@assets/18688_1517423084_1777221307666.mp3";
 import horseNeighUrl from "@assets/18697_1517424136_1777221429193.mp3";
 import cowMooUrl from "@assets/18691_1517423527_1777221546285.mp3";
+import foxCallUrl from "@assets/Fox-calls_1777225514788.wav";
+import wolfHowlUrl from "@assets/wolf_1777225717457.mp3";
 
 const MAX_SOUND_DURATION = 5;
 
@@ -50,28 +52,11 @@ export const playAnimalSound = (animal: string) => {
       playAudioFile(cowMooUrl);
       return;
     case 'fox':
-      osc.type = 'sawtooth';
-      osc.frequency.setValueAtTime(800, now);
-      osc.frequency.exponentialRampToValueAtTime(400, now + 0.1);
-      gain.gain.setValueAtTime(0, now);
-      gain.gain.linearRampToValueAtTime(0.5, now + 0.02);
-      gain.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
-      osc.start(now);
-      osc.stop(now + 0.15);
-      break;
+      playAudioFile(foxCallUrl);
+      return;
     case 'wolf':
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(300, now);
-      osc.frequency.linearRampToValueAtTime(600, now + 0.5);
-      osc.frequency.setValueAtTime(600, now + 1.0);
-      osc.frequency.linearRampToValueAtTime(300, now + 1.5);
-      gain.gain.setValueAtTime(0, now);
-      gain.gain.linearRampToValueAtTime(0.5, now + 0.5);
-      gain.gain.setValueAtTime(0.5, now + 1.0);
-      gain.gain.exponentialRampToValueAtTime(0.01, now + 1.5);
-      osc.start(now);
-      osc.stop(now + 1.5);
-      break;
+      playAudioFile(wolfHowlUrl);
+      return;
     case 'squirrel':
       osc.type = 'triangle';
       osc.frequency.setValueAtTime(2000, now);
