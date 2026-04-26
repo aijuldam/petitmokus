@@ -1,4 +1,16 @@
 import dogBarkUrl from "@assets/10243_1369416216_1777221073239.mp3";
+import catMeowUrl from "@assets/18688_1517423084_1777221307666.mp3";
+
+const MAX_SOUND_DURATION = 5;
+
+const playAudioFile = (url: string) => {
+  const audio = new Audio(url);
+  audio.play().catch(() => {});
+  setTimeout(() => {
+    audio.pause();
+    audio.currentTime = 0;
+  }, MAX_SOUND_DURATION * 1000);
+};
 
 let audioCtx: AudioContext | null = null;
 
@@ -23,22 +35,12 @@ export const playAnimalSound = (animal: string) => {
   const now = ctx.currentTime;
   
   switch (animal) {
-    case 'dog': {
-      const audio = new Audio(dogBarkUrl);
-      audio.play().catch(() => {});
+    case 'dog':
+      playAudioFile(dogBarkUrl);
       return;
-    }
     case 'cat':
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(400, now);
-      osc.frequency.linearRampToValueAtTime(600, now + 0.2);
-      osc.frequency.linearRampToValueAtTime(400, now + 0.4);
-      gain.gain.setValueAtTime(0, now);
-      gain.gain.linearRampToValueAtTime(0.5, now + 0.1);
-      gain.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
-      osc.start(now);
-      osc.stop(now + 0.5);
-      break;
+      playAudioFile(catMeowUrl);
+      return;
     case 'horse':
       osc.type = 'triangle';
       osc.frequency.setValueAtTime(300, now);

@@ -3,6 +3,7 @@ import { Language, dictionary } from "../lib/i18n";
 import { playAnimalSound } from "../lib/audio";
 import { cn } from "../lib/utils";
 import dogPhoto from "@assets/fran-taylor-3VhTw1T0WwI-unsplash_1777220813646.jpg";
+import catPhoto from "@assets/animal-face_W8CE6CC9MP_1777221156438.jpg";
 
 interface TabSoundsProps {
   language: Language;
@@ -12,7 +13,7 @@ type AnimalEntry = { id: string; color: string } & ({ emoji: string; photo?: nev
 
 const animals: AnimalEntry[] = [
   { id: 'dog', photo: dogPhoto, color: 'bg-accent/20 text-accent-foreground' },
-  { id: 'cat', emoji: '🐱', color: 'bg-primary/10 text-primary-foreground' },
+  { id: 'cat', photo: catPhoto, color: 'bg-primary/10 text-primary-foreground' },
   { id: 'horse', emoji: '🐴', color: 'bg-secondary/20 text-secondary-foreground' },
   { id: 'cow', emoji: '🐄', color: 'bg-chart-3/50 text-foreground' },
   { id: 'fox', emoji: '🦊', color: 'bg-orange-100 text-orange-900' },
