@@ -6,6 +6,7 @@ import foxCallUrl from "@assets/Fox-calls_1777225514788.wav";
 import wolfHowlUrl from "@assets/wolf_1777225717457.mp3";
 import squirrelUrl from "@assets/squirrel_1777226634633.mp3";
 import pigUrl from "@assets/schwein_1777226753094.mp3";
+import sheepUrl from "@assets/schafe_1777226874835.mp3";
 
 const MAX_SOUND_DURATION = 5;
 
@@ -66,18 +67,8 @@ export const playAnimalSound = (animal: string) => {
       playAudioFile(pigUrl);
       return;
     case 'sheep':
-      osc.type = 'square';
-      osc.frequency.setValueAtTime(250, now);
-      osc.frequency.linearRampToValueAtTime(300, now + 0.1);
-      osc.frequency.linearRampToValueAtTime(250, now + 0.2);
-      osc.frequency.linearRampToValueAtTime(300, now + 0.3);
-      osc.frequency.linearRampToValueAtTime(250, now + 0.4);
-      gain.gain.setValueAtTime(0, now);
-      gain.gain.linearRampToValueAtTime(0.4, now + 0.1);
-      gain.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
-      osc.start(now);
-      osc.stop(now + 0.5);
-      break;
+      playAudioFile(sheepUrl);
+      return;
   }
 };
 

@@ -10,6 +10,7 @@ import foxPhoto from "@assets/alex-glebov-Y9mp8VnyreQ-unsplash_1777225879484.jpg
 import wolfPhoto from "@assets/reyk-odinson-mk2chAKaZR4-unsplash_1777225751422.jpg";
 import squirrelPhoto from "@assets/richard-sagredo-VKe5EyWv8PA-unsplash_1777226655987.jpg";
 import pigPhoto from "@assets/pascal-debrunner-b-zyMn_e_R4-unsplash_1777226794867.jpg";
+import sheepPhoto from "@assets/benjamin-sander-bergum-Bpkdz8nkufU-unsplash_1777226933706.jpg";
 
 interface TabSoundsProps {
   language: Language;
@@ -30,7 +31,7 @@ const animals: AnimalEntry[] = [
   { id: 'wolf',     photo: wolfPhoto,  color: 'bg-slate-100 text-slate-800',    objectPosition: 'center 25%' },
   { id: 'squirrel', photo: squirrelPhoto, color: 'bg-primary/20 text-primary-foreground', objectPosition: 'center 30%' },
   { id: 'pig',      photo: pigPhoto,   color: 'bg-pink-100 text-pink-900',  objectPosition: 'center 40%' },
-  { id: 'sheep',    emoji: '🐑',       color: 'bg-blue-50 text-blue-900' },
+  { id: 'sheep',    photo: sheepPhoto, color: 'bg-blue-50 text-blue-900',  objectPosition: 'center 25%' },
 ];
 
 export function TabSounds({ language }: TabSoundsProps) {
