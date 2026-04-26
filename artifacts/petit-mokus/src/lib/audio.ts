@@ -1,5 +1,6 @@
 import dogBarkUrl from "@assets/10243_1369416216_1777221073239.mp3";
 import catMeowUrl from "@assets/18688_1517423084_1777221307666.mp3";
+import horseNeighUrl from "@assets/18697_1517424136_1777221429193.mp3";
 
 const MAX_SOUND_DURATION = 5;
 
@@ -42,15 +43,8 @@ export const playAnimalSound = (animal: string) => {
       playAudioFile(catMeowUrl);
       return;
     case 'horse':
-      osc.type = 'triangle';
-      osc.frequency.setValueAtTime(300, now);
-      osc.frequency.exponentialRampToValueAtTime(100, now + 0.4);
-      gain.gain.setValueAtTime(0, now);
-      gain.gain.linearRampToValueAtTime(0.8, now + 0.1);
-      gain.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
-      osc.start(now);
-      osc.stop(now + 0.5);
-      break;
+      playAudioFile(horseNeighUrl);
+      return;
     case 'cow':
       osc.type = 'square';
       osc.frequency.setValueAtTime(80, now);
