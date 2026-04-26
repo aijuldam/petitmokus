@@ -6,7 +6,7 @@ import dogPhoto from "@assets/fran-taylor-3VhTw1T0WwI-unsplash_1777220813646.jpg
 import catPhoto from "@assets/animal-face_W8CE6CC9MP_1777221156438.jpg";
 import horsePhoto from "@assets/luisa-peter-Olt577JtPM0-unsplash_(1)_1777223739525.jpg";
 import cowPhoto from "@assets/thomas-oldenburger-1SQFd9_zNW4-unsplash_(1)_1777221618899.jpg";
-import foxPhoto from "@assets/daniil-silantev-vdlKQXBwOWY-unsplash_1777224849185.jpg";
+import foxPhoto from "@assets/alex-glebov-Y9mp8VnyreQ-unsplash_1777225879484.jpg";
 import wolfPhoto from "@assets/reyk-odinson-mk2chAKaZR4-unsplash_1777225751422.jpg";
 
 interface TabSoundsProps {
