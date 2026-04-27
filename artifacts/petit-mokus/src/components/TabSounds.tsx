@@ -27,7 +27,7 @@ const animals: AnimalEntry[] = [
   { id: 'dog',      photo: dogPhoto,   color: 'bg-accent/20 text-accent-foreground',       objectPosition: 'center 25%' },
   { id: 'cat',      photo: catPhoto,   color: 'bg-primary/10 text-primary-foreground',      objectPosition: 'center 15%' },
   { id: 'horse',    photo: horsePhoto, color: 'bg-secondary/20 text-secondary-foreground',  objectPosition: 'center 30%' },
-  { id: 'cow',      photo: cowPhoto,   color: 'bg-chart-3/50 text-foreground',              objectPosition: 'center 10%' },
+  { id: 'cow',      photo: cowPhoto,   color: 'bg-chart-3/50 text-foreground',              objectPosition: 'center 65%' },
   { id: 'fox',      photo: foxPhoto,   color: 'bg-orange-100 text-orange-900',  objectPosition: 'center 20%' },
   { id: 'wolf',     photo: wolfPhoto,  color: 'bg-slate-100 text-slate-800',    objectPosition: 'center 25%' },
   { id: 'squirrel', photo: squirrelPhoto, color: 'bg-primary/20 text-primary-foreground', objectPosition: 'center 30%' },
