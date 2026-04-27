@@ -2,7 +2,7 @@ import dogBarkUrl from "@assets/10243_1369416216_1777221073239.mp3";
 import catMeowUrl from "@assets/18688_1517423084_1777221307666.mp3";
 import horseNeighUrl from "@assets/18697_1517424136_1777221429193.mp3";
 import cowMooUrl from "@assets/18691_1517423527_1777221546285.mp3";
-import foxCallUrl from "@assets/Fox-calls_1777225514788.wav";
+import foxCallUrl from "@assets/Fox-calls_1777225514788.mp3";
 import wolfHowlUrl from "@assets/wolf_1777225717457.mp3";
 import squirrelUrl from "@assets/squirrel_1777226634633.mp3";
 import pigUrl from "@assets/schwein_1777226753094.mp3";
