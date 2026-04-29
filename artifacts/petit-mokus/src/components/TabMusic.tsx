@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { Language, dictionary } from "../lib/i18n";
 import { playSongLoop, stopSong } from "../lib/audio";
 import { Play, Square, ChevronDown } from "lucide-react";
@@ -9,6 +9,7 @@ interface TabMusicProps {
 }
 
 const PIROUETTE_ID = 'fr1';
+const FRERE_JACQUES_ID = 'fr4';
 
 const PIROUETTE_LYRICS = `Il était un petit homme
 Pirouette cacahuète
@@ -58,8 +59,19 @@ Mon histoire est terminée
 Mesdames, Messieurs, applaudissez!
 Mesdames, Messieurs, applaudissez!`;
 
+const FRERE_JACQUES_FR = `Frère Jacques, Frère Jacques,
+Dormez-vous? Dormez-vous?
+Sonnez les matines! Sonnez les matines!
+Ding, dang, dong. Ding, dang, dong.`;
+
+const FRERE_JACQUES_EN = `Are you sleeping, are you sleeping,
+Brother John? Brother John?
+Morning bells are ringing! Morning bells are ringing!
+Ding, dang, dong. Ding, dang, dong.`;
+
 const songs = [
   { id: 'fr1', title: dictionary.songs.fr1, emoji: '🎠', lang: 'FR' },
+  { id: 'fr4', title: dictionary.songs.fr4, emoji: '🔔', lang: 'FR' },
   { id: 'fr2', title: dictionary.songs.fr2, emoji: '🍎', lang: 'FR' },
   { id: 'fr3', title: dictionary.songs.fr3, emoji: '🌲', lang: 'FR' },
   { id: 'hu1', title: dictionary.songs.hu1, emoji: '🌙', lang: 'HU' },
@@ -68,17 +80,22 @@ const songs = [
   { id: 'en2', title: dictionary.songs.en2, emoji: '🌛', lang: 'EN' },
 ];
 
+const lyricsVariants = {
+  hidden: { opacity: 0, height: 0 },
+  visible: { opacity: 1, height: 'auto' },
+};
+
 export function TabMusic({ language }: TabMusicProps) {
   const [playingId, setPlayingId] = useState<string | null>(null);
-  const [lyricsOpen, setLyricsOpen] = useState(false);
-  const audioRef = useRef<HTMLAudioElement>(null);
+  const [pirouetteLyricsOpen, setPirouetteLyricsOpen] = useState(false);
+  const [fjLyricsLang, setFjLyricsLang] = useState<'FR' | 'EN' | null>('FR');
 
   useEffect(() => {
     return () => { stopSong(); };
   }, []);
 
   const handlePlay = (id: string) => {
-    if (id === PIROUETTE_ID) return;
+    if (id === PIROUETTE_ID || id === FRERE_JACQUES_ID) return;
     if (playingId === id) {
       stopSong();
       setPlayingId(null);
@@ -91,6 +108,8 @@ export function TabMusic({ language }: TabMusicProps) {
   return (
     <div className="flex flex-col gap-4 p-6 pb-32 max-w-md mx-auto">
       {songs.map((song) => {
+
+        /* ── Pirouette ── */
         if (song.id === PIROUETTE_ID) {
           return (
             <motion.div
@@ -102,7 +121,7 @@ export function TabMusic({ language }: TabMusicProps) {
                   {song.emoji}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-bold text-foreground truncate text-lg">{song.title}</h3>
+                  <h3 className="font-bold text-foreground text-lg leading-tight">{song.title}</h3>
                   <span className="inline-block mt-1 px-2 py-0.5 rounded-full bg-accent/20 text-accent-foreground text-xs font-bold">
                     {song.lang}
                   </span>
@@ -110,38 +129,28 @@ export function TabMusic({ language }: TabMusicProps) {
               </div>
 
               <div className="px-4 pb-3">
-                <audio
-                  ref={audioRef}
-                  controls
-                  src="/pirouette-cacahuete.mp3"
-                  className="w-full h-10 rounded-full"
-                  style={{ accentColor: 'var(--primary)' }}
-                />
+                <audio controls src="/pirouette-cacahuete.mp3" className="w-full h-10" style={{ accentColor: 'var(--primary)' }} />
               </div>
 
               <div className="px-4 pb-4">
                 <button
-                  aria-expanded={lyricsOpen}
+                  aria-expanded={pirouetteLyricsOpen}
                   aria-controls="pirouette-lyrics"
-                  onClick={() => setLyricsOpen(o => !o)}
+                  onClick={() => setPirouetteLyricsOpen(o => !o)}
                   className="flex items-center gap-1.5 text-sm font-semibold text-primary hover:text-primary/80 transition-colors"
                 >
-                  <ChevronDown
-                    size={16}
-                    className="transition-transform duration-250"
-                    style={{ transform: lyricsOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
-                  />
-                  {lyricsOpen ? 'Masquer les paroles' : 'Voir les paroles'}
+                  <ChevronDown size={16} style={{ transform: pirouetteLyricsOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.25s' }} />
+                  {pirouetteLyricsOpen ? 'Masquer les paroles' : 'Voir les paroles'}
                 </button>
-
                 <AnimatePresence initial={false}>
-                  {lyricsOpen && (
+                  {pirouetteLyricsOpen && (
                     <motion.div
                       id="pirouette-lyrics"
                       key="lyrics"
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: 'auto' }}
-                      exit={{ opacity: 0, height: 0 }}
+                      variants={lyricsVariants}
+                      initial="hidden"
+                      animate="visible"
+                      exit="hidden"
                       transition={{ duration: 0.28, ease: 'easeInOut' }}
                       className="overflow-hidden"
                     >
@@ -156,6 +165,101 @@ export function TabMusic({ language }: TabMusicProps) {
           );
         }
 
+        /* ── Frère Jacques ── */
+        if (song.id === FRERE_JACQUES_ID) {
+          return (
+            <motion.div
+              key={song.id}
+              className="bg-card rounded-[1.25rem] shadow-sm border border-card-border overflow-hidden"
+            >
+              <div className="flex items-center p-4 pb-2">
+                <div className="w-14 h-14 bg-muted rounded-[1rem] flex items-center justify-center text-3xl shrink-0 mr-4">
+                  {song.emoji}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-bold text-foreground text-lg leading-tight">{song.title}</h3>
+                  <p className="text-xs text-foreground/50 mt-0.5">Comptine d'origine française</p>
+                  <p className="text-xs text-foreground/40 italic">Version anglaise : <span className="font-semibold not-italic">Brother John</span></p>
+                </div>
+              </div>
+
+              <div className="px-4 pb-3">
+                <audio controls src="/frere-jacques.mp3" className="w-full h-10" style={{ accentColor: 'var(--primary)' }} />
+              </div>
+
+              {/* Language tab buttons */}
+              <div className="px-4 pb-1 flex gap-2">
+                <button
+                  aria-expanded={fjLyricsLang === 'FR'}
+                  aria-controls="fj-lyrics-fr"
+                  onClick={() => setFjLyricsLang(fjLyricsLang === 'FR' ? null : 'FR')}
+                  className={`flex items-center gap-1 text-xs font-semibold px-3 py-1.5 rounded-full transition-colors ${
+                    fjLyricsLang === 'FR'
+                      ? 'bg-primary text-white'
+                      : 'bg-muted text-foreground/60 hover:bg-primary/10 hover:text-primary'
+                  }`}
+                >
+                  <ChevronDown size={12} style={{ transform: fjLyricsLang === 'FR' ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.25s' }} />
+                  Paroles françaises
+                </button>
+                <button
+                  aria-expanded={fjLyricsLang === 'EN'}
+                  aria-controls="fj-lyrics-en"
+                  onClick={() => setFjLyricsLang(fjLyricsLang === 'EN' ? null : 'EN')}
+                  className={`flex items-center gap-1 text-xs font-semibold px-3 py-1.5 rounded-full transition-colors ${
+                    fjLyricsLang === 'EN'
+                      ? 'bg-accent text-accent-foreground'
+                      : 'bg-muted text-foreground/60 hover:bg-accent/30 hover:text-foreground'
+                  }`}
+                >
+                  <ChevronDown size={12} style={{ transform: fjLyricsLang === 'EN' ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.25s' }} />
+                  English (Brother John)
+                </button>
+              </div>
+
+              <div className="px-4 pb-4">
+                <AnimatePresence initial={false} mode="wait">
+                  {fjLyricsLang === 'FR' && (
+                    <motion.div
+                      id="fj-lyrics-fr"
+                      key="fr"
+                      variants={lyricsVariants}
+                      initial="hidden"
+                      animate="visible"
+                      exit="hidden"
+                      transition={{ duration: 0.25, ease: 'easeInOut' }}
+                      className="overflow-hidden"
+                    >
+                      <p className="mt-3 mb-1 text-[10px] font-bold uppercase tracking-wider text-foreground/40">Paroles originales en français</p>
+                      <pre className="text-sm text-foreground/80 leading-relaxed whitespace-pre-wrap font-sans">
+                        {FRERE_JACQUES_FR}
+                      </pre>
+                    </motion.div>
+                  )}
+                  {fjLyricsLang === 'EN' && (
+                    <motion.div
+                      id="fj-lyrics-en"
+                      key="en"
+                      variants={lyricsVariants}
+                      initial="hidden"
+                      animate="visible"
+                      exit="hidden"
+                      transition={{ duration: 0.25, ease: 'easeInOut' }}
+                      className="overflow-hidden"
+                    >
+                      <p className="mt-3 mb-1 text-[10px] font-bold uppercase tracking-wider text-foreground/40">English version — Brother John</p>
+                      <pre className="text-sm text-foreground/80 leading-relaxed whitespace-pre-wrap font-sans">
+                        {FRERE_JACQUES_EN}
+                      </pre>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </motion.div>
+          );
+        }
+
+        /* ── All other songs ── */
         return (
           <motion.div
             key={song.id}

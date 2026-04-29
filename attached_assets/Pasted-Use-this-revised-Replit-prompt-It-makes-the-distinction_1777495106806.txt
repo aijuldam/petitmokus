@@ -1,0 +1,87 @@
+Use this revised Replit prompt. It makes the distinction clear: Frère Jacques is the original French song, while Brother John is the English translation/adaptation and should have its own separate lyrics panel. “Frère Jacques” is a nursery rhyme of French origin, commonly known in English as “Brother John,” and the familiar English version changes some of the original meaning rather than being a strict line-by-line translation.
+
+Replit prompt
+Update my existing page and keep the current layout, tabs, and styling intact. Do not rebuild the page. Only modify the existing Music tab for the song “Frère Jacques”.
+
+In this Music tab, make it very clear that:
+
+Frère Jacques is the original French version.
+
+Brother John is the English translation/adaptation of the same traditional song.
+
+The French version should be presented as the primary/original version.
+
+The English version should be shown as a separate translated lyrics option, not as the main title.
+
+Please implement the following inside the existing Music tab:
+
+Keep the main song title as Frère Jacques.
+
+Add a subtitle or note saying: “Original French nursery rhyme; English version: Brother John.”
+
+Add or update an <audio controls> player for the local MP3 file for Frère Jacques.
+
+Add a smooth lyrics interface with two dedicated buttons or tabs:
+
+French lyrics
+
+English lyrics (Brother John)
+
+Each button should open its own lyrics panel smoothly.
+
+The French lyrics panel should be open by default.
+
+The English panel should clearly be labeled as a translation/adaptation called Brother John.
+
+Behavior and UX requirements:
+
+Do not change unrelated parts of the page.
+
+Reuse existing classes and styles where possible.
+
+Use accessible buttons with aria-expanded, aria-controls, and unique panel IDs.
+
+Use a smooth fade + slide or accordion transition for switching lyrics.
+
+Add a subtle active state so users can clearly see whether they are viewing French or English lyrics.
+
+Respect prefers-reduced-motion by minimizing animation.
+
+Content requirements:
+
+The French lyrics section should be labeled “Original French lyrics”.
+
+The English lyrics section should be labeled “English version: Brother John”.
+
+Add a short helper note explaining that Brother John is the English version of Frère Jacques, but the French title is the original.
+
+Important copy guidance:
+
+Avoid wording that suggests Brother John is the original title.
+
+Avoid presenting the two versions as equal-language originals.
+
+The UI should clearly prioritize the French version first, with the English version as a secondary translated/adapted lyrics view.
+
+Please return:
+
+The exact HTML snippet to insert or replace in the existing Music tab.
+
+The exact CSS snippet to add.
+
+The exact JavaScript snippet to add.
+
+A short note explaining where each snippet should go.
+
+Better wording for the UI
+You can also tell Replit to use this exact microcopy:
+
+Title: Frère Jacques
+
+Subtitle: Original French nursery rhyme
+
+Secondary note: English version available as “Brother John”
+
+Button 1: French lyrics
+
+Button 2: English lyrics (Brother John)
