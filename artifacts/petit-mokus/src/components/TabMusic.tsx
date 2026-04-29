@@ -239,7 +239,7 @@ export function TabMusic({ language }: TabMusicProps) {
                 </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="font-bold text-foreground text-lg leading-tight">{song.title}</h3>
-                  <span className="inline-flex items-center gap-1 mt-1 text-xs text-foreground/50">🇫🇷 France</span>
+                  <span className="inline-flex items-center gap-1 mt-1 text-xs text-foreground/50">🇫🇷 France (FR)</span>
                 </div>
               </div>
 
@@ -293,7 +293,7 @@ export function TabMusic({ language }: TabMusicProps) {
                 </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="font-bold text-foreground text-lg leading-tight">{song.title}</h3>
-                  <span className="inline-flex items-center gap-1 mt-1 text-xs text-foreground/50">🇫🇷 France</span>
+                  <span className="inline-flex items-center gap-1 mt-1 text-xs text-foreground/50">🇫🇷 France (FR)</span>
                   <p className="text-xs text-foreground/40 italic mt-0.5">Version anglaise : <span className="font-semibold not-italic">Brother John</span></p>
                 </div>
               </div>
@@ -387,7 +387,7 @@ export function TabMusic({ language }: TabMusicProps) {
                 </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="font-bold text-foreground text-lg leading-tight">{song.title}</h3>
-                  <span className="inline-flex items-center gap-1 mt-1 text-xs text-foreground/50">🇫🇷 France</span>
+                  <span className="inline-flex items-center gap-1 mt-1 text-xs text-foreground/50">🇫🇷 France (FR)</span>
                 </div>
               </div>
 
@@ -441,7 +441,7 @@ export function TabMusic({ language }: TabMusicProps) {
                 </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="font-bold text-foreground text-lg leading-tight">{song.title}</h3>
-                  <span className="inline-flex items-center gap-1 mt-1 text-xs text-foreground/50">🇫🇷 France</span>
+                  <span className="inline-flex items-center gap-1 mt-1 text-xs text-foreground/50">🇫🇷 France (FR)</span>
                 </div>
               </div>
 
@@ -495,7 +495,7 @@ export function TabMusic({ language }: TabMusicProps) {
                 </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="font-bold text-foreground text-lg leading-tight">{song.title}</h3>
-                  <span className="inline-flex items-center gap-1 mt-1 text-xs text-foreground/50">🇺🇸 United States</span>
+                  <span className="inline-flex items-center gap-1 mt-1 text-xs text-foreground/50">🇺🇸 United States (US)</span>
                 </div>
               </div>
 
@@ -549,7 +549,7 @@ export function TabMusic({ language }: TabMusicProps) {
                 </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="font-bold text-foreground text-lg leading-tight">{song.title}</h3>
-                  <span className="inline-flex items-center gap-1 mt-1 text-xs text-foreground/50">🇭🇺 Hongrie</span>
+                  <span className="inline-flex items-center gap-1 mt-1 text-xs text-foreground/50">🇭🇺 Magyarország (HU)</span>
                 </div>
               </div>
 
