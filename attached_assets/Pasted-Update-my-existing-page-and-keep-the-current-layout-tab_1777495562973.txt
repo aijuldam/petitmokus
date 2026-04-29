@@ -1,0 +1,65 @@
+Update my existing page and keep the current layout, tabs, and styling intact. Do not rebuild the page. Only modify the existing Music tab for the song “Au clair de la lune.” Keep this as one version only, in French, with no English/French switch and no alternate lyrics mode.
+
+In the existing Music tab:
+
+Keep the main song title as Au clair de la lune.
+
+Add a short subtitle such as: Traditional French nursery rhyme.
+
+Add or update an <audio controls> player for the local MP3 file for this song.
+
+Add one smooth Lyrics button that shows and hides a single lyrics panel.
+
+Do not add translation tabs, language toggles, or multiple lyrics sections.
+
+Behavior requirements:
+
+The page and tab already exist, so patch the current code only.
+
+Preserve all existing layout and styling outside the Music tab.
+
+Reuse existing classes and markup where possible.
+
+The Lyrics button should smoothly open and close the panel with a soft fade + slide or accordion effect.
+
+Use aria-expanded, aria-controls, and a unique panel id for accessibility.
+
+Implementation requirements:
+
+Use plain HTML, CSS, and JavaScript only.
+
+Use a native <audio controls> element with a relative local MP3 path.
+
+Do not fetch the MP3 with JavaScript.
+
+Keep the CSS minimal and only add what is needed for the smooth lyrics interaction.
+
+Use a max-height + opacity transition around 250–300ms.
+
+Add a subtle chevron rotation on the Lyrics button when open.
+
+Respect prefers-reduced-motion by minimizing animation.
+
+Content guidance:
+
+Present Au clair de la lune as a single French nursery rhyme.
+
+Keep the lyrics panel label simple, such as Lyrics or French lyrics.
+
+Do not mention Brother John, Frère Jacques, translation mode, or alternate versions anywhere in this section.
+
+Please return:
+
+The exact HTML snippet to insert or replace inside the existing Music tab.
+
+The exact CSS snippet to add.
+
+The exact JavaScript snippet to add.
+
+A short note explaining where each snippet should go.
+
+Stronger final line
+Add this at the end of the prompt for clarity:
+
+“Important: this song should now behave as a single-track, single-lyrics experience. Remove any previous bilingual logic, language tabs, or alternate-version labels from the Music tab for this item.”
+

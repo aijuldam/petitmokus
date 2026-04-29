@@ -10,6 +10,7 @@ interface TabMusicProps {
 
 const PIROUETTE_ID = 'fr1';
 const FRERE_JACQUES_ID = 'fr4';
+const AU_CLAIR_ID = 'fr5';
 
 const PIROUETTE_LYRICS = `Il était un petit homme
 Pirouette cacahuète
@@ -69,9 +70,46 @@ Brother John? Brother John?
 Morning bells are ringing! Morning bells are ringing!
 Ding, dang, dong. Ding, dang, dong.`;
 
+const AU_CLAIR_LYRICS = `Au clair de la lune,
+Mon ami Pierrot,
+Prête-moi ta plume
+Pour écrire un mot.
+Ma chandelle est morte,
+Je n'ai plus de feu.
+Ouvre-moi ta porte
+Pour l'amour de Dieu.
+
+Au clair de la lune,
+Pierrot répondit :
+"Je n'ai pas de plume,
+Je suis dans mon lit.
+Va chez la voisine,
+Je crois qu'elle y est,
+Car dans sa cuisine
+On bat le briquet."
+
+Au clair de la lune,
+L'aimable Lubin;
+Frappe chez la brune,
+Elle répond soudain :
+–Qui frappe de la sorte ?
+Il dit à son tour :
+–Ouvrez votre porte,
+Pour le Dieu d'Amour.
+
+Au clair de la lune,
+On n'y voit qu'un peu.
+On chercha la plume,
+On chercha du feu.
+En cherchant d'la sorte,
+Je n'sais c'qu'on trouva ;
+Mais je sais qu'la porte
+Sur eux se ferma.`;
+
 const songs = [
   { id: 'fr1', title: dictionary.songs.fr1, emoji: '🎠', lang: 'FR' },
   { id: 'fr4', title: dictionary.songs.fr4, emoji: '🔔', lang: 'FR' },
+  { id: 'fr5', title: dictionary.songs.fr5, emoji: '🌙', lang: 'FR' },
   { id: 'fr2', title: dictionary.songs.fr2, emoji: '🍎', lang: 'FR' },
   { id: 'fr3', title: dictionary.songs.fr3, emoji: '🌲', lang: 'FR' },
   { id: 'hu1', title: dictionary.songs.hu1, emoji: '🌙', lang: 'HU' },
@@ -89,6 +127,7 @@ export function TabMusic({ language }: TabMusicProps) {
   const [playingId, setPlayingId] = useState<string | null>(null);
   const [pirouetteLyricsOpen, setPirouetteLyricsOpen] = useState(false);
   const [fjLyricsLang, setFjLyricsLang] = useState<'FR' | 'EN' | null>('FR');
+  const [auClairLyricsOpen, setAuClairLyricsOpen] = useState(false);
 
   useEffect(() => {
     return () => { stopSong(); };
@@ -250,6 +289,60 @@ export function TabMusic({ language }: TabMusicProps) {
                       <p className="mt-3 mb-1 text-[10px] font-bold uppercase tracking-wider text-foreground/40">English version — Brother John</p>
                       <pre className="text-sm text-foreground/80 leading-relaxed whitespace-pre-wrap font-sans">
                         {FRERE_JACQUES_EN}
+                      </pre>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </motion.div>
+          );
+        }
+
+        /* ── Au clair de la lune ── */
+        if (song.id === AU_CLAIR_ID) {
+          return (
+            <motion.div
+              key={song.id}
+              className="bg-card rounded-[1.25rem] shadow-sm border border-card-border overflow-hidden"
+            >
+              <div className="flex items-center p-4 pb-2">
+                <div className="w-14 h-14 bg-muted rounded-[1rem] flex items-center justify-center text-3xl shrink-0 mr-4">
+                  {song.emoji}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-bold text-foreground text-lg leading-tight">{song.title}</h3>
+                  <p className="text-xs text-foreground/50 mt-0.5">Comptine française traditionnelle</p>
+                </div>
+              </div>
+
+              <div className="px-4 pb-3">
+                <audio controls src="/au-clair-de-la-lune.mp3" className="w-full h-10" style={{ accentColor: 'var(--primary)' }} />
+              </div>
+
+              <div className="px-4 pb-4">
+                <button
+                  aria-expanded={auClairLyricsOpen}
+                  aria-controls="au-clair-lyrics"
+                  onClick={() => setAuClairLyricsOpen(o => !o)}
+                  className="flex items-center gap-1.5 text-sm font-semibold text-primary hover:text-primary/80 transition-colors"
+                >
+                  <ChevronDown size={16} style={{ transform: auClairLyricsOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.25s' }} />
+                  {auClairLyricsOpen ? 'Masquer les paroles' : 'Voir les paroles'}
+                </button>
+                <AnimatePresence initial={false}>
+                  {auClairLyricsOpen && (
+                    <motion.div
+                      id="au-clair-lyrics"
+                      key="lyrics"
+                      variants={lyricsVariants}
+                      initial="hidden"
+                      animate="visible"
+                      exit="hidden"
+                      transition={{ duration: 0.28, ease: 'easeInOut' }}
+                      className="overflow-hidden"
+                    >
+                      <pre className="mt-3 text-sm text-foreground/80 leading-relaxed whitespace-pre-wrap font-sans">
+                        {AU_CLAIR_LYRICS}
                       </pre>
                     </motion.div>
                   )}
