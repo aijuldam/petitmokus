@@ -217,9 +217,7 @@ export function TabMusic({ language }: TabMusicProps) {
                 </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="font-bold text-foreground text-lg leading-tight">{song.title}</h3>
-                  <span className="inline-block mt-1 px-2 py-0.5 rounded-full bg-accent/20 text-accent-foreground text-xs font-bold">
-                    {song.lang}
-                  </span>
+                  <span className="inline-flex items-center gap-1 mt-1 text-xs text-foreground/50">🇫🇷 France</span>
                 </div>
               </div>
 
@@ -273,8 +271,8 @@ export function TabMusic({ language }: TabMusicProps) {
                 </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="font-bold text-foreground text-lg leading-tight">{song.title}</h3>
-                  <p className="text-xs text-foreground/50 mt-0.5">Comptine d'origine française</p>
-                  <p className="text-xs text-foreground/40 italic">Version anglaise : <span className="font-semibold not-italic">Brother John</span></p>
+                  <span className="inline-flex items-center gap-1 mt-1 text-xs text-foreground/50">🇫🇷 France</span>
+                  <p className="text-xs text-foreground/40 italic mt-0.5">Version anglaise : <span className="font-semibold not-italic">Brother John</span></p>
                 </div>
               </div>
 
@@ -367,7 +365,7 @@ export function TabMusic({ language }: TabMusicProps) {
                 </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="font-bold text-foreground text-lg leading-tight">{song.title}</h3>
-                  <p className="text-xs text-foreground/50 mt-0.5">Comptine française traditionnelle</p>
+                  <span className="inline-flex items-center gap-1 mt-1 text-xs text-foreground/50">🇫🇷 France</span>
                 </div>
               </div>
 
@@ -421,7 +419,7 @@ export function TabMusic({ language }: TabMusicProps) {
                 </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="font-bold text-foreground text-lg leading-tight">{song.title}</h3>
-                  <p className="text-xs text-foreground/50 mt-0.5">Berceuse française traditionnelle</p>
+                  <span className="inline-flex items-center gap-1 mt-1 text-xs text-foreground/50">🇫🇷 France</span>
                 </div>
               </div>
 
@@ -475,7 +473,7 @@ export function TabMusic({ language }: TabMusicProps) {
                 </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="font-bold text-foreground text-lg leading-tight">{song.title}</h3>
-                  <p className="text-xs text-foreground/50 mt-0.5">Traditional English lullaby</p>
+                  <span className="inline-flex items-center gap-1 mt-1 text-xs text-foreground/50">🇺🇸 United States</span>
                 </div>
               </div>
 
