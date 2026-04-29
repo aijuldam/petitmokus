@@ -14,6 +14,7 @@ const AU_CLAIR_ID = 'fr5';
 const FAIS_DODO_ID = 'fr6';
 const HUSH_BABY_ID = 'en2';
 const BOBITA_ID = 'hu2';
+const TENTE_BABA_ID = 'hu1';
 
 const PIROUETTE_LYRICS = `Il était un petit homme
 Pirouette cacahuète
@@ -160,6 +161,13 @@ Je n'sais c'qu'on trouva ;
 Mais je sais qu'la porte
 Sur eux se ferma.`;
 
+const TENTE_BABA_LYRICS = `Tente, baba, tente,
+a szemedet hunyd be.
+Aludj, ingó-bingó,
+kicsi rózsabimbó.
+Alszik az ibolya,
+csicsíja babája.`;
+
 const BOBITA_LYRICS = `Bóbita, Bóbita táncol,
 Körben az angyalok ülnek,
 Béka-hadak fuvoláznak,
@@ -206,13 +214,14 @@ export function TabMusic({ language }: TabMusicProps) {
   const [faisDodoLyricsOpen, setFaisDodoLyricsOpen] = useState(false);
   const [hushBabyLyricsOpen, setHushBabyLyricsOpen] = useState(false);
   const [bobitaLyricsOpen, setBobitaLyricsOpen] = useState(false);
+  const [tenteBabaLyricsOpen, setTenteBabaLyricsOpen] = useState(false);
 
   useEffect(() => {
     return () => { stopSong(); };
   }, []);
 
   const handlePlay = (id: string) => {
-    if (id === PIROUETTE_ID || id === FRERE_JACQUES_ID || id === AU_CLAIR_ID || id === FAIS_DODO_ID || id === HUSH_BABY_ID || id === BOBITA_ID) return;
+    if (id === PIROUETTE_ID || id === FRERE_JACQUES_ID || id === AU_CLAIR_ID || id === FAIS_DODO_ID || id === HUSH_BABY_ID || id === BOBITA_ID || id === TENTE_BABA_ID) return;
     if (playingId === id) {
       stopSong();
       setPlayingId(null);
@@ -527,6 +536,56 @@ export function TabMusic({ language }: TabMusicProps) {
                     >
                       <pre className="mt-3 text-sm text-foreground/80 leading-relaxed whitespace-pre-wrap font-sans">
                         {HUSH_BABY_LYRICS}
+                      </pre>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </motion.div>
+          );
+        }
+
+        /* ── Tente, baba, tente ── */
+        if (song.id === TENTE_BABA_ID) {
+          return (
+            <motion.div
+              key={song.id}
+              className="bg-card rounded-[1.25rem] shadow-sm border border-card-border overflow-hidden"
+            >
+              <div className="flex items-center p-4 pb-3">
+                <div className="w-14 h-14 bg-muted rounded-[1rem] flex items-center justify-center text-3xl shrink-0 mr-4">
+                  {song.emoji}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-bold text-foreground text-lg leading-tight">{song.title}</h3>
+                  <span className="inline-flex items-center gap-1 mt-1 text-xs text-foreground/50">🇭🇺 Magyarország (HU)</span>
+                </div>
+              </div>
+
+              <div className="px-4 pb-4">
+                <button
+                  aria-expanded={tenteBabaLyricsOpen}
+                  aria-controls="tente-baba-lyrics"
+                  onClick={() => setTenteBabaLyricsOpen(o => !o)}
+                  className="flex items-center gap-1.5 text-sm font-semibold text-primary hover:text-primary/80 transition-colors"
+                >
+                  <ChevronDown size={16} style={{ transform: tenteBabaLyricsOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.25s' }} />
+                  {tenteBabaLyricsOpen ? 'Masquer les paroles' : 'Voir les paroles'}
+                </button>
+                <AnimatePresence initial={false}>
+                  {tenteBabaLyricsOpen && (
+                    <motion.div
+                      id="tente-baba-lyrics"
+                      key="lyrics"
+                      variants={lyricsVariants}
+                      initial="hidden"
+                      animate="visible"
+                      exit="hidden"
+                      transition={{ duration: 0.28, ease: 'easeInOut' }}
+                      className="overflow-hidden"
+                    >
+                      <pre className="mt-3 text-sm text-foreground/80 leading-relaxed whitespace-pre-wrap font-sans">
+                        {TENTE_BABA_LYRICS}
                       </pre>
                     </motion.div>
                   )}
