@@ -15,6 +15,7 @@ const FAIS_DODO_ID = 'fr6';
 const HUSH_BABY_ID = 'en2';
 const BOBITA_ID = 'hu2';
 const TENTE_BABA_ID = 'hu1';
+const TWINKLE_ID = 'en1';
 
 const PIROUETTE_LYRICS = `Il était un petit homme
 Pirouette cacahuète
@@ -161,6 +162,41 @@ Je n'sais c'qu'on trouva ;
 Mais je sais qu'la porte
 Sur eux se ferma.`;
 
+const TWINKLE_LYRICS = `Twinkle, twinkle, little star,
+How I wonder what you are!
+Up above the world so high,
+Like a diamond in the sky.
+Twinkle, twinkle, little star,
+How I wonder what you are!
+
+When the blazing sun is gone,
+When he nothing shines upon,
+Then you show your little light,
+Twinkle, twinkle, all the night.
+Twinkle, twinkle, little bliss,
+How I wonder what you are!
+
+Then the traveller in the dark
+Thanks you for your tiny spark;
+He could not see which way to go,
+If you did not twinkle so.
+Twinkle, twinkle, little star,
+How I wonder what you are!
+
+In the dark blue sky you keep,
+And often through my curtains peep,
+For you never shut your eye
+Till the sun is in the sky.
+Twinkle, twinkle, little star,
+How I wonder what you are!
+
+As your bright and tiny spark
+Lights the traveller in the dark,
+Though I know not what you are,
+Twinkle, twinkle, little star.
+Twinkle, twinkle, little star,
+How I wonder what you are!`;
+
 const TENTE_BABA_LYRICS = `Tente, baba, tente,
 a szemedet hunyd be.
 Aludj, ingó-bingó,
@@ -193,8 +229,6 @@ const songs = [
   { id: 'fr4', title: dictionary.songs.fr4, emoji: '🔔', lang: 'FR' },
   { id: 'fr5', title: dictionary.songs.fr5, emoji: '🌙', lang: 'FR' },
   { id: 'fr6', title: dictionary.songs.fr6, emoji: '🍼', lang: 'FR' },
-  { id: 'fr2', title: dictionary.songs.fr2, emoji: '🍎', lang: 'FR' },
-  { id: 'fr3', title: dictionary.songs.fr3, emoji: '🌲', lang: 'FR' },
   { id: 'hu1', title: dictionary.songs.hu1, emoji: '🌙', lang: 'HU' },
   { id: 'hu2', title: dictionary.songs.hu2, emoji: '🌸', lang: 'HU' },
   { id: 'en1', title: dictionary.songs.en1, emoji: '⭐', lang: 'EN' },
@@ -215,13 +249,14 @@ export function TabMusic({ language }: TabMusicProps) {
   const [hushBabyLyricsOpen, setHushBabyLyricsOpen] = useState(false);
   const [bobitaLyricsOpen, setBobitaLyricsOpen] = useState(false);
   const [tenteBabaLyricsOpen, setTenteBabaLyricsOpen] = useState(false);
+  const [twinkleLyricsOpen, setTwinkleLyricsOpen] = useState(false);
 
   useEffect(() => {
     return () => { stopSong(); };
   }, []);
 
   const handlePlay = (id: string) => {
-    if (id === PIROUETTE_ID || id === FRERE_JACQUES_ID || id === AU_CLAIR_ID || id === FAIS_DODO_ID || id === HUSH_BABY_ID || id === BOBITA_ID || id === TENTE_BABA_ID) return;
+    if (id === PIROUETTE_ID || id === FRERE_JACQUES_ID || id === AU_CLAIR_ID || id === FAIS_DODO_ID || id === HUSH_BABY_ID || id === BOBITA_ID || id === TENTE_BABA_ID || id === TWINKLE_ID) return;
     if (playingId === id) {
       stopSong();
       setPlayingId(null);
@@ -536,6 +571,60 @@ export function TabMusic({ language }: TabMusicProps) {
                     >
                       <pre className="mt-3 text-sm text-foreground/80 leading-relaxed whitespace-pre-wrap font-sans">
                         {HUSH_BABY_LYRICS}
+                      </pre>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </motion.div>
+          );
+        }
+
+        /* ── Twinkle, Twinkle, Little Star ── */
+        if (song.id === TWINKLE_ID) {
+          return (
+            <motion.div
+              key={song.id}
+              className="bg-card rounded-[1.25rem] shadow-sm border border-card-border overflow-hidden"
+            >
+              <div className="flex items-center p-4 pb-2">
+                <div className="w-14 h-14 bg-muted rounded-[1rem] flex items-center justify-center text-3xl shrink-0 mr-4">
+                  {song.emoji}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-bold text-foreground text-lg leading-tight">{song.title}</h3>
+                  <span className="inline-flex items-center gap-1 mt-1 text-xs text-foreground/50">🇬🇧 United Kingdom (UK)</span>
+                </div>
+              </div>
+
+              <div className="px-4 pb-3">
+                <audio controls src="/twinkle-twinkle.mp3" className="w-full h-10" style={{ accentColor: 'var(--primary)' }} />
+              </div>
+
+              <div className="px-4 pb-4">
+                <button
+                  aria-expanded={twinkleLyricsOpen}
+                  aria-controls="twinkle-lyrics"
+                  onClick={() => setTwinkleLyricsOpen(o => !o)}
+                  className="flex items-center gap-1.5 text-sm font-semibold text-primary hover:text-primary/80 transition-colors"
+                >
+                  <ChevronDown size={16} style={{ transform: twinkleLyricsOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.25s' }} />
+                  {twinkleLyricsOpen ? 'Hide lyrics' : 'See lyrics'}
+                </button>
+                <AnimatePresence initial={false}>
+                  {twinkleLyricsOpen && (
+                    <motion.div
+                      id="twinkle-lyrics"
+                      key="lyrics"
+                      variants={lyricsVariants}
+                      initial="hidden"
+                      animate="visible"
+                      exit="hidden"
+                      transition={{ duration: 0.28, ease: 'easeInOut' }}
+                      className="overflow-hidden"
+                    >
+                      <pre className="mt-3 text-sm text-foreground/80 leading-relaxed whitespace-pre-wrap font-sans">
+                        {TWINKLE_LYRICS}
                       </pre>
                     </motion.div>
                   )}
