@@ -1,0 +1,62 @@
+Replit prompt
+Update my existing page and keep the current layout, tabs, and styling intact. Do not rebuild the page from scratch. Only modify the existing Music tab so that the song “Pirouette, Cacahuète” has a working local MP3 audio player and a smooth lyrics toggle. Use the existing HTML structure whenever possible.
+
+In the existing Music tab:
+
+Add or update an <audio controls> player for ./assets/pirouette-cacahuete.mp3.
+
+Keep the current tab and surrounding UI unchanged.
+
+Add a Lyrics button below or beside the audio player.
+
+Make the Lyrics button smoothly open and close a lyrics panel with a fade + slide effect.
+
+The button must update aria-expanded="true" and aria-expanded="false" when toggled, and the lyrics panel should be associated to the button with aria-controls and an id.
+
+Implementation requirements:
+
+Use plain HTML, CSS, and JavaScript only.
+
+Do not fetch the MP3 with JavaScript; use the native <audio> element with a relative file path.
+
+Reuse existing classes and styles where possible.
+
+If needed, add only minimal new CSS for the smooth accordion animation.
+
+Use a max-height and opacity transition for the lyrics panel, with a duration around 250–300ms.
+
+Add a small chevron icon that rotates when the lyrics panel opens.
+
+Respect prefers-reduced-motion by reducing or removing animation.
+
+JavaScript behavior:
+
+Target the existing Music tab content only.
+
+Add a click handler for the Lyrics button.
+
+Toggle an .is-open class on the lyrics container.
+
+Update aria-expanded on the button.
+
+Keep the code small and clean, and avoid changing unrelated parts of the page.
+
+Please return:
+
+The exact HTML snippet to insert or replace inside the existing Music tab.
+
+The exact CSS snippet to add.
+
+The exact JavaScript snippet to add.
+
+A short note showing where each snippet should go in the existing file.
+
+Even better version
+If you want Replit to be more precise, paste this too:
+
+“Assume the Music tab already exists. Patch the current code instead of regenerating the whole file. Preserve current class names unless a new class is absolutely necessary.”
+
+Tiny code hint
+If your MP3 is already uploaded, use the exact file path in the prompt, for example ./assets/pirouette-cacahuete.mp3, because the native media element can play a local relative asset directly in a static page setup.
+
+Would you like me to write the patch version now with the HTML, CSS, and JS snippets already filled in?
