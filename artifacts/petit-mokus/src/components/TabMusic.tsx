@@ -12,6 +12,7 @@ const PIROUETTE_ID = 'fr1';
 const FRERE_JACQUES_ID = 'fr4';
 const AU_CLAIR_ID = 'fr5';
 const FAIS_DODO_ID = 'fr6';
+const HUSH_BABY_ID = 'en2';
 
 const PIROUETTE_LYRICS = `Il était un petit homme
 Pirouette cacahuète
@@ -98,6 +99,30 @@ Fait de la compote
 Fais dodo, Colas mon p'tit frère
 Fais dodo, t'auras du lolo`;
 
+const HUSH_BABY_LYRICS = `Hush, little baby, don't say a word,
+Mama's gonna buy you a mockingbird.
+
+And if that mockingbird don't sing,
+Mama's gonna buy you a diamond ring.
+
+And if that diamond ring turns brass,
+Mama's gonna buy you a looking glass.
+
+And if that looking glass is broke,
+Mama's gonna buy you a billy goat.
+
+And if that billy goat won't pull,
+Mama's gonna buy you a cart and a bull.
+
+And if that cart and bull turn over,
+Mama's gonna buy you a dog named Rover.
+
+And if that dog named Rover won't bark,
+Mama's gonna buy you a horse and a cart.
+
+And if that horse and cart fall down,
+You'll still be the sweetest little baby in town.`;
+
 const AU_CLAIR_LYRICS = `Au clair de la lune,
 Mon ami Pierrot,
 Prête-moi ta plume
@@ -158,13 +183,14 @@ export function TabMusic({ language }: TabMusicProps) {
   const [fjLyricsLang, setFjLyricsLang] = useState<'FR' | 'EN' | null>('FR');
   const [auClairLyricsOpen, setAuClairLyricsOpen] = useState(false);
   const [faisDodoLyricsOpen, setFaisDodoLyricsOpen] = useState(false);
+  const [hushBabyLyricsOpen, setHushBabyLyricsOpen] = useState(false);
 
   useEffect(() => {
     return () => { stopSong(); };
   }, []);
 
   const handlePlay = (id: string) => {
-    if (id === PIROUETTE_ID || id === FRERE_JACQUES_ID) return;
+    if (id === PIROUETTE_ID || id === FRERE_JACQUES_ID || id === AU_CLAIR_ID || id === FAIS_DODO_ID || id === HUSH_BABY_ID) return;
     if (playingId === id) {
       stopSong();
       setPlayingId(null);
@@ -427,6 +453,60 @@ export function TabMusic({ language }: TabMusicProps) {
                     >
                       <pre className="mt-3 text-sm text-foreground/80 leading-relaxed whitespace-pre-wrap font-sans">
                         {FAIS_DODO_LYRICS}
+                      </pre>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </motion.div>
+          );
+        }
+
+        /* ── Hush Little Baby ── */
+        if (song.id === HUSH_BABY_ID) {
+          return (
+            <motion.div
+              key={song.id}
+              className="bg-card rounded-[1.25rem] shadow-sm border border-card-border overflow-hidden"
+            >
+              <div className="flex items-center p-4 pb-2">
+                <div className="w-14 h-14 bg-muted rounded-[1rem] flex items-center justify-center text-3xl shrink-0 mr-4">
+                  {song.emoji}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-bold text-foreground text-lg leading-tight">{song.title}</h3>
+                  <p className="text-xs text-foreground/50 mt-0.5">Traditional English lullaby</p>
+                </div>
+              </div>
+
+              <div className="px-4 pb-3">
+                <audio controls src="/hush-little-baby.mp3" className="w-full h-10" style={{ accentColor: 'var(--primary)' }} />
+              </div>
+
+              <div className="px-4 pb-4">
+                <button
+                  aria-expanded={hushBabyLyricsOpen}
+                  aria-controls="hush-baby-lyrics"
+                  onClick={() => setHushBabyLyricsOpen(o => !o)}
+                  className="flex items-center gap-1.5 text-sm font-semibold text-primary hover:text-primary/80 transition-colors"
+                >
+                  <ChevronDown size={16} style={{ transform: hushBabyLyricsOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.25s' }} />
+                  {hushBabyLyricsOpen ? 'Hide lyrics' : 'See lyrics'}
+                </button>
+                <AnimatePresence initial={false}>
+                  {hushBabyLyricsOpen && (
+                    <motion.div
+                      id="hush-baby-lyrics"
+                      key="lyrics"
+                      variants={lyricsVariants}
+                      initial="hidden"
+                      animate="visible"
+                      exit="hidden"
+                      transition={{ duration: 0.28, ease: 'easeInOut' }}
+                      className="overflow-hidden"
+                    >
+                      <pre className="mt-3 text-sm text-foreground/80 leading-relaxed whitespace-pre-wrap font-sans">
+                        {HUSH_BABY_LYRICS}
                       </pre>
                     </motion.div>
                   )}
