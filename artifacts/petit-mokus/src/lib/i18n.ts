@@ -69,6 +69,7 @@ export const dictionary = {
     fr1: 'Pirouette, cacahuète',
     fr4: 'Frère Jacques',
     fr5: 'Au clair de la lune',
+    fr6: 'Fais dodo, Colas',
     fr2: 'Pomme de reinette et pomme d\'api',
     fr3: 'Promenons-nous dans les bois',
     hu1: 'Tente, baba, tente',

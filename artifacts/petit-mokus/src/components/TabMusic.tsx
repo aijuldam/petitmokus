@@ -11,6 +11,7 @@ interface TabMusicProps {
 const PIROUETTE_ID = 'fr1';
 const FRERE_JACQUES_ID = 'fr4';
 const AU_CLAIR_ID = 'fr5';
+const FAIS_DODO_ID = 'fr6';
 
 const PIROUETTE_LYRICS = `Il était un petit homme
 Pirouette cacahuète
@@ -70,6 +71,33 @@ Brother John? Brother John?
 Morning bells are ringing! Morning bells are ringing!
 Ding, dang, dong. Ding, dang, dong.`;
 
+const FAIS_DODO_LYRICS = `Fais dodo, Colas mon p'tit frère
+Fais dodo, t'auras du lolo
+Maman est en haut
+Qui fait du gâteau
+Papa est en bas
+Qui fait du chocolat
+Fais dodo, Colas mon p'tit frère
+Fais dodo, t'auras du lolo
+
+Fais dodo, Colas mon p'tit frère
+Fais dodo, t'auras du lolo
+Ta sœur est en haut
+Qui fait des chapeaux
+Ton frère est en bas
+Qui fait des nougats
+Fais dodo, Colas mon p'tit frère
+Fais dodo, t'auras du lolo
+
+Fais dodo, Colas mon p'tit frère
+Fais dodo, t'auras du lolo
+Ton cousin Gaston
+Fait des gros bonbons
+Ta cousine Charlotte
+Fait de la compote
+Fais dodo, Colas mon p'tit frère
+Fais dodo, t'auras du lolo`;
+
 const AU_CLAIR_LYRICS = `Au clair de la lune,
 Mon ami Pierrot,
 Prête-moi ta plume
@@ -110,6 +138,7 @@ const songs = [
   { id: 'fr1', title: dictionary.songs.fr1, emoji: '🎠', lang: 'FR' },
   { id: 'fr4', title: dictionary.songs.fr4, emoji: '🔔', lang: 'FR' },
   { id: 'fr5', title: dictionary.songs.fr5, emoji: '🌙', lang: 'FR' },
+  { id: 'fr6', title: dictionary.songs.fr6, emoji: '🍼', lang: 'FR' },
   { id: 'fr2', title: dictionary.songs.fr2, emoji: '🍎', lang: 'FR' },
   { id: 'fr3', title: dictionary.songs.fr3, emoji: '🌲', lang: 'FR' },
   { id: 'hu1', title: dictionary.songs.hu1, emoji: '🌙', lang: 'HU' },
@@ -128,6 +157,7 @@ export function TabMusic({ language }: TabMusicProps) {
   const [pirouetteLyricsOpen, setPirouetteLyricsOpen] = useState(false);
   const [fjLyricsLang, setFjLyricsLang] = useState<'FR' | 'EN' | null>('FR');
   const [auClairLyricsOpen, setAuClairLyricsOpen] = useState(false);
+  const [faisDodoLyricsOpen, setFaisDodoLyricsOpen] = useState(false);
 
   useEffect(() => {
     return () => { stopSong(); };
@@ -343,6 +373,60 @@ export function TabMusic({ language }: TabMusicProps) {
                     >
                       <pre className="mt-3 text-sm text-foreground/80 leading-relaxed whitespace-pre-wrap font-sans">
                         {AU_CLAIR_LYRICS}
+                      </pre>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </motion.div>
+          );
+        }
+
+        /* ── Fais dodo ── */
+        if (song.id === FAIS_DODO_ID) {
+          return (
+            <motion.div
+              key={song.id}
+              className="bg-card rounded-[1.25rem] shadow-sm border border-card-border overflow-hidden"
+            >
+              <div className="flex items-center p-4 pb-2">
+                <div className="w-14 h-14 bg-muted rounded-[1rem] flex items-center justify-center text-3xl shrink-0 mr-4">
+                  {song.emoji}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-bold text-foreground text-lg leading-tight">{song.title}</h3>
+                  <p className="text-xs text-foreground/50 mt-0.5">Berceuse française traditionnelle</p>
+                </div>
+              </div>
+
+              <div className="px-4 pb-3">
+                <audio controls src="/fais-dodo.mp3" className="w-full h-10" style={{ accentColor: 'var(--primary)' }} />
+              </div>
+
+              <div className="px-4 pb-4">
+                <button
+                  aria-expanded={faisDodoLyricsOpen}
+                  aria-controls="fais-dodo-lyrics"
+                  onClick={() => setFaisDodoLyricsOpen(o => !o)}
+                  className="flex items-center gap-1.5 text-sm font-semibold text-primary hover:text-primary/80 transition-colors"
+                >
+                  <ChevronDown size={16} style={{ transform: faisDodoLyricsOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.25s' }} />
+                  {faisDodoLyricsOpen ? 'Masquer les paroles' : 'Voir les paroles'}
+                </button>
+                <AnimatePresence initial={false}>
+                  {faisDodoLyricsOpen && (
+                    <motion.div
+                      id="fais-dodo-lyrics"
+                      key="lyrics"
+                      variants={lyricsVariants}
+                      initial="hidden"
+                      animate="visible"
+                      exit="hidden"
+                      transition={{ duration: 0.28, ease: 'easeInOut' }}
+                      className="overflow-hidden"
+                    >
+                      <pre className="mt-3 text-sm text-foreground/80 leading-relaxed whitespace-pre-wrap font-sans">
+                        {FAIS_DODO_LYRICS}
                       </pre>
                     </motion.div>
                   )}
