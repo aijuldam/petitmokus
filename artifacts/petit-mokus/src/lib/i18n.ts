@@ -108,9 +108,9 @@ export const dictionary = {
     about:           { EN: 'About',   FR: 'À propos', HU: 'Rólunk' },
     soundsIntroTitle: { EN: 'Listen & discover', FR: 'Écouter & découvrir', HU: 'Hallgass & fedezz fel' },
     soundsIntroBody: {
-      EN: 'Animal sounds sharpen listening skills, spark curiosity, and build early vocabulary. Play a sound — then ask your child: what does this animal say?',
-      FR: "Les sons d'animaux aiguisent l'écoute, éveillent la curiosité et enrichissent le vocabulaire. Jouez un son — puis demandez : qu'est-ce qu'il dit ?",
-      HU: 'Az állathangok fejlesztik a figyelmet, ébresztik a kíváncsiságot és bővítik a szókincset. Játssz egy hangot — aztán kérdezd: mit mond ez az állat?',
+      EN: 'Animal sounds sharpen listening skills, spark curiosity, and build early vocabulary. Click on ℹ for fun animal facts.',
+      FR: "Les sons d'animaux aiguisent l'écoute, éveillent la curiosité et enrichissent le vocabulaire. Cliquez sur ℹ pour des anecdotes amusantes.",
+      HU: 'Az állathangok fejlesztik a figyelmet, ébresztik a kíváncsiságot és bővítik a szókincset. Kattints az ℹ gombra érdekességekért!',
     },
     musicIntroTitle: { EN: 'Soothe & bond', FR: 'Bercer & se connecter', HU: 'Ringass & kötődjetek' },
     musicIntroBody: {
@@ -123,6 +123,22 @@ export const dictionary = {
       EN: "Storytime calms the mind, builds language, and sparks imagination. Reading together is one of the richest things you can do for your child's development.",
       FR: "Les histoires apaisent l'esprit, développent le langage et stimulent l'imagination. Lire ensemble est l'une des choses les plus précieuses pour votre enfant.",
       HU: 'A mesék megnyugtatják az elmét, fejlesztik a nyelvet és szárnyalásra késztetik a képzeletet. A közös olvasás az egyik legértékesebb dolog, amit gyermekedért tehetsz.',
+    },
+    aboutTitle: { EN: 'About Petit Mokus', FR: 'À propos de Petit Mokus', HU: 'A Petit Mokusról' },
+    aboutP1: {
+      EN: 'Petit Mokus is a gentle digital companion for families, supporting children\'s growth through calming routines, soothing sounds, and simple learning — wherever life takes you.',
+      FR: 'Petit Mokus est un compagnon numérique bienveillant pour les familles, soutenant le développement des enfants à travers des routines apaisantes, des sons doux et un apprentissage simple — où que vous soyez.',
+      HU: 'A Petit Mokus egy kedves digitális társ a családok számára, amely nyugtató rutinok, lágy hangok és egyszerű tanulás révén támogatja a gyermekek fejlődését — bárhol is jártok.',
+    },
+    aboutP2: {
+      EN: 'Petit Mokus is multicultural at its core, crafted by a French & Hungarian family in Amsterdam. Mokus means squirrel in Hungarian — a small, curious animal that thrives through play, exploration, and a love of small, meaningful moments. This mirrors the way Petit Mokus turns bedtime songs, quiet sounds, and simple games into building blocks for children\'s emotional and cognitive development.',
+      FR: 'Petit Mokus est multiculturel dans son ADN, créé par une famille franco-hongroise à Amsterdam. Mokus signifie écureuil en hongrois — un petit animal curieux qui s\'épanouit à travers le jeu, l\'exploration et l\'amour des petits moments précieux. Cela reflète la manière dont Petit Mokus transforme les berceuses, les sons apaisants et les jeux simples en véritables fondations pour le développement émotionnel et cognitif de l\'enfant.',
+      HU: 'A Petit Mokus lényegében multikulturális: egy Amszterdamban élő francia-magyar család alkotása. A „mókus" szó egy kis, kíváncsi állatra utal, amely a játékon, felfedezésen és az apró, értékes pillanatok szeretetén keresztül virágzik. Ez tükrözi azt is, ahogyan a Petit Mokus az altatódalokat, nyugtató hangokat és egyszerű játékokat a gyermekek érzelmi és kognitív fejlődésének alapköveivé varázsolja.',
+    },
+    aboutP3: {
+      EN: 'Like a little squirrel gathering nuts, Petit Mokus gathers gentle interactions that help families feel more connected and secure, one small moment at a time.',
+      FR: 'Comme un petit écureuil qui récolte ses noisettes, Petit Mokus réunit de douces interactions qui aident les familles à se sentir plus liées et en sécurité — un petit moment à la fois.',
+      HU: 'Akárcsak a kis mókus, amely gondosan gyűjti a mogyorókat, a Petit Mokus is kedves pillanatokat gyűjt össze — hogy a családok közelebb kerüljenek egymáshoz, és biztonságban érezzék magukat, egy kis pillanat egyszerre.',
     },
   }
 };
