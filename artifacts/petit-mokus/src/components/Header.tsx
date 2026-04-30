@@ -9,29 +9,38 @@ interface HeaderProps {
 
 export function Header({ language, setLanguage }: HeaderProps) {
   return (
-    <header className="sticky top-0 z-50 w-full bg-background/80 backdrop-blur-md border-b border-border/50 pb-4 pt-6 px-6 flex items-center justify-between">
-      <div className="flex items-center gap-3">
-        <img src={logoSrc} alt="Petit Mokus" width={48} height={48} className="rounded-full" />
-        <h1 className="text-2xl font-bold text-foreground tracking-tight">Petit Mokus</h1>
+    <header className="sticky top-0 z-50 w-full bg-background/80 backdrop-blur-md border-b border-border/50 pb-4 pt-6 px-6">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <img src={logoSrc} alt="Petit Mokus" width={48} height={48} className="rounded-full" />
+          <div>
+            <h1 className="text-2xl font-bold text-foreground tracking-tight leading-tight">Petit Mokus</h1>
+            <p className="text-[11px] text-foreground/45 font-medium tracking-wide leading-none mt-0.5">Little Moments Matter</p>
+          </div>
+        </div>
+
+        <div className="flex bg-muted rounded-full p-1 border border-border/50">
+          {(['EN', 'FR', 'HU'] as Language[]).map(lang => (
+            <button
+              key={lang}
+              data-testid={`lang-toggle-${lang}`}
+              onClick={() => setLanguage(lang)}
+              className={cn(
+                "px-3 py-1.5 rounded-full text-sm font-bold transition-all duration-300",
+                language === lang
+                  ? "bg-card text-foreground shadow-sm"
+                  : "text-muted-foreground hover:text-foreground"
+              )}
+            >
+              {lang}
+            </button>
+          ))}
+        </div>
       </div>
-      
-      <div className="flex bg-muted rounded-full p-1 border border-border/50">
-        {(['EN', 'FR', 'HU'] as Language[]).map(lang => (
-          <button
-            key={lang}
-            data-testid={`lang-toggle-${lang}`}
-            onClick={() => setLanguage(lang)}
-            className={cn(
-              "px-3 py-1.5 rounded-full text-sm font-bold transition-all duration-300",
-              language === lang 
-                ? "bg-card text-foreground shadow-sm" 
-                : "text-muted-foreground hover:text-foreground"
-            )}
-          >
-            {lang}
-          </button>
-        ))}
-      </div>
+
+      <p className="hidden md:block text-center text-xs text-foreground/40 italic mt-3 leading-relaxed">
+        Digital companion for families, supporting children's growth through calming routines, soothing sounds, and simple learning — wherever life takes you.
+      </p>
     </header>
   );
 }

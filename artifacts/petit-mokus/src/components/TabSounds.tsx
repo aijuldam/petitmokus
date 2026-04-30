@@ -41,7 +41,8 @@ export function TabSounds({ language }: TabSoundsProps) {
   const [openFact, setOpenFact] = useState<string | null>(null);
 
   return (
-    <div className="grid grid-cols-2 gap-4 p-6 pb-32 max-w-md mx-auto">
+    <>
+    <div className="grid grid-cols-2 gap-4 p-6 pb-4 max-w-md mx-auto">
       {animals.map((animal) => {
         const isOpen = openFact === animal.id;
         return (
@@ -115,5 +116,15 @@ export function TabSounds({ language }: TabSoundsProps) {
         );
       })}
     </div>
+
+    <div className="px-6 pb-36 max-w-md mx-auto">
+      <div className="bg-card border border-card-border rounded-[1.25rem] p-5 shadow-sm">
+        <h2 className="font-bold text-foreground text-base mb-3">About Petit Mokus</h2>
+        <p className="text-sm text-foreground/65 leading-relaxed">
+          Petit Mokus is a gentle digital companion for families, supporting children's growth through calming routines, soothing sounds, and simple learning — wherever life takes you. Petit Mokus is multicultural at its core, crafted by a French &amp; Hungarian family in Amsterdam. <em>Mokus</em> means squirrel in Hungarian, a small, curious animal that thrives through play, exploration, and a love of small, meaningful moments — which mirrors the way Petit Mokus turns bedtime songs, quiet sounds, and simple games into building blocks for children's emotional and cognitive development. Like a little squirrel gathering nuts, Petit Mokus gathers gentle interactions that help families feel more connected and secure, one small moment at a time.
+        </p>
+      </div>
+    </div>
+    </>
   );
 }
