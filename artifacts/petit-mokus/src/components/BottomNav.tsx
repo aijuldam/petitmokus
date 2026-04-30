@@ -1,8 +1,8 @@
 import { cn } from "../lib/utils";
 import { Language, dictionary } from "../lib/i18n";
-import { Volume2, Music, BookOpen } from "lucide-react";
+import { Volume2, Music, BookOpen, Puzzle } from "lucide-react";
 
-export type TabType = 'sounds' | 'music' | 'stories';
+export type TabType = 'sounds' | 'music' | 'stories' | 'games';
 
 interface BottomNavProps {
   currentTab: TabType;
@@ -14,8 +14,9 @@ export function BottomNav({ currentTab, setTab, language }: BottomNavProps) {
   const ui = dictionary.ui;
 
   const tabs = [
-    { id: 'sounds' as const, label: ui.sounds[language], icon: Volume2 },
-    { id: 'music' as const, label: ui.music[language], icon: Music },
+    { id: 'sounds'  as const, label: ui.sounds[language],  icon: Volume2  },
+    { id: 'music'   as const, label: ui.music[language],   icon: Music    },
+    { id: 'games'   as const, label: ui.games[language],   icon: Puzzle   },
     { id: 'stories' as const, label: ui.stories[language], icon: BookOpen, soon: true },
   ];
 

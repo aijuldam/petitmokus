@@ -81,12 +81,29 @@ export const dictionary = {
     sounds:      { EN: 'Sounds',   FR: 'Sons',      HU: 'Hangok'     },
     music:       { EN: 'Music',    FR: 'Musique',   HU: 'Zene'       },
     stories:     { EN: 'Stories',  FR: 'Histoires', HU: 'Mesék'      },
+    games:       { EN: 'Games',    FR: 'Jeux',      HU: 'Játék'      },
     soon:        { EN: 'Soon',     FR: 'Bientôt',   HU: 'Hamarosan'  },
     storiesTitle: { EN: 'Bedtime Stories', FR: 'Histoires du Soir', HU: 'Esti Mesék' },
     storiesSub: {
       EN: 'Soft little tales are on their way.',
       FR: 'De douces petites histoires sont en route.',
       HU: 'Lágy kis mesék már úton vannak.'
-    }
+    },
+    gameHeaderTitle: { EN: 'Learning through play', FR: 'Apprendre en jouant', HU: 'Tanulás játékkal' },
+    gameHeaderBody: {
+      EN: 'Short, guided play with a grown-up supports attention and language. Name what you see, play together, keep sessions brief.',
+      FR: "Quelques minutes de jeu avec un adulte favorisent l'attention et le langage. Nommez ce que vous voyez, jouez ensemble, restez calmes.",
+      HU: 'A rövid, felnőttel közös játék segíti a figyelmet és a nyelvfejlődést. Nevezzétek meg, amit láttok, játsszatok nyugodtan.',
+    },
+    gameColors:      { EN: 'Colors',        FR: 'Couleurs',                  HU: 'Színek'          },
+    gameShapes:      { EN: 'Shapes',        FR: 'Formes',                    HU: 'Formák'          },
+    gameMatchColor:  { EN: 'Tap a color, then tap its spot.',   FR: 'Touche une couleur, puis sa place.',   HU: 'Érintsd meg a színt, majd a helyét.'  },
+    gameMatchShape:  { EN: 'Tap a shape, then tap its outline.',FR: 'Touche une forme, puis son contour.', HU: 'Érintsd meg a formát, majd a helyét.' },
+    gameBravo:       { EN: 'Well done!',    FR: 'Bravo !',                   HU: 'Ügyes vagy!'     },
+    gamePlayAgain:   { EN: 'Play again',    FR: 'Rejouer',                   HU: 'Újra játszani'   },
+    gameOf:          { EN: 'of',            FR: 'sur',                       HU: '/'               },
+    gameMatched:     { EN: 'matched',       FR: 'associés',                  HU: 'párosítva'       },
+    gameTipColor:    { EN: 'Name the color out loud together!', FR: 'Nommez la couleur ensemble à voix haute !', HU: 'Mondjátok hangosan együtt a színt!' },
+    gameTipShape:    { EN: 'Find the same shape somewhere in the room!', FR: 'Cherchez la même forme dans la pièce !', HU: 'Keressetek ugyanolyan formát a szobában!' },
   }
 };

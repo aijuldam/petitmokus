@@ -1,0 +1,163 @@
+Add a new tab to the existing Petit Mokus app called Games. Keep the current app structure, design system, and navigation intact. Do not rebuild the app. Patch the existing codebase and add this tab in the same spirit as the existing Sounds tab, including the same three-language tab pattern for content switching.
+
+In the new Games tab, create a warm, child-friendly mini-game experience focused on shape matching or color matching for toddlers and preschoolers. The goal is to offer a simple educational activity that remains aligned with pediatric recommendations: limited, high-quality, age-appropriate screen use, ideally with caregiver participation, can be beneficial when it supports attention, language, memory, and real-world interaction.
+
+Header content
+At the top of the Games tab, add a specific header section explaining why this kind of game can still be appropriate even with screen-time concerns. Keep the tone reassuring, factual, and short.
+
+The header should communicate these ideas:
+
+Screen time should stay limited for young children, especially under age 5.
+
+This game is designed as high-quality, age-appropriate, short-form interactive play, not passive viewing.
+
+Pediatric guidance supports co-viewing / caregiver participation, because children learn better when adults talk with them and connect what they see on screen to real life.
+
+Matching games help support visual recognition, attention, problem-solving, hand-eye coordination, and fine motor skills.
+
+Use a visual treatment similar to an informational card or soft callout box under the Games title.
+
+Languages
+Reuse the same three-language tab pattern as the Sounds tab. Keep the UX consistent with the rest of Petit Mokus.
+
+Languages:
+
+French
+
+English
+
+Hungarian
+
+The language switch should update:
+
+the game instructions
+
+the header copy
+
+the labels inside the game UI such as “Start again,” “Match the color,” “Match the shape,” “Well done,” etc.
+
+Game type
+Build one simple matching game with a toggle or mode switch for:
+
+Color matching
+
+Shape matching
+
+The game should be suitable for toddlers and preschoolers:
+
+very simple rules
+
+large touch targets
+
+low visual clutter
+
+no timer
+
+no ads
+
+no overstimulating animations
+
+no penalties
+
+Gameplay ideas
+Option A: Color matching
+Show 3 to 5 large colored targets or baskets.
+
+Show draggable or tappable items that must be matched to the correct color.
+
+Example: drag the red apple to the red basket, or tap the yellow sun and then tap the yellow target.
+
+Give positive feedback when matched correctly.
+
+Option B: Shape matching
+Show 3 to 5 large shape outlines or slots.
+
+Show simple shapes such as circle, square, triangle, star.
+
+Let children drag or tap-to-place the matching shape into the correct slot.
+
+Give positive feedback for correct placement.
+
+You can either:
+
+make one game with a mode switch between colors and shapes, or
+
+default to color matching and allow easy extension to shapes later.
+
+UX requirements
+Keep the UI calm, soft, and bedtime-friendly, consistent with Petit Mokus.
+
+Use rounded cards, gentle shadows, and spacious layout.
+
+Make all touch targets at least 44x44px.
+
+Prefer soft transitions and subtle success feedback.
+
+Respect prefers-reduced-motion.
+
+Keep the whole interaction in one visible panel without complicated navigation.
+
+Make it work well on mobile first.
+
+Educational helper copy
+Inside the game area, add one short sentence for caregivers, such as:
+
+“Name the color out loud together.”
+
+“Ask your child to find the same shape in the room.”
+
+“Play together and keep sessions short.”
+
+This should reinforce the co-viewing / real-world extension approach described in pediatric guidance.
+
+Technical requirements
+Use plain HTML, CSS, and JavaScript only unless the app already uses a framework.
+
+Reuse existing app components and styles where possible.
+
+Patch the existing tab system instead of creating a separate page.
+
+Follow the existing multilingual logic from the Sounds tab.
+
+Keep game state simple and in memory.
+
+No localStorage required.
+
+No external dependencies unless already used by the app.
+
+Please return
+The exact code changes needed to add the new Games tab
+
+The HTML snippet for the tab content
+
+The CSS snippet for the game layout and feedback states
+
+The JavaScript needed for:
+
+language switching inside the Games tab
+
+game mode switching between colors and shapes
+
+matching logic
+
+success feedback
+
+reset / play again behavior
+
+A short integration note explaining where to place each part in the existing codebase
+
+Optional polish
+If possible, add:
+
+a soft success state like “Bravo!” / “Well done!” / “Ügyes vagy!”
+
+a simple progress indicator such as “3 of 4 matched”
+
+a “Play again” button
+
+a tiny icon in the Games tab header
+
+Better final constraint
+Add this exact sentence at the end of the prompt:
+
+“Important: the Games tab must feel calm, educational, and pediatrician-friendly, with short guided interaction and clear caregiver participation cues, not like an arcade or reward-heavy app.
