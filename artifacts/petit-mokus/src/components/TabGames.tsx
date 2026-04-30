@@ -181,15 +181,15 @@ export function TabGames({ language }: TabGamesProps) {
                 onClick={() => handleTargetTap(id)}
                 animate={isWrong ? { x: [-7, 7, -5, 5, 0] } : { x: 0 }}
                 transition={{ duration: 0.35 }}
-                className="h-[4.5rem] rounded-[1.25rem] border-[3px] flex items-center justify-center transition-colors duration-300"
+                className="h-[4.5rem] rounded-[1.25rem] border-[3px] flex flex-col items-center justify-center gap-1 transition-all duration-300"
                 style={{
-                  backgroundColor: isMatched ? color.hex : undefined,
-                  borderStyle: isMatched ? 'solid' : 'dashed',
-                  borderColor: isWrong ? '#F87171' : isMatched ? color.hex : 'rgba(92,74,61,0.18)',
+                  backgroundColor: isMatched ? color.hex : color.hex + '22',
+                  borderStyle: 'solid',
+                  borderColor: isWrong ? '#F87171' : color.hex,
                 }}
                 aria-label={color[language]}
               >
-                {isMatched && (
+                {isMatched ? (
                   <motion.span
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
@@ -198,6 +198,19 @@ export function TabGames({ language }: TabGamesProps) {
                   >
                     ✓
                   </motion.span>
+                ) : (
+                  <>
+                    <div
+                      className="w-7 h-7 rounded-full shadow-sm"
+                      style={{ backgroundColor: color.hex }}
+                    />
+                    <span
+                      className="text-[11px] font-bold leading-none"
+                      style={{ color: color.hex }}
+                    >
+                      {color[language]}
+                    </span>
+                  </>
                 )}
               </motion.button>
             );
