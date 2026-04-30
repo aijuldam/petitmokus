@@ -105,5 +105,24 @@ export const dictionary = {
     gameMatched:     { EN: 'matched',       FR: 'associés',                  HU: 'párosítva'       },
     gameTipColor:    { EN: 'Name the color out loud together!', FR: 'Nommez la couleur ensemble à voix haute !', HU: 'Mondjátok hangosan együtt a színt!' },
     gameTipShape:    { EN: 'Find the same shape somewhere in the room!', FR: 'Cherchez la même forme dans la pièce !', HU: 'Keressetek ugyanolyan formát a szobában!' },
+    about:           { EN: 'About',   FR: 'À propos', HU: 'Rólunk' },
+    soundsIntroTitle: { EN: 'Listen & discover', FR: 'Écouter & découvrir', HU: 'Hallgass & fedezz fel' },
+    soundsIntroBody: {
+      EN: 'Animal sounds sharpen listening skills, spark curiosity, and build early vocabulary. Play a sound — then ask your child: what does this animal say?',
+      FR: "Les sons d'animaux aiguisent l'écoute, éveillent la curiosité et enrichissent le vocabulaire. Jouez un son — puis demandez : qu'est-ce qu'il dit ?",
+      HU: 'Az állathangok fejlesztik a figyelmet, ébresztik a kíváncsiságot és bővítik a szókincset. Játssz egy hangot — aztán kérdezd: mit mond ez az állat?',
+    },
+    musicIntroTitle: { EN: 'Soothe & bond', FR: 'Bercer & se connecter', HU: 'Ringass & kötődjetek' },
+    musicIntroBody: {
+      EN: 'Songs and lullabies calm the nervous system, strengthen the caregiver bond, and gently introduce children to language and rhythm.',
+      FR: "Chansons et berceuses apaisent, renforcent le lien avec l'enfant et l'exposent doucement au langage et au rythme.",
+      HU: 'A dalok és altatók megnyugtatják az idegrendszert, erősítik a szülő-gyermek kapcsolatot, és finoman ismertetik meg a kicsiket a nyelvvel és a ritmussal.',
+    },
+    storiesIntroTitle: { EN: 'Imagine & dream', FR: 'Imaginer & rêver', HU: 'Képzeld el & álmodozz' },
+    storiesIntroBody: {
+      EN: "Storytime calms the mind, builds language, and sparks imagination. Reading together is one of the richest things you can do for your child's development.",
+      FR: "Les histoires apaisent l'esprit, développent le langage et stimulent l'imagination. Lire ensemble est l'une des choses les plus précieuses pour votre enfant.",
+      HU: 'A mesék megnyugtatják az elmét, fejlesztik a nyelvet és szárnyalásra késztetik a képzeletet. A közös olvasás az egyik legértékesebb dolog, amit gyermekedért tehetsz.',
+    },
   }
 };

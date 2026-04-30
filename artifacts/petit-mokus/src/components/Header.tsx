@@ -38,7 +38,7 @@ export function Header({ language, setLanguage }: HeaderProps) {
         </div>
       </div>
 
-      <p className="hidden md:block text-center text-xs text-foreground/40 italic mt-3 leading-relaxed">
+      <p className="hidden md:block text-sm text-foreground/55 font-medium mt-2.5 leading-snug">
         Digital companion for families, supporting children's growth through calming routines, soothing sounds, and simple learning — wherever life takes you.
       </p>
     </header>

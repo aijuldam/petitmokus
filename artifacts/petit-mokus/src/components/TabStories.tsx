@@ -1,4 +1,5 @@
 import { Language, dictionary } from "../lib/i18n";
+import { TabIntro } from "./TabIntro";
 
 interface TabStoriesProps {
   language: Language;
@@ -8,7 +9,11 @@ export function TabStories({ language }: TabStoriesProps) {
   const ui = dictionary.ui;
 
   return (
-    <div className="flex flex-col items-center justify-center p-6 pb-32 max-w-md mx-auto min-h-[60vh] text-center">
+    <>
+    <div className="px-6 pt-6 max-w-md mx-auto">
+      <TabIntro emoji="📖" title={ui.storiesIntroTitle[language]} body={ui.storiesIntroBody[language]} />
+    </div>
+    <div className="flex flex-col items-center justify-center p-6 pb-32 max-w-md mx-auto min-h-[50vh] text-center">
       <div className="w-48 h-48 mb-8 relative">
         {/* Soft background glow */}
         <div className="absolute inset-0 bg-primary/10 rounded-full blur-3xl"></div>
@@ -32,5 +37,6 @@ export function TabStories({ language }: TabStoriesProps) {
         {ui.soon[language]}
       </div>
     </div>
+    </>
   );
 }

@@ -5,6 +5,7 @@ import { TabSounds } from "./components/TabSounds";
 import { TabMusic } from "./components/TabMusic";
 import { TabStories } from "./components/TabStories";
 import { TabGames } from "./components/TabGames";
+import { TabAbout } from "./components/TabAbout";
 import { Language } from "./lib/i18n";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
@@ -22,6 +23,7 @@ function App() {
           {currentTab === 'music' && <TabMusic language={language} />}
           {currentTab === 'stories' && <TabStories language={language} />}
           {currentTab === 'games' && <TabGames language={language} />}
+          {currentTab === 'about' && <TabAbout language={language} />}
         </main>
 
         <BottomNav currentTab={currentTab} setTab={setCurrentTab} language={language} />

@@ -3,6 +3,7 @@ import { Language, dictionary } from "../lib/i18n";
 import { playSongLoop, stopSong } from "../lib/audio";
 import { Play, Square, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { TabIntro } from "./TabIntro";
 
 interface TabMusicProps {
   language: Language;
@@ -268,6 +269,7 @@ export function TabMusic({ language }: TabMusicProps) {
 
   return (
     <div className="flex flex-col gap-4 p-6 pb-32 max-w-md mx-auto">
+      <TabIntro emoji="🎵" title={dictionary.ui.musicIntroTitle[language]} body={dictionary.ui.musicIntroBody[language]} />
       {songs.map((song) => {
 
         /* ── Pirouette ── */
