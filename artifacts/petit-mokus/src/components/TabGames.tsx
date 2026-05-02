@@ -5,23 +5,21 @@ import { RefreshCw } from "lucide-react";
 import { ShapeSvg, ShapeId } from "../lib/ShapeSvg";
 import { GameFind } from "./GameFind";
 import { GameColorHunt } from "./GameColorHunt";
-import { GameShapeParking } from "./GameShapeParking";
 import { GameColorBasket } from "./GameColorBasket";
 
 interface TabGamesProps {
   language: Language;
 }
 
-type GameMode = 'colors' | 'find' | 'shapes' | 'colorhunt' | 'shapeparking' | 'colorbasket';
+type GameMode = 'colors' | 'find' | 'shapes' | 'colorhunt' | 'colorbasket';
 type AgeFilter = null | 1 | 2 | 3 | 5;
 
 const GAME_MODES: { id: GameMode; minAge: number }[] = [
   { id: 'colors',    minAge: 1 },
   { id: 'find',      minAge: 1 },
   { id: 'shapes',    minAge: 1 },
-  { id: 'colorhunt',    minAge: 2 },
-  { id: 'shapeparking', minAge: 2 },
-  { id: 'colorbasket',  minAge: 2 },
+  { id: 'colorhunt',   minAge: 2 },
+  { id: 'colorbasket', minAge: 2 },
 ];
 
 const AGE_OPTIONS: AgeFilter[] = [null, 1, 2, 3, 5];
@@ -87,7 +85,7 @@ export function TabGames({ language }: TabGamesProps) {
     setSelected(null);
     setMatched(new Set());
     setWrong(null);
-    if (m !== 'find' && m !== 'colorhunt' && m !== 'shapeparking' && m !== 'colorbasket') {
+    if (m !== 'find' && m !== 'colorhunt' && m !== 'colorbasket') {
       setTargetOrder(shuffle(getIds(m)));
       setItemOrder(shuffle(getIds(m)));
     }
@@ -120,7 +118,6 @@ export function TabGames({ language }: TabGamesProps) {
     if (id === 'colors')    return ui.gameColors[language];
     if (id === 'find')      return ui.gameFindLabel[language];
     if (id === 'colorhunt')    return ui.gameColorHuntLabel[language];
-    if (id === 'shapeparking') return ui.gameShapeParkingLabel[language];
     if (id === 'colorbasket')  return ui.gameColorBasketLabel[language];
     return ui.gameShapes[language];
   };
@@ -209,14 +206,11 @@ export function TabGames({ language }: TabGamesProps) {
           {/* Color Hunt game */}
           {mode === 'colorhunt' && <GameColorHunt key="colorhunt" language={language} />}
 
-          {/* Shape Parking game */}
-          {mode === 'shapeparking' && <GameShapeParking key="shapeparking" language={language} />}
-
           {/* Color Basket Sort game */}
           {mode === 'colorbasket' && <GameColorBasket key="colorbasket" language={language} />}
 
           {/* Color / Shape match games */}
-          {mode !== 'find' && mode !== 'colorhunt' && mode !== 'shapeparking' && mode !== 'colorbasket' && (
+          {mode !== 'find' && mode !== 'colorhunt' && mode !== 'colorbasket' && (
             <>
               <p className="text-sm text-foreground/55 text-center mb-5">{instruction}</p>
 
