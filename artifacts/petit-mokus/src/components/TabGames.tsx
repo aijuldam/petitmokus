@@ -15,7 +15,7 @@ type AgeFilter = null | 1 | 2 | 3 | 5;
 const GAME_MODES: { id: GameMode; minAge: number }[] = [
   { id: 'colors', minAge: 1 },
   { id: 'find',   minAge: 1 },
-  { id: 'shapes', minAge: 2 },
+  { id: 'shapes', minAge: 1 },
 ];
 
 const AGE_OPTIONS: AgeFilter[] = [null, 1, 2, 3, 5];
