@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Header } from "./components/Header";
 import { BottomNav, TabType } from "./components/BottomNav";
 import { TabSounds } from "./components/TabSounds";
@@ -7,12 +7,36 @@ import { TabStories } from "./components/TabStories";
 import { TabGames } from "./components/TabGames";
 import { TabAbout } from "./components/TabAbout";
 import { NewsletterBar } from "./components/NewsletterBar";
+import { StudioApp } from "./components/Studio/StudioApp";
 import { Language } from "./lib/i18n";
 import { TooltipProvider } from "@/components/ui/tooltip";
+
+function useStudioMode(): boolean {
+  const [isStudio, setIsStudio] = useState(
+    () => typeof window !== "undefined" && window.location.hash === "#studio",
+  );
+  useEffect(() => {
+    function check() {
+      setIsStudio(window.location.hash === "#studio");
+    }
+    window.addEventListener("hashchange", check);
+    return () => window.removeEventListener("hashchange", check);
+  }, []);
+  return isStudio;
+}
 
 function App() {
   const [language, setLanguage] = useState<Language>('EN');
   const [currentTab, setCurrentTab] = useState<TabType>('sounds');
+  const isStudio = useStudioMode();
+
+  if (isStudio) {
+    return (
+      <TooltipProvider>
+        <StudioApp />
+      </TooltipProvider>
+    );
+  }
 
   return (
     <TooltipProvider>
