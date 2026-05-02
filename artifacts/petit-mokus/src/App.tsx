@@ -6,6 +6,7 @@ import { TabMusic } from "./components/TabMusic";
 import { TabStories } from "./components/TabStories";
 import { TabGames } from "./components/TabGames";
 import { TabAbout } from "./components/TabAbout";
+import { NewsletterBar } from "./components/NewsletterBar";
 import { Language } from "./lib/i18n";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
@@ -27,6 +28,7 @@ function App() {
         </main>
 
         <BottomNav currentTab={currentTab} setTab={setCurrentTab} language={language} />
+        <NewsletterBar language={language} />
       </div>
     </TooltipProvider>
   );
