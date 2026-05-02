@@ -32,37 +32,33 @@ router.post("/newsletter/signup", async (req, res) => {
 
   const { email, language, signup_page } = parsed.data;
 
-  // Check for duplicate
-  const { data: existing, error: lookupError } = await supabase
+  // Atomic upsert: insert if not exists, silently ignore duplicates.
+  // ignoreDuplicates: true maps to ON CONFLICT DO NOTHING so no row is
+  // overwritten; an empty result means the email was already present.
+  const { data, error: upsertError } = await supabase
     .from("newsletter_signups")
-    .select("id")
-    .eq("email", email)
-    .maybeSingle();
+    .upsert(
+      {
+        email,
+        consent_given: true,
+        consent_text: CONSENT_TEXT,
+        source: "floating_newsletter_bar",
+        signup_page: signup_page ?? "/",
+        language: language ?? "EN",
+        user_agent: req.headers["user-agent"] ?? null,
+      },
+      { onConflict: "email", ignoreDuplicates: true },
+    )
+    .select("id");
 
-  if (lookupError) {
-    req.log.error({ err: lookupError }, "Supabase lookup error");
+  if (upsertError) {
+    req.log.error({ err: upsertError }, "Supabase upsert error");
     res.status(500).json({ error: "Server error" });
     return;
   }
 
-  if (existing) {
+  if (!data || data.length === 0) {
     res.status(200).json({ status: "already_subscribed" });
-    return;
-  }
-
-  const { error: insertError } = await supabase.from("newsletter_signups").insert({
-    email,
-    consent_given: true,
-    consent_text: CONSENT_TEXT,
-    source: "floating_newsletter_bar",
-    signup_page: signup_page ?? "/",
-    language: language ?? "EN",
-    user_agent: req.headers["user-agent"] ?? null,
-  });
-
-  if (insertError) {
-    req.log.error({ err: insertError }, "Supabase insert error");
-    res.status(500).json({ error: "Server error" });
     return;
   }
 
