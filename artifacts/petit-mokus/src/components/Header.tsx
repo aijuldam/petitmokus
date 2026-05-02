@@ -24,7 +24,7 @@ export function Header({ language, setLanguage }: HeaderProps) {
         </p>
 
         <div className="flex bg-muted rounded-full p-1 border border-border/50 shrink-0">
-          {(['EN', 'FR', 'HU'] as Language[]).map(lang => (
+          {(['EN', 'FR', 'HU', 'DE'] as Language[]).map(lang => (
             <button
               key={lang}
               data-testid={`lang-toggle-${lang}`}

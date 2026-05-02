@@ -46,10 +46,10 @@ const GAME_MODES: GameEntry[] = [
 const AGE_OPTIONS: AgeFilter[] = [null, 1, 2, 3, 5];
 
 const COLORS = [
-  { id: 'pink',   hex: '#D897A8', EN: 'Pink',   FR: 'Rose',   HU: 'Rózsaszín' },
-  { id: 'blue',   hex: '#B8CCE0', EN: 'Blue',   FR: 'Bleu',   HU: 'Kék'       },
-  { id: 'green',  hex: '#A6C9B5', EN: 'Green',  FR: 'Vert',   HU: 'Zöld'      },
-  { id: 'yellow', hex: '#E8C77A', EN: 'Yellow', FR: 'Jaune',  HU: 'Sárga'     },
+  { id: 'pink',   hex: '#D897A8', EN: 'Pink',   FR: 'Rose',   HU: 'Rózsaszín', DE: 'Rosa'  },
+  { id: 'blue',   hex: '#B8CCE0', EN: 'Blue',   FR: 'Bleu',   HU: 'Kék',       DE: 'Blau'  },
+  { id: 'green',  hex: '#A6C9B5', EN: 'Green',  FR: 'Vert',   HU: 'Zöld',      DE: 'Grün'  },
+  { id: 'yellow', hex: '#E8C77A', EN: 'Yellow', FR: 'Jaune',  HU: 'Sárga',     DE: 'Gelb'  },
 ];
 
 const SHAPES: { id: ShapeId; hex: string }[] = [

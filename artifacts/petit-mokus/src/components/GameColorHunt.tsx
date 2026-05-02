@@ -32,13 +32,14 @@ const PROMPTS_PREFIX: Record<Language, string> = {
   EN: 'Find something',
   FR: 'Trouve quelque chose de',
   HU: 'Keress valami',
+  DE: 'Finde etwas',
 };
 
 const COLOR_WORD: Record<HuntColor, Record<Language, string>> = {
-  red:    { EN: 'red',    FR: 'rouge', HU: 'pirosat'  },
-  yellow: { EN: 'yellow', FR: 'jaune', HU: 'sárgát'   },
-  blue:   { EN: 'blue',   FR: 'bleu',  HU: 'kéket'    },
-  green:  { EN: 'green',  FR: 'vert',  HU: 'zöldet'   },
+  red:    { EN: 'red',    FR: 'rouge', HU: 'pirosat', DE: 'Rotes'   },
+  yellow: { EN: 'yellow', FR: 'jaune', HU: 'sárgát',  DE: 'Gelbes'  },
+  blue:   { EN: 'blue',   FR: 'bleu',  HU: 'kéket',   DE: 'Blaues'  },
+  green:  { EN: 'green',  FR: 'vert',  HU: 'zöldet',  DE: 'Grünes'  },
 };
 
 const HUNT_ITEMS: Record<HuntColor, HuntItem[]> = {
