@@ -1,0 +1,97 @@
+Great — use “Suitable from age and up” as the helper text. It’s clear, plain-language, and matches the threshold logic you want, which is important because filter labels work best when they are concrete and predictable.
+
+Updated Replit prompt
+Build an age filter for the Games section of my app using a threshold approach.
+
+I want these filter options:
+
+All ages
+
+1+ years
+
+2+ years
+
+3+ years
+
+5+ years
+
+Important behavior:
+
+This is not a strict category filter.
+
+It should behave as a minimum age threshold.
+
+If the user selects 1+ years, show all games with minAge >= 1.
+
+If the user selects 2+ years, show all games with minAge >= 2.
+
+If the user selects 3+ years, show all games with minAge >= 3.
+
+If the user selects 5+ years, show all games with minAge >= 5.
+
+If the user selects All ages, show every game.
+
+Data model:
+
+Each game should have a minAge property with one of these numeric values: 1, 2, 3, or 5.
+
+Example:
+
+js
+const games = [
+  { id: 1, title: "Color Match", minAge: 1 },
+  { id: 2, title: "Shape Sort", minAge: 2 },
+  { id: 3, title: "Pattern Builder", minAge: 3 },
+  { id: 4, title: "Memory Challenge", minAge: 5 }
+];
+Filtering logic:
+
+js
+const filteredGames =
+  selectedAge === null
+    ? games
+    : games.filter(game => game.minAge >= selectedAge);
+UI requirements:
+
+Display the age filters as pill buttons or segmented tabs above the games list.
+
+Only allow one selected age filter at a time.
+
+Make the selected filter visually highlighted.
+
+Add helper text under the section title: “Suitable from age and up.”
+
+Make the layout responsive on desktop and mobile.
+
+Keep the code clean, readable, and easy to extend.
+
+Nice-to-have:
+
+Show the number of matching games next to the section title.
+
+Smoothly update the game grid when the filter changes.
+
+If no games match, show a friendly empty state.
+
+Please implement the UI and logic directly in the Games section.
+
+Small wording recommendation
+If you want it to read a little more naturally in the interface itself, I’d make the section look like this:
+
+Filter by age
+Suitable from age and up.
+
+That gives the user a clear label plus a short explanation, which is usually easier to scan than helper text alone.
+
+Tiny polish
+You may also want Replit to display each game badge as:
+
+Age 1+
+
+Age 2+
+
+Age 3+
+
+Age 5+
+
+That keeps the card labels consistent with the filter chips and reduces ambiguity.

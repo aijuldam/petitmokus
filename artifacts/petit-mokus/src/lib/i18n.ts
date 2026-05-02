@@ -105,6 +105,9 @@ export const dictionary = {
     gameMatched:     { EN: 'matched',       FR: 'associés',                  HU: 'párosítva'       },
     gameTipColor:    { EN: 'Name the color out loud together!', FR: 'Nommez la couleur ensemble à voix haute !', HU: 'Mondjátok hangosan együtt a színt!' },
     gameTipShape:    { EN: 'Find the same shape somewhere in the room!', FR: 'Cherchez la même forme dans la pièce !', HU: 'Keressetek ugyanolyan formát a szobában!' },
+    gameFilterAll:   { EN: 'All ages', FR: 'Tous âges', HU: 'Minden kor' },
+    gameFilterHelp:  { EN: 'Suitable from age and up.', FR: 'Adapté à partir de cet âge.', HU: 'Alkalmas ettől a kortól.' },
+    gameNoGames:     { EN: 'No games for this age filter yet — more coming soon!', FR: 'Aucun jeu pour ce filtre d\'âge — bientôt disponible !', HU: 'Ehhez a korhoz még nincs játék — hamarosan!' },
     about:           { EN: 'About',   FR: 'À propos', HU: 'Rólunk' },
     soundsIntroTitle: { EN: 'Listen & discover', FR: 'Écouter & découvrir', HU: 'Hallgass & fedezz fel' },
     soundsIntroBody: {
