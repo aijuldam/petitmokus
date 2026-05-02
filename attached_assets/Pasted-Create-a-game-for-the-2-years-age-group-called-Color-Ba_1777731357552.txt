@@ -1,0 +1,86 @@
+Create a game for the 2+ years age group called Color Basket Sort, in the same style as the other games in the app.
+
+Goal:
+The child sorts multiple colored objects into the matching colored baskets.
+
+Core gameplay:
+
+Show 2–3 large colored baskets on screen.
+
+Each basket should represent one color, such as red, blue, and yellow.
+
+Show multiple objects for each color, not just one.
+
+Example: 3 red objects, 3 blue objects, and 3 yellow objects mixed together.
+
+The child drags or taps each object into the basket with the matching color.
+
+When an object is sorted correctly, it should snap into the basket with warm positive feedback.
+
+If an object is placed incorrectly, it should gently return and allow the child to try again.
+
+Important design rule:
+
+This should feel like a true sorting game, not a one-to-one matching game.
+
+Each color must have multiple objects, so the child repeats the matching action several times per round.
+
+The repeated sorting should reinforce color recognition and keep the child engaged.
+
+Development approach:
+
+Focus on early color recognition, visual sorting, and simple fine motor interaction.
+
+Keep the gameplay calm, repetitive, and confidence-building.
+
+Do not require reading.
+
+No timers, no scores, and no penalties.
+
+Difficulty for 2+ years:
+
+Start with just 2 colors in the easiest version.
+
+Then allow expansion to 3 colors in later rounds.
+
+Use very distinct colors like red, blue, and yellow.
+
+Use simple objects such as balls, blocks, pom-poms, buttons, or tokens.
+
+Keep the objects either visually consistent across colors or very easy to distinguish.
+
+Visual style:
+
+Match the same visual style, UI patterns, spacing, and feedback style as the other games already created.
+
+Keep it soft, playful, clean, and toddler-friendly.
+
+Use large touch targets and generous spacing.
+
+Make it work smoothly on mobile and tablet.
+
+Round structure:
+
+Start each round with mixed objects placed in a tray or play area.
+
+The child sorts all objects into baskets.
+
+When all objects are correctly sorted, show a gentle celebration and begin a new round.
+
+Nice-to-have:
+
+Add a simple prompt like: “Put the colors in the matching basket.”
+
+Randomize object positions each round.
+
+Add a soft celebration effect like sparkle, bounce, or glow when the round is completed.
+
+Show progress visually as baskets fill up.
+
+Implementation note:
+
+Store each object with a color property and compare it to the selected basket color.
+
+Keep the code reusable so this game fits into the existing game library structure.
+
+Tag this game as suitable for 2+ years.

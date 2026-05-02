@@ -6,12 +6,13 @@ import { ShapeSvg, ShapeId } from "../lib/ShapeSvg";
 import { GameFind } from "./GameFind";
 import { GameColorHunt } from "./GameColorHunt";
 import { GameShapeParking } from "./GameShapeParking";
+import { GameColorBasket } from "./GameColorBasket";
 
 interface TabGamesProps {
   language: Language;
 }
 
-type GameMode = 'colors' | 'find' | 'shapes' | 'colorhunt' | 'shapeparking';
+type GameMode = 'colors' | 'find' | 'shapes' | 'colorhunt' | 'shapeparking' | 'colorbasket';
 type AgeFilter = null | 1 | 2 | 3 | 5;
 
 const GAME_MODES: { id: GameMode; minAge: number }[] = [
@@ -20,6 +21,7 @@ const GAME_MODES: { id: GameMode; minAge: number }[] = [
   { id: 'shapes',    minAge: 1 },
   { id: 'colorhunt',    minAge: 2 },
   { id: 'shapeparking', minAge: 2 },
+  { id: 'colorbasket',  minAge: 2 },
 ];
 
 const AGE_OPTIONS: AgeFilter[] = [null, 1, 2, 3, 5];
@@ -85,7 +87,7 @@ export function TabGames({ language }: TabGamesProps) {
     setSelected(null);
     setMatched(new Set());
     setWrong(null);
-    if (m !== 'find' && m !== 'colorhunt' && m !== 'shapeparking') {
+    if (m !== 'find' && m !== 'colorhunt' && m !== 'shapeparking' && m !== 'colorbasket') {
       setTargetOrder(shuffle(getIds(m)));
       setItemOrder(shuffle(getIds(m)));
     }
@@ -119,6 +121,7 @@ export function TabGames({ language }: TabGamesProps) {
     if (id === 'find')      return ui.gameFindLabel[language];
     if (id === 'colorhunt')    return ui.gameColorHuntLabel[language];
     if (id === 'shapeparking') return ui.gameShapeParkingLabel[language];
+    if (id === 'colorbasket')  return ui.gameColorBasketLabel[language];
     return ui.gameShapes[language];
   };
   const modeMinAge = (id: GameMode) => GAME_MODES.find(m => m.id === id)!.minAge;
@@ -178,13 +181,13 @@ export function TabGames({ language }: TabGamesProps) {
         </motion.div>
       ) : (
         <>
-          {/* Mode switch */}
-          <div className="flex gap-1 mb-5 bg-muted rounded-full p-1">
+          {/* Mode switch — horizontally scrollable for many games */}
+          <div className="flex gap-1 mb-5 bg-muted rounded-2xl p-1 overflow-x-auto" style={{ scrollbarWidth: 'none' }}>
             {visibleModes.map(({ id }) => (
               <button
                 key={id}
                 onClick={() => switchMode(id)}
-                className={`flex-1 py-2 rounded-full text-xs font-bold transition-all duration-200 flex items-center justify-center gap-1.5 ${
+                className={`flex-shrink-0 py-2 px-3 rounded-xl text-xs font-bold transition-all duration-200 flex items-center gap-1.5 whitespace-nowrap ${
                   mode === id
                     ? 'bg-card shadow text-primary'
                     : 'text-muted-foreground hover:text-foreground/70'
@@ -209,8 +212,11 @@ export function TabGames({ language }: TabGamesProps) {
           {/* Shape Parking game */}
           {mode === 'shapeparking' && <GameShapeParking key="shapeparking" language={language} />}
 
+          {/* Color Basket Sort game */}
+          {mode === 'colorbasket' && <GameColorBasket key="colorbasket" language={language} />}
+
           {/* Color / Shape match games */}
-          {mode !== 'find' && mode !== 'colorhunt' && mode !== 'shapeparking' && (
+          {mode !== 'find' && mode !== 'colorhunt' && mode !== 'shapeparking' && mode !== 'colorbasket' && (
             <>
               <p className="text-sm text-foreground/55 text-center mb-5">{instruction}</p>
 

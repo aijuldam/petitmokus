@@ -109,6 +109,8 @@ export const dictionary = {
     gameColorHuntLabel:  { EN: 'Color Hunt',                    FR: 'Chasse aux couleurs',             HU: 'Színvadászat'           },
     gameShapeParkingLabel:       { EN: 'Shape Parking',         FR: 'Parking formes',                  HU: 'Formás parkoló'         },
     gameShapeParkingInstruction: { EN: 'Park each car in its spot!', FR: 'Gare chaque voiture à sa place !', HU: 'Parkold be az autókat!' },
+    gameColorBasketLabel:        { EN: 'Color Sort',            FR: 'Tri couleurs',                    HU: 'Színrendező'            },
+    gameColorBasketInstruction:  { EN: 'Sort each object into its basket!', FR: 'Trie chaque objet dans le bon panier !', HU: 'Tedd az elemeket a megfelelő kosárba!' },
     gameFindInstruction: { EN: 'Which one is the same?',        FR: 'Lequel est pareil ?',             HU: 'Melyik ugyanolyan?'     },
     gameFilterAll:   { EN: 'All ages', FR: 'Tous âges', HU: 'Minden kor' },
     gameFilterHelp:  { EN: 'Suitable from age and up.', FR: 'Adapté à partir de cet âge.', HU: 'Alkalmas ettől a kortól.' },
