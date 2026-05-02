@@ -17,7 +17,17 @@ export function NewsletterBar({ language }: NewsletterBarProps) {
   const [dismissed, setDismissed] = useState(false);
 
   const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  const canSubmit  = emailValid && consent && state === "idle";
+  const canSubmit  = emailValid && consent && state !== "loading";
+
+  function updateEmail(value: string) {
+    setEmail(value);
+    if (state === "error") setState("idle");
+  }
+
+  function updateConsent(value: boolean) {
+    setConsent(value);
+    if (state === "error") setState("idle");
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -25,7 +35,10 @@ export function NewsletterBar({ language }: NewsletterBarProps) {
     setState("loading");
 
     try {
-      const res = await fetch("/api/newsletter/signup", {
+      // VITE_API_BASE_URL is empty in Replit dev (uses relative /api via proxy)
+      // and set to the deployed API URL in Cloudflare Pages production.
+      const apiBase = (import.meta.env.VITE_API_BASE_URL ?? "").replace(/\/$/, "");
+      const res = await fetch(`${apiBase}/api/newsletter/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -109,7 +122,7 @@ export function NewsletterBar({ language }: NewsletterBarProps) {
                   <input
                     type="email"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={(e) => updateEmail(e.target.value)}
                     placeholder={ui.newsletterEmailPlaceholder[language]}
                     required
                     className="flex-1 min-w-0 text-[13px] px-3 py-2 rounded-xl border border-[#D897A8]/30 bg-[#F9F6F1] text-[#5C4A3D] placeholder:text-[#5C4A3D]/30 focus:outline-none focus:border-[#D897A8]/60 focus:ring-1 focus:ring-[#D897A8]/30 transition-all"
@@ -127,7 +140,7 @@ export function NewsletterBar({ language }: NewsletterBarProps) {
                   <input
                     type="checkbox"
                     checked={consent}
-                    onChange={(e) => setConsent(e.target.checked)}
+                    onChange={(e) => updateConsent(e.target.checked)}
                     className="mt-0.5 shrink-0 accent-[#D897A8] w-3.5 h-3.5 cursor-pointer"
                   />
                   <span className="text-[10px] text-[#5C4A3D]/50 leading-snug group-hover:text-[#5C4A3D]/70 transition-colors">

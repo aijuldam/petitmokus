@@ -22,7 +22,10 @@ function getResend() {
 const CONSENT_TEXT =
   "I agree to receive the Petit Mokus newsletter with updates about new features and special offers. I understand I can unsubscribe at any time.";
 
-const FROM_ADDRESS = "Petit Mokus <hello@petitmokus.com>";
+// Override via RESEND_FROM_EMAIL once your domain is verified in Resend.
+// Until then, Resend's onboarding sender works without DNS setup.
+const FROM_ADDRESS =
+  process.env.RESEND_FROM_EMAIL ?? "Petit Mokus <onboarding@resend.dev>";
 
 const SignupSchema = z.object({
   email: z.string().email(),
@@ -45,7 +48,10 @@ router.post("/newsletter/signup", async (req, res) => {
     return;
   }
 
-  const { email, language, signup_page } = parsed.data;
+  const { language, signup_page } = parsed.data;
+  // Normalize email server-side so direct API callers can't bypass duplicate
+  // detection with mixed-case input (e.g. "User@x.com" vs "user@x.com").
+  const email = parsed.data.email.trim().toLowerCase();
   const emailLang = resolveLanguage(language);
 
   const { data, error: upsertError } = await supabase
