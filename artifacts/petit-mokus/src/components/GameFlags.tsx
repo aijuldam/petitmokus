@@ -8,6 +8,7 @@ type AgeMode = 2 | 3 | 5;
 
 interface GameFlagsProps {
   language: Language;
+  ageMode: AgeMode;
 }
 
 const ui = dictionary.ui;
@@ -62,8 +63,7 @@ function FlagImage({ code, alt, className = "" }: { code: string; alt: string; c
   );
 }
 
-export function GameFlags({ language }: GameFlagsProps) {
-  const [ageMode, setAgeMode] = useState<AgeMode>(2);
+export function GameFlags({ language, ageMode }: GameFlagsProps) {
   const [rounds, setRounds] = useState<Round[]>([]);
   const [round, setRound] = useState(0);
   const [wrong, setWrong] = useState<string | null>(null);
@@ -123,23 +123,6 @@ export function GameFlags({ language }: GameFlagsProps) {
 
   return (
     <div className="w-full flex flex-col items-center gap-4">
-      {/* Age sub-mode selector */}
-      <div className="flex gap-1 w-full bg-muted rounded-2xl p-1">
-        {([2, 3, 5] as AgeMode[]).map((age) => (
-          <button
-            key={age}
-            onClick={() => setAgeMode(age)}
-            className={`flex-1 py-2 rounded-xl text-xs font-bold transition-all duration-200 ${
-              ageMode === age
-                ? "bg-card shadow text-primary"
-                : "text-muted-foreground hover:text-foreground/70"
-            }`}
-          >
-            {age}+
-          </button>
-        ))}
-      </div>
-
       {/* Instruction */}
       <p className="text-[10px] font-bold tracking-widest uppercase text-foreground/40 text-center">
         {instruction}
@@ -274,7 +257,7 @@ export function GameFlags({ language }: GameFlagsProps) {
               {ui.gameBravo[language]}
             </p>
             <button
-              onClick={() => initGame(ageMode)}
+              onClick={() => initGame(ageMode as AgeMode)}
               className="mt-6 px-6 py-3 rounded-full bg-primary text-white font-bold text-sm shadow-lg active:scale-95 transition-transform"
             >
               {ui.gamePlayAgain[language]}

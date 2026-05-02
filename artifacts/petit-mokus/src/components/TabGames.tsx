@@ -16,13 +16,15 @@ interface TabGamesProps {
 type GameId =
   | 'colors' | 'find' | 'shapes'
   | 'animals-1' | 'animals-2' | 'animals-3' | 'animals-5'
-  | 'colorhunt' | 'colorbasket' | 'flags';
+  | 'colorhunt' | 'colorbasket'
+  | 'flags-2' | 'flags-3' | 'flags-5';
 
 type AgeFilter = null | 1 | 2 | 3 | 5;
 
 interface GameEntry {
   id: GameId;
   minAge: number;
+  baseId?: 'animals' | 'flags';
   ageMode?: 1 | 2 | 3 | 5;
 }
 
@@ -30,13 +32,15 @@ const GAME_MODES: GameEntry[] = [
   { id: 'colors',      minAge: 1 },
   { id: 'find',        minAge: 1 },
   { id: 'shapes',      minAge: 1 },
-  { id: 'animals-1',   minAge: 1, ageMode: 1 },
-  { id: 'animals-2',   minAge: 2, ageMode: 2 },
+  { id: 'animals-1',   minAge: 1, baseId: 'animals', ageMode: 1 },
+  { id: 'animals-2',   minAge: 2, baseId: 'animals', ageMode: 2 },
   { id: 'colorhunt',   minAge: 2 },
   { id: 'colorbasket', minAge: 2 },
-  { id: 'flags',       minAge: 2 },
-  { id: 'animals-3',   minAge: 3, ageMode: 3 },
-  { id: 'animals-5',   minAge: 5, ageMode: 5 },
+  { id: 'flags-2',     minAge: 2, baseId: 'flags',   ageMode: 2 },
+  { id: 'animals-3',   minAge: 3, baseId: 'animals', ageMode: 3 },
+  { id: 'flags-3',     minAge: 3, baseId: 'flags',   ageMode: 3 },
+  { id: 'animals-5',   minAge: 5, baseId: 'animals', ageMode: 5 },
+  { id: 'flags-5',     minAge: 5, baseId: 'flags',   ageMode: 5 },
 ];
 
 const AGE_OPTIONS: AgeFilter[] = [null, 1, 2, 3, 5];
@@ -137,18 +141,18 @@ export function TabGames({ language }: TabGamesProps) {
   const instruction = mode === 'colors' ? ui.gameMatchColor[language] : ui.gameMatchShape[language];
 
   const modeLabel = (entry: GameEntry): string => {
-    const animalBase = ui.gameAnimalsLabel[language];
-    if (entry.ageMode !== undefined) return `${animalBase} ${entry.ageMode}+`;
+    if (entry.baseId === 'animals') return `${ui.gameAnimalsLabel[language]} ${entry.ageMode}+`;
+    if (entry.baseId === 'flags')   return `${ui.gameFlagsLabel[language]} ${entry.ageMode}+`;
     if (entry.id === 'colors')      return ui.gameColors[language];
     if (entry.id === 'find')        return ui.gameFindLabel[language];
     if (entry.id === 'colorhunt')   return ui.gameColorHuntLabel[language];
     if (entry.id === 'colorbasket') return ui.gameColorBasketLabel[language];
-    if (entry.id === 'flags')       return ui.gameFlagsLabel[language];
     return ui.gameShapes[language];
   };
 
   const currentEntry = GAME_MODES.find(m => m.id === mode);
-  const isAnimals    = currentEntry?.ageMode !== undefined;
+  const isAnimals    = currentEntry?.baseId === 'animals';
+  const isFlags      = currentEntry?.baseId === 'flags';
 
   return (
     <div className="px-4 pt-4 pb-36 max-w-md mx-auto">
@@ -239,8 +243,14 @@ export function TabGames({ language }: TabGamesProps) {
           {/* Color Basket Sort game */}
           {mode === 'colorbasket' && <GameColorBasket key="colorbasket" language={language} />}
 
-          {/* Flags game */}
-          {mode === 'flags' && <GameFlags key="flags" language={language} />}
+          {/* Flags — each variant has its own ageMode prop, no internal selector */}
+          {isFlags && currentEntry?.ageMode !== undefined && (
+            <GameFlags
+              key={mode}
+              language={language}
+              ageMode={currentEntry.ageMode as 2 | 3 | 5}
+            />
+          )}
 
           {/* Animals — each variant has its own ageMode prop, no internal selector */}
           {isAnimals && currentEntry?.ageMode !== undefined && (
