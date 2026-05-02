@@ -1,0 +1,70 @@
+In the flag games, many of the flag images are incorrect and need to be fixed.
+
+Please audit and correct all flag assets and mappings used in the app.
+
+What needs to happen:
+
+Review every country in the flag game dataset.
+
+Check that each countryName is matched to the correct flag image.
+
+Replace any incorrect, swapped, duplicated, distorted, low-quality, or placeholder flag images.
+
+Make sure the same country always uses the same correct flag everywhere in the app.
+
+Important implementation requirements:
+
+Use a reliable flag source instead of manually mixed images.
+
+Prefer a consistent SVG-based source so flags render sharply across screen sizes.
+
+Use ISO country codes where possible to reduce mapping errors.
+
+Store each flag with a clean structure like:
+```js
+{
+countryName: "France",
+countryCode: "FR",
+flagImage: "correct-source-url-or-local-svg"
+}
+```
+
+Refactor the current dataset if needed so the country name, ISO code, and flag asset are always linked correctly.
+
+Recommended approach:
+
+Replace the current flag images with a trusted and consistent source such as an SVG country flag library or a verified flag dataset.
+
+Validate each country mapping before rendering it in the game.
+
+Make sure there are no mismatches like a country showing another country’s flag.
+
+UI requirements:
+
+Keep the existing game UI and visual style unchanged.
+
+Only fix the flag data and rendering quality.
+
+Preserve the age-based gameplay logic already implemented.
+
+Quality checks to perform:
+
+No wrong country-to-flag pairings.
+
+No duplicate flags assigned to different countries unless intentionally shared.
+
+No blurry raster images if SVG is available.
+
+No stretched or cropped flags.
+
+Preserve correct aspect ratios.
+
+Suggested libraries / sources:
+
+Use a reliable SVG flag library such as flag-icons or another verified ISO-based flag dataset.
+
+If the current implementation is using custom assets, replace them with a standardized source and update all references consistently.
+
+Final result:
+
+All flags in the game should be visually correct, consistently sourced, and correctly mapped to the right country names.

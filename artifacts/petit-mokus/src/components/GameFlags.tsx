@@ -22,12 +22,8 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-function flagEmoji(code: string): string {
-  return code
-    .toUpperCase()
-    .split("")
-    .map((c) => String.fromCodePoint(0x1f1e0 + c.charCodeAt(0) - 65))
-    .join("");
+function flagUrl(code: string): string {
+  return `https://flagcdn.com/w320/${code}.png`;
 }
 
 function getPool(age: AgeMode): FlagItem[] {
@@ -53,6 +49,17 @@ function buildRounds(age: AgeMode): Round[] {
     const distractors = shuffle(pool.filter((f) => f.code !== target.code)).slice(0, optCount - 1);
     return { target, options: shuffle([target, ...distractors]) };
   });
+}
+
+function FlagImage({ code, alt, className = "" }: { code: string; alt: string; className?: string }) {
+  return (
+    <img
+      src={flagUrl(code)}
+      alt={alt}
+      draggable={false}
+      className={`w-full h-full object-contain select-none ${className}`}
+    />
+  );
 }
 
 export function GameFlags({ language }: GameFlagsProps) {
@@ -104,13 +111,10 @@ export function GameFlags({ language }: GameFlagsProps) {
 
   const nameCls =
     ageMode === 2
-      ? "text-[9px] text-foreground/35 mt-0.5 leading-tight"
+      ? "text-[9px] text-foreground/35 mt-1 leading-tight"
       : ageMode === 3
       ? "text-[11px] text-foreground/58 font-medium mt-1 leading-tight"
       : "text-xs text-foreground/82 font-semibold mt-1 leading-tight";
-
-  const emojSize =
-    ageMode === 2 ? "text-6xl" : ageMode === 3 ? "text-5xl" : "text-4xl";
 
   const instruction =
     ageMode === 5 ? ui.gameFlagsMatch[language] : ui.gameFlagsFind[language];
@@ -170,15 +174,18 @@ export function GameFlags({ language }: GameFlagsProps) {
               {current.target.countryName[language]}
             </div>
           ) : (
-            <div className="flex flex-col items-center gap-1">
+            <div className="flex flex-col items-center gap-1.5">
               <div
-                className={`rounded-2xl bg-card border-2 border-primary/25 shadow-md flex items-center justify-center ${
-                  ageMode === 2 ? "w-40 h-26 px-4 py-4" : "w-32 h-20 px-3 py-3"
-                } ${ageMode === 2 ? "text-7xl" : "text-6xl"}`}
+                className={`rounded-2xl bg-card border-2 border-primary/25 shadow-md overflow-hidden flex items-center justify-center p-2 ${
+                  ageMode === 2 ? "w-48 h-32" : "w-40 h-[106px]"
+                }`}
               >
-                {flagEmoji(current.target.code)}
+                <FlagImage
+                  code={current.target.code}
+                  alt={current.target.countryName[language]}
+                />
               </div>
-              <span className="text-[9px] text-foreground/28 mt-0.5">
+              <span className="text-[9px] text-foreground/28">
                 {current.target.countryName[language]}
               </span>
             </div>
@@ -211,7 +218,7 @@ export function GameFlags({ language }: GameFlagsProps) {
                     : {}
                 }
                 transition={{ duration: 0.3 }}
-                className={`flex flex-col items-center gap-1 p-3 rounded-2xl border-2 transition-colors shadow-sm ${
+                className={`flex flex-col items-center gap-1 p-2.5 rounded-2xl border-2 transition-colors shadow-sm ${
                   isCorrect
                     ? "border-green-400 bg-green-50/80"
                     : isWrong
@@ -219,10 +226,14 @@ export function GameFlags({ language }: GameFlagsProps) {
                     : "border-transparent bg-card hover:border-primary/25 active:scale-95"
                 }`}
               >
-                <span className={`${emojSize} leading-none`}>
-                  {flagEmoji(flag.code)}
-                </span>
-                <span className={`text-center ${nameCls}`}>
+                {/* Flag image — 3:2 aspect ratio container */}
+                <div className="w-full rounded-lg overflow-hidden bg-muted/20" style={{ aspectRatio: "3/2" }}>
+                  <FlagImage
+                    code={flag.code}
+                    alt={flag.countryName[language]}
+                  />
+                </div>
+                <span className={`text-center w-full ${nameCls}`}>
                   {flag.countryName[language]}
                 </span>
                 {isCorrect && (
