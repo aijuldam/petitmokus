@@ -1,0 +1,122 @@
+Refactor the Games section so that games with multiple age levels are duplicated as separate age-specific game entries instead of having an internal age filter or age selector inside the game.
+
+Goal:
+If one game supports multiple ages, it should appear as multiple separate game cards, one for each age level available.
+
+Example:
+Instead of one game card like:
+
+Animal Match
+
+1+ years
+
+2+ years
+
+5+ years
+
+create separate cards like:
+
+Animal Match — 1+ years
+
+Animal Match — 2+ years
+
+Animal Match — 5+ years
+
+Each card should open directly into the correct age-specific version of that game.
+
+Important filtering behavior:
+The Games page age filter must show only games relevant for the selected age and older, and must exclude younger games.
+
+Filtering rules:
+
+If the selected filter is 1+ years, show games with minAge >= 1
+
+If the selected filter is 2+ years, show games with minAge >= 2 and do not show 1+ games
+
+If the selected filter is 3+ years, show games with minAge >= 3 and exclude 1+ and 2+ games
+
+If the selected filter is 5+ years, show only games with minAge >= 5
+
+If All ages is selected, show every game
+
+What to change:
+
+Remove internal age filters, tabs, dropdowns, or selectors from games that support multiple ages.
+
+Duplicate each multi-age game into separate age-specific entries in the Games list.
+
+Each duplicated entry should keep the same base game concept but load the correct age-specific mode automatically.
+
+Keep age metadata on each entry so the Games section filter works correctly.
+
+Data structure requirement:
+
+Refactor the game data so each age-specific version is its own record.
+
+Example structure:
+```js
+{
+id: "animal-match-1",
+baseGame: "animal-match",
+title: "Animal Match — 1+ years",
+minAge: 1,
+mode: "match-picture"
+}
+```
+```js
+{
+id: "animal-match-2",
+baseGame: "animal-match",
+title: "Animal Match — 2+ years",
+minAge: 2,
+mode: "match-sound"
+}
+```
+```js
+{
+id: "animal-match-5",
+baseGame: "animal-match",
+title: "Animal Match — 5+ years",
+minAge: 5,
+mode: "who-am-i"
+}
+```
+
+Filtering logic:
+```js
+const filteredGames =
+selectedAge === null
+? games
+: games.filter(game => game.minAge >= selectedAge);
+```
+
+UI requirements:
+
+In the Games section, show each age-specific version as its own card.
+
+Make the title or subtitle clearly indicate the age level.
+
+Remove any in-game UI that asks the user to choose the age after opening the game.
+
+When a card is clicked, it should launch directly into that specific age version.
+
+Implementation guidance:
+
+Reuse shared assets and shared core logic where possible.
+
+Avoid duplicating code unnecessarily — duplicate the entries, not the whole implementation.
+
+Use one shared game engine with age-based config if appropriate, but expose each config as a separate game card in the UI.
+
+Keep the code modular and easy to extend.
+
+Important:
+
+Do not remove the age-based gameplay differences.
+
+Only remove the internal age-selection layer and replace it with separate age-specific game entries.
+
+The Games filter must show only relevant games for the selected age and above, never younger ones.
+
+Desired outcome:
+The Games section should feel simpler and clearer: one card = one age-specific game experience, and the selected age filter should hide anything below that age.

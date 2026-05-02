@@ -134,7 +134,7 @@ export const dictionary = {
     gameFlagsMatch: { EN: 'Find the flag for the country!', FR: 'Trouve le drapeau du pays !',        HU: 'Keresd az ország zászlóját!'         },
     gameFindInstruction: { EN: 'Which one is the same?',        FR: 'Lequel est pareil ?',             HU: 'Melyik ugyanolyan?'     },
     gameFilterAll:   { EN: 'All ages', FR: 'Tous âges', HU: 'Minden kor' },
-    gameFilterHelp:  { EN: 'Games for age+ year olds and younger.', FR: 'Jeux pour enfants de age+ ans et moins.', HU: 'Játékok age+ éves gyerekeknek és fiatalabbaknak.' },
+    gameFilterHelp:  { EN: 'Showing games for age+ and up only.', FR: 'Jeux pour age+ ans et plus uniquement.', HU: 'Csak age+ éves kortól ajánlott játékok.' },
     gameNoGames:     { EN: 'No games for this age filter yet — more coming soon!', FR: 'Aucun jeu pour ce filtre d\'âge — bientôt disponible !', HU: 'Ehhez a korhoz még nincs játék — hamarosan!' },
     about:           { EN: 'About',   FR: 'À propos', HU: 'Rólunk' },
     soundsIntroTitle: { EN: 'Listen & discover', FR: 'Écouter & découvrir', HU: 'Hallgass & fedezz fel' },
