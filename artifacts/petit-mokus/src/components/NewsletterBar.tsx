@@ -37,7 +37,16 @@ export function NewsletterBar({ language }: NewsletterBarProps) {
     try {
       // VITE_API_BASE_URL is empty in Replit dev (uses relative /api via proxy)
       // and set to the deployed API URL in Cloudflare Pages production.
-      const apiBase = (import.meta.env.VITE_API_BASE_URL ?? "").replace(/\/$/, "");
+      // Falls back to the known production API URL on petitmokus.com so the
+      // form still works if the Cloudflare env var injection ever fails.
+      const PRODUCTION_API_FALLBACK =
+        typeof window !== "undefined" && window.location.hostname.endsWith("petitmokus.com")
+          ? "https://petit-mokus.replit.app"
+          : "";
+      const apiBase = (import.meta.env.VITE_API_BASE_URL || PRODUCTION_API_FALLBACK).replace(
+        /\/$/,
+        "",
+      );
       const res = await fetch(`${apiBase}/api/newsletter/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
