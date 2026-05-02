@@ -81,7 +81,7 @@ export function TabGames({ language }: TabGamesProps) {
 
   const visibleModes = ageFilter === null
     ? GAME_MODES
-    : GAME_MODES.filter(m => m.minAge >= ageFilter);
+    : GAME_MODES.filter(m => m.minAge === ageFilter);
 
   const switchMode = (id: GameId) => {
     setMode(id);
@@ -96,8 +96,7 @@ export function TabGames({ language }: TabGamesProps) {
 
   // When the age filter changes, auto-jump to the first visible mode if
   // the current one is no longer in the filtered list.
-  // minAge >= selectedAge: "2+" shows only games for ages 2+ and above,
-  // hiding games designed for younger children.
+  // minAge === selectedAge: each pill shows only games for exactly that age level.
   useEffect(() => {
     if (visibleModes.length > 0 && !visibleModes.some(m => m.id === mode)) {
       switchMode(visibleModes[0].id);
