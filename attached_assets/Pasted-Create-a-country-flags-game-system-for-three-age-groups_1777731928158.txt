@@ -1,0 +1,113 @@
+Create a country flags game system for three age groups: 2+ years, 3+ years, and 5+ years, in the same visual style as the other games in the app.
+
+The game should introduce country flags from the beginning, but the country names should become more prominent with age.
+
+Core design principle:
+
+For 2+ years, the game should be mostly visual. Country names should still appear, but only as small, discreet labels below or beside the flags.
+
+For 3+ years, country names should be a little more visible and more intentionally connected to the flag.
+
+For 5+ years, country names should be clearly visible and can become part of the challenge.
+
+Build the game as three age-based difficulty modes:
+
+2+ years mode
+Focus on simple visual matching only.
+
+Show 2–3 very distinct flags per round.
+
+Ask the child to find the same flag or match identical flags.
+
+Do not require reading.
+
+Display the country name in a small, discreet way under each flag card, mainly for passive exposure and parent support.
+
+Use large cards, minimal distractions, no timer, no score pressure, and very gentle feedback.
+
+3+ years mode
+Focus on matching plus simple visual noticing.
+
+Show 3–4 flags per round.
+
+Tasks can include matching the target flag, finding a flag with a specific feature, or pairing a flag with the correct country name with light support.
+
+Make the country names more visible than in 2+ mode, but still secondary to the visual task.
+
+The interface should still feel simple and playful.
+
+5+ years mode
+Focus on recognition, memory, and early country association.
+
+Show 4–6 flags per round.
+
+Include challenges like:
+match the flag to the country name,
+
+memory pairs with flags,
+
+identify the correct flag from a country name,
+
+sort or group flags by visible features.
+
+
+Make the country names clear and prominent.
+
+Add slightly more challenge, but still keep the experience child-friendly and encouraging.
+
+Flag selection rules:
+
+Start with a small set of highly distinct flags that are easy to tell apart visually.
+
+Avoid using too many visually similar flags in early levels.
+
+Progress from very obvious flags to more detailed ones only in later levels.
+
+UI and visual style:
+
+Match the same style as the other games in the app.
+
+Keep the design soft, playful, clean, and child-friendly.
+
+Use large touch targets, clear feedback, and responsive layouts for mobile and tablet.
+
+Use the same component patterns, spacing, animations, and reward style as the rest of the app.
+
+Feedback and interaction:
+
+Correct answers should trigger warm, positive feedback.
+
+Incorrect answers should be gentle and allow retry without penalty.
+
+No harsh sounds, no failure states, and no stress-based mechanics.
+
+Content structure:
+
+Each flag item should include:
+countryName
+
+flagImage
+
+optional difficultyLevel
+
+
+Design the system so the same flag dataset can be reused across the 2+, 3+, and 5+ modes with different presentation rules.
+
+Important requirement:
+
+The country name should be present in all age modes, but:
+2+ years: tiny and discreet
+
+3+ years: moderately visible
+
+5+ years: clearly visible and actively used in gameplay
+
+
+Nice-to-have:
+
+Include audio support for country names.
+
+Let the same game scale its difficulty by age mode rather than building three completely separate interfaces.
+
+Keep the code modular and easy to extend with more flags later.
+
