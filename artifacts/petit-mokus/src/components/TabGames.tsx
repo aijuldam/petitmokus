@@ -167,8 +167,68 @@ export function TabGames({ language }: TabGamesProps) {
       {/* Instruction */}
       <p className="text-sm text-foreground/55 text-center mb-5">{instruction}</p>
 
-      {/* Target slots (top) */}
+      {/* Item pieces (top) */}
       <div className="grid grid-cols-2 gap-3 mb-3">
+        {itemOrder.map(id => {
+          const isMatched = matched.has(id);
+          const isSelected = selected === id;
+
+          if (isMatched) {
+            return <div key={id} className="h-[4.5rem] rounded-[1.25rem] bg-muted/20" />;
+          }
+
+          if (mode === 'colors') {
+            const color = COLORS.find(c => c.id === id)!;
+            return (
+              <motion.button
+                key={id}
+                onClick={() => handleItemTap(id)}
+                whileTap={{ scale: 0.92 }}
+                animate={{ scale: isSelected ? 1.05 : 1 }}
+                transition={{ type: 'spring', stiffness: 380, damping: 22 }}
+                className="h-[4.5rem] rounded-[1.25rem] flex items-center justify-center font-bold text-white text-sm drop-shadow transition-shadow duration-200"
+                style={{
+                  backgroundColor: color.hex,
+                  boxShadow: isSelected
+                    ? '0 0 0 4px rgba(92,74,61,0.4), 0 4px 16px rgba(0,0,0,0.15)'
+                    : '0 2px 8px rgba(0,0,0,0.08)',
+                }}
+                aria-label={color[language]}
+                aria-pressed={isSelected}
+              >
+                {color[language]}
+              </motion.button>
+            );
+          } else {
+            const shape = SHAPES.find(s => s.id === id)!;
+            return (
+              <motion.button
+                key={id}
+                onClick={() => handleItemTap(id)}
+                whileTap={{ scale: 0.92 }}
+                animate={{ scale: isSelected ? 1.05 : 1 }}
+                transition={{ type: 'spring', stiffness: 380, damping: 22 }}
+                className="h-[4.5rem] rounded-[1.25rem] bg-muted flex items-center justify-center transition-shadow duration-200"
+                style={{
+                  boxShadow: isSelected
+                    ? '0 0 0 4px rgba(92,74,61,0.4), 0 4px 16px rgba(0,0,0,0.15)'
+                    : '0 2px 8px rgba(0,0,0,0.05)',
+                }}
+                aria-label={shape.id}
+                aria-pressed={isSelected}
+              >
+                <ShapeSvg id={shape.id} hex={shape.hex} size={44} />
+              </motion.button>
+            );
+          }
+        })}
+      </div>
+
+      {/* Divider hint */}
+      <p className="text-center text-foreground/25 text-xs mb-3 tracking-wide uppercase select-none">↓ match ↓</p>
+
+      {/* Target slots (bottom) */}
+      <div className="grid grid-cols-2 gap-3 mb-5">
         {targetOrder.map(id => {
           const isMatched = matched.has(id);
           const isWrong = wrong === id;
@@ -241,66 +301,6 @@ export function TabGames({ language }: TabGamesProps) {
                   )
                   : <ShapeSvg id={shape.id} hex={shape.hex} size={40} outline />
                 }
-              </motion.button>
-            );
-          }
-        })}
-      </div>
-
-      {/* Divider hint */}
-      <p className="text-center text-foreground/25 text-xs mb-3 tracking-wide uppercase select-none">↑ match ↑</p>
-
-      {/* Item pieces (bottom) */}
-      <div className="grid grid-cols-2 gap-3 mb-5">
-        {itemOrder.map(id => {
-          const isMatched = matched.has(id);
-          const isSelected = selected === id;
-
-          if (isMatched) {
-            return <div key={id} className="h-[4.5rem] rounded-[1.25rem] bg-muted/20" />;
-          }
-
-          if (mode === 'colors') {
-            const color = COLORS.find(c => c.id === id)!;
-            return (
-              <motion.button
-                key={id}
-                onClick={() => handleItemTap(id)}
-                whileTap={{ scale: 0.92 }}
-                animate={{ scale: isSelected ? 1.05 : 1 }}
-                transition={{ type: 'spring', stiffness: 380, damping: 22 }}
-                className="h-[4.5rem] rounded-[1.25rem] flex items-center justify-center font-bold text-white text-sm drop-shadow transition-shadow duration-200"
-                style={{
-                  backgroundColor: color.hex,
-                  boxShadow: isSelected
-                    ? '0 0 0 4px rgba(92,74,61,0.4), 0 4px 16px rgba(0,0,0,0.15)'
-                    : '0 2px 8px rgba(0,0,0,0.08)',
-                }}
-                aria-label={color[language]}
-                aria-pressed={isSelected}
-              >
-                {color[language]}
-              </motion.button>
-            );
-          } else {
-            const shape = SHAPES.find(s => s.id === id)!;
-            return (
-              <motion.button
-                key={id}
-                onClick={() => handleItemTap(id)}
-                whileTap={{ scale: 0.92 }}
-                animate={{ scale: isSelected ? 1.05 : 1 }}
-                transition={{ type: 'spring', stiffness: 380, damping: 22 }}
-                className="h-[4.5rem] rounded-[1.25rem] bg-muted flex items-center justify-center transition-shadow duration-200"
-                style={{
-                  boxShadow: isSelected
-                    ? '0 0 0 4px rgba(92,74,61,0.4), 0 4px 16px rgba(0,0,0,0.15)'
-                    : '0 2px 8px rgba(0,0,0,0.05)',
-                }}
-                aria-label={shape.id}
-                aria-pressed={isSelected}
-              >
-                <ShapeSvg id={shape.id} hex={shape.hex} size={44} />
               </motion.button>
             );
           }
