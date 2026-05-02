@@ -1,0 +1,180 @@
+Add a persistent floating newsletter signup bar across the entire Petit Mokus website, and use Supabase to store all newsletter signup data.
+
+Placement and behavior
+The newsletter signup must be visible on every tab / every section of the website.
+
+It should stay fixed at the bottom of the screen at all times.
+
+It should behave like a floating bottom bar, not a full-screen popup.
+
+It must remain present across the whole site and stay consistent while navigating between tabs.
+
+It should be fully responsive on desktop and mobile.
+
+It must not block key navigation or important CTAs.
+
+Add any necessary bottom padding so page content is not hidden behind the bar.
+
+Purpose
+This signup is only for the newsletter.
+
+The newsletter will be used to announce:
+new Petit Mokus features
+
+special Petit Mokus deals
+
+
+The tone must feel fully aligned with Petit Mokus values: gentle, calming, family-centered, multicultural, intentional, and emotionally reassuring.
+
+Consent requirement
+Add a required checkbox that must be manually ticked before the user can submit.
+
+The checkbox must be unchecked by default.
+
+The user must not be able to register unless:
+the email is valid
+
+the checkbox is ticked
+
+
+The checkbox must clearly state that the user is signing up only for the newsletter.
+
+Add a short note that they can unsubscribe at any time.
+
+Form fields
+Email address field
+
+Required consent checkbox
+
+Subscribe button
+
+Suggested consent copy
+Checkbox label:
+I agree to receive the Petit Mokus newsletter with updates about new features and special offers. I understand I can unsubscribe at any time.
+
+Brand-aligned copy
+Use the following text as the basis for the tone and message of the newsletter signup:
+
+“Petit Mokus is a gentle digital companion for families, supporting children's growth through calming routines, soothing sounds, and simple learning — wherever life takes you.
+Petit Mokus is multicultural at its core, crafted by a French & Hungarian family in Amsterdam. Mokus means squirrel in Hungarian — a small, curious animal that thrives through play, exploration, and a love of small, meaningful moments. This mirrors the way Petit Mokus turns bedtime songs, quiet sounds, and simple games into building blocks for children's emotional and cognitive development.
+Like a little squirrel gathering nuts, Petit Mokus gathers gentle interactions that help families feel more connected and secure, one small moment at a time.”
+
+Design direction
+The floating newsletter bar should feel soft, warm, calm, and trustworthy.
+
+It should visually match the Petit Mokus brand and the rest of the website.
+
+Avoid aggressive marketing patterns.
+
+Do not make it flashy, pushy, or salesy.
+
+It should feel like a gentle invitation, not a conversion popup.
+
+Keep it elegant, minimal, and accessible.
+
+Content direction
+Include a short headline and supporting text that explain the value of the newsletter in a warm and brand-aligned way.
+
+Mention updates, new features, and special Petit Mokus offers in a gentle tone.
+
+Make the message feel relevant to families and consistent with the brand story.
+
+Accessibility and UX
+Ensure the email field and checkbox are keyboard accessible.
+
+Ensure the checkbox label is clickable.
+
+Preserve good spacing and readable type on mobile.
+
+Provide clear error and success states.
+
+Keep the sticky bottom bar accessible and unobtrusive.
+
+Supabase integration
+Use Supabase as the backend to store newsletter signups.
+
+Create a Supabase table for newsletter signups
+Create a table such as newsletter_signups with fields like:
+
+id UUID primary key
+
+email text, required
+
+consent_given boolean, required
+
+consent_text text, required
+
+source text, e.g. "floating_newsletter_bar"
+
+signup_page text or URL path
+
+created_at timestamp with timezone, default now()
+
+Optional useful fields:
+
+language text
+
+country text
+
+utm_source text
+
+utm_campaign text
+
+user_agent text
+
+Submission logic
+On submit, insert the email and consent data into Supabase.
+
+Only insert if the checkbox is ticked.
+
+Save the exact consent text shown at the time of signup.
+
+Save a timestamp for the signup event.
+
+Save the page path or tab where the signup happened.
+
+Prevent duplicate signups for the same email if appropriate.
+
+Supabase implementation requirements
+Use environment variables for the Supabase URL and anon/public key.
+
+Keep keys secure and do not hardcode secrets in the frontend.
+
+If needed, use a server function / API route / backend action for insertion instead of writing directly from the client.
+
+Add basic validation and error handling.
+
+Return a clean success state when the signup is saved successfully.
+
+Compliance-oriented storage
+Store proof of consent together with the signup:
+email
+
+whether consent was given
+
+exact consent text
+
+timestamp
+
+source/location of signup
+
+
+This signup flow is only for newsletter communication, not account creation or general marketing profiling.
+
+UI state behavior
+The submit button should stay disabled until the form is valid and the checkbox is ticked.
+
+After a successful signup, replace the form with a soft success message.
+
+Optionally allow the bar to collapse after signup or dismissal, but keep it visible by default for new visitors.
+
+Code quality
+Build it directly into the shared site layout so it appears across all tabs.
+
+Keep the component reusable and easy to maintain.
+
+Match the existing design system and spacing of the website.
+
+Goal
+Create a bottom-floating newsletter signup component that feels fully native to Petit Mokus and stores newsletter signup data in Supabase in a clean, consent-aware way.
+
