@@ -10,6 +10,13 @@ const APP_URL = "https://petitmokus.com";
 
 const UNSUBSCRIBE_PLACEHOLDER = "{UNSUBSCRIBE_URL}";
 
+const UNSUBSCRIBE_LABELS: Record<EmailLanguage, string> = {
+  EN: "Unsubscribe",
+  FR: "Se désabonner",
+  HU: "Leiratkozás",
+  DE: "Abmelden",
+};
+
 function buildHtml(body: string): string {
   return `<!DOCTYPE html>
 <html lang="en">
@@ -39,15 +46,6 @@ function buildHtml(body: string): string {
           </td>
         </tr>
 
-        <!-- Footer -->
-        <tr>
-          <td style="padding:16px 32px 28px;border-top:1px solid #E8DDD3;">
-            <p style="margin:0;font-size:10px;color:#9C8878;text-align:center;line-height:1.6;">
-              ${UNSUBSCRIBE_PLACEHOLDER}
-            </p>
-          </td>
-        </tr>
-
       </table>
     </td></tr>
   </table>
@@ -74,7 +72,7 @@ With warmth,
 The Petit Mokus team 🐿
 
 ---
-This is a marketing email. You can unsubscribe at any time.
+This is a marketing email. You can unsubscribe at any time:
 ${UNSUBSCRIBE_PLACEHOLDER}`,
     html: buildHtml(`
       <p style="margin:0 0 16px;">Hi there,</p>
@@ -85,7 +83,7 @@ ${UNSUBSCRIBE_PLACEHOLDER}`,
         <a href="${APP_URL}" style="display:inline-block;background:#D897A8;color:#fff;font-weight:bold;font-size:14px;padding:12px 28px;border-radius:50px;text-decoration:none;">Open Petit Mokus →</a>
       </p>
       <p style="margin:0;color:#9C8878;font-size:13px;">With warmth,<br/>The Petit Mokus team 🐿</p>
-      <p style="margin:16px 0 0;font-size:10px;color:#B8A898;">This is a marketing email. You can unsubscribe at any time.<br/>${UNSUBSCRIBE_PLACEHOLDER}</p>`),
+      <p style="margin:24px 0 0;padding-top:16px;border-top:1px solid #E8DDD3;font-size:11px;color:#B8A898;text-align:center;">This is a marketing email. <a href="${UNSUBSCRIBE_PLACEHOLDER}" style="color:#9C8878;text-decoration:underline;">Unsubscribe</a> at any time.</p>`),
   },
 
   FR: {
@@ -106,7 +104,7 @@ Avec toute notre chaleur,
 L'équipe Petit Mokus 🐿
 
 ---
-Ceci est un e-mail marketing. Vous pouvez vous désabonner à tout moment.
+Ceci est un e-mail marketing. Vous pouvez vous désabonner à tout moment :
 ${UNSUBSCRIBE_PLACEHOLDER}`,
     html: buildHtml(`
       <p style="margin:0 0 16px;">Bonjour,</p>
@@ -117,7 +115,7 @@ ${UNSUBSCRIBE_PLACEHOLDER}`,
         <a href="${APP_URL}" style="display:inline-block;background:#D897A8;color:#fff;font-weight:bold;font-size:14px;padding:12px 28px;border-radius:50px;text-decoration:none;">Ouvrir Petit Mokus →</a>
       </p>
       <p style="margin:0;color:#9C8878;font-size:13px;">Avec toute notre chaleur,<br/>L'équipe Petit Mokus 🐿</p>
-      <p style="margin:16px 0 0;font-size:10px;color:#B8A898;">Ceci est un e-mail marketing. Vous pouvez vous désabonner à tout moment.<br/>${UNSUBSCRIBE_PLACEHOLDER}</p>`),
+      <p style="margin:24px 0 0;padding-top:16px;border-top:1px solid #E8DDD3;font-size:11px;color:#B8A898;text-align:center;">Ceci est un e-mail marketing. <a href="${UNSUBSCRIBE_PLACEHOLDER}" style="color:#9C8878;text-decoration:underline;">Se désabonner</a> à tout moment.</p>`),
   },
 
   HU: {
@@ -138,7 +136,7 @@ Szeretettel,
 A Petit Mókus csapata 🐿
 
 ---
-Ez egy marketing e-mail. Bármikor leiratkozhatsz.
+Ez egy marketing e-mail. Bármikor leiratkozhatsz:
 ${UNSUBSCRIBE_PLACEHOLDER}`,
     html: buildHtml(`
       <p style="margin:0 0 16px;">Szia,</p>
@@ -149,7 +147,7 @@ ${UNSUBSCRIBE_PLACEHOLDER}`,
         <a href="${APP_URL}" style="display:inline-block;background:#D897A8;color:#fff;font-weight:bold;font-size:14px;padding:12px 28px;border-radius:50px;text-decoration:none;">Petit Mókus megnyitása →</a>
       </p>
       <p style="margin:0;color:#9C8878;font-size:13px;">Szeretettel,<br/>A Petit Mókus csapata 🐿</p>
-      <p style="margin:16px 0 0;font-size:10px;color:#B8A898;">Ez egy marketing e-mail. Bármikor leiratkozhatsz.<br/>${UNSUBSCRIBE_PLACEHOLDER}</p>`),
+      <p style="margin:24px 0 0;padding-top:16px;border-top:1px solid #E8DDD3;font-size:11px;color:#B8A898;text-align:center;">Ez egy marketing e-mail. Bármikor <a href="${UNSUBSCRIBE_PLACEHOLDER}" style="color:#9C8878;text-decoration:underline;">leiratkozhatsz</a>.</p>`),
   },
 
   DE: {
@@ -170,7 +168,7 @@ Mit herzlichen Grüßen,
 Das Petit Mokus Team 🐿
 
 ---
-Dies ist eine Marketing-E-Mail. Du kannst dich jederzeit abmelden.
+Dies ist eine Marketing-E-Mail. Du kannst dich jederzeit abmelden:
 ${UNSUBSCRIBE_PLACEHOLDER}`,
     html: buildHtml(`
       <p style="margin:0 0 16px;">Hallo,</p>
@@ -181,12 +179,26 @@ ${UNSUBSCRIBE_PLACEHOLDER}`,
         <a href="${APP_URL}" style="display:inline-block;background:#D897A8;color:#fff;font-weight:bold;font-size:14px;padding:12px 28px;border-radius:50px;text-decoration:none;">Petit Mokus öffnen →</a>
       </p>
       <p style="margin:0;color:#9C8878;font-size:13px;">Mit herzlichen Grüßen,<br/>Das Petit Mokus Team 🐿</p>
-      <p style="margin:16px 0 0;font-size:10px;color:#B8A898;">Dies ist eine Marketing-E-Mail. Du kannst dich jederzeit abmelden.<br/>${UNSUBSCRIBE_PLACEHOLDER}</p>`),
+      <p style="margin:24px 0 0;padding-top:16px;border-top:1px solid #E8DDD3;font-size:11px;color:#B8A898;text-align:center;">Dies ist eine Marketing-E-Mail. Du kannst dich jederzeit <a href="${UNSUBSCRIBE_PLACEHOLDER}" style="color:#9C8878;text-decoration:underline;">abmelden</a>.</p>`),
   },
 };
 
 export function getEmailTemplate(language: EmailLanguage): EmailContent {
   return TEMPLATES[language] ?? TEMPLATES.EN;
+}
+
+export function renderTemplateWithUnsubscribe(
+  language: EmailLanguage,
+  unsubscribeUrl: string,
+): EmailContent {
+  const tpl = getEmailTemplate(language);
+  const replaceAll = (s: string) =>
+    s.split(UNSUBSCRIBE_PLACEHOLDER).join(unsubscribeUrl);
+  return {
+    subject: tpl.subject,
+    text: replaceAll(tpl.text),
+    html: replaceAll(tpl.html),
+  };
 }
 
 export function resolveLanguage(raw: string | undefined | null): EmailLanguage {
@@ -195,4 +207,74 @@ export function resolveLanguage(raw: string | undefined | null): EmailLanguage {
   if (upper === "HU") return "HU";
   if (upper === "DE") return "DE";
   return "EN";
+}
+
+interface UnsubPageContent {
+  title: string;
+  body: string;
+  back: string;
+  errorTitle: string;
+  errorBody: string;
+}
+
+const UNSUB_PAGES: Record<EmailLanguage, UnsubPageContent> = {
+  EN: {
+    title: "You're unsubscribed 🐿",
+    body: "We've removed your email from the Petit Mokus newsletter. Sorry to see you go — you can sign up again anytime from the website.",
+    back: "← Back to petitmokus.com",
+    errorTitle: "Link not valid",
+    errorBody: "This unsubscribe link is invalid or has expired. Please contact us at hello@petitmokus.com if you'd like to be removed from our newsletter.",
+  },
+  FR: {
+    title: "Vous êtes désabonné 🐿",
+    body: "Nous avons supprimé votre adresse de la newsletter Petit Mokus. Désolé de vous voir partir — vous pouvez vous réinscrire à tout moment depuis le site.",
+    back: "← Retour à petitmokus.com",
+    errorTitle: "Lien invalide",
+    errorBody: "Ce lien de désabonnement est invalide ou a expiré. Veuillez nous contacter à hello@petitmokus.com si vous souhaitez être retiré de notre newsletter.",
+  },
+  HU: {
+    title: "Sikeresen leiratkoztál 🐿",
+    body: "Töröltük az e-mail címed a Petit Mókus hírlevelünkből. Sajnáljuk, hogy elmész — bármikor újra feliratkozhatsz a weboldalon.",
+    back: "← Vissza a petitmokus.com oldalra",
+    errorTitle: "Érvénytelen link",
+    errorBody: "Ez a leiratkozási link érvénytelen vagy lejárt. Kérlek, írj nekünk a hello@petitmokus.com címre, ha el szeretnéd távolítani magad a hírlevelünkből.",
+  },
+  DE: {
+    title: "Du bist abgemeldet 🐿",
+    body: "Wir haben deine E-Mail-Adresse aus dem Petit Mokus Newsletter entfernt. Schade, dass du gehst — du kannst dich jederzeit wieder auf der Website anmelden.",
+    back: "← Zurück zu petitmokus.com",
+    errorTitle: "Ungültiger Link",
+    errorBody: "Dieser Abmeldelink ist ungültig oder abgelaufen. Bitte kontaktiere uns unter hello@petitmokus.com, wenn du aus unserem Newsletter entfernt werden möchtest.",
+  },
+};
+
+function unsubPage(title: string, body: string, back: string): string {
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>${title}</title>
+</head>
+<body style="margin:0;padding:0;background:#F9F6F1;font-family:Georgia,serif;min-height:100vh;">
+  <div style="max-width:520px;margin:0 auto;padding:64px 24px;text-align:center;">
+    <div style="background:#FDFDFC;border:1px solid #E8DDD3;border-radius:20px;padding:48px 32px;">
+      <p style="font-size:48px;margin:0 0 8px;">🐿</p>
+      <h1 style="color:#5C4A3D;font-size:24px;margin:0 0 16px;">${title}</h1>
+      <p style="color:#5C4A3D;font-size:15px;line-height:1.7;margin:0 0 32px;">${body}</p>
+      <a href="${APP_URL}" style="display:inline-block;color:#D897A8;font-size:14px;text-decoration:none;font-weight:bold;">${back}</a>
+    </div>
+  </div>
+</body>
+</html>`;
+}
+
+export function renderUnsubscribeSuccessPage(language: EmailLanguage): string {
+  const c = UNSUB_PAGES[language] ?? UNSUB_PAGES.EN;
+  return unsubPage(c.title, c.body, c.back);
+}
+
+export function renderUnsubscribeErrorPage(language: EmailLanguage): string {
+  const c = UNSUB_PAGES[language] ?? UNSUB_PAGES.EN;
+  return unsubPage(c.errorTitle, c.errorBody, c.back);
 }

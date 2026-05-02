@@ -1,8 +1,18 @@
-import { Router, type IRouter } from "express";
+import { Router, type IRouter, type Request, type Response } from "express";
 import { createClient } from "@supabase/supabase-js";
 import { Resend } from "resend";
 import { z } from "zod";
-import { getEmailTemplate, resolveLanguage } from "../lib/email.js";
+import {
+  renderTemplateWithUnsubscribe,
+  renderUnsubscribeErrorPage,
+  renderUnsubscribeSuccessPage,
+  resolveLanguage,
+} from "../lib/email.js";
+import {
+  buildUnsubscribeUrl,
+  getPublicApiBaseUrl,
+  verifyEmailToken,
+} from "../lib/unsubscribe.js";
 
 const router: IRouter = Router();
 
@@ -86,7 +96,12 @@ router.post("/newsletter/signup", async (req, res) => {
   // Send welcome email only for new signups with consent
   const resend = getResend();
   if (resend) {
-    const template = getEmailTemplate(emailLang);
+    const unsubscribeUrl = buildUnsubscribeUrl(
+      getPublicApiBaseUrl(),
+      email,
+      emailLang,
+    );
+    const template = renderTemplateWithUnsubscribe(emailLang, unsubscribeUrl);
     try {
       const { error: emailError } = await resend.emails.send({
         from: FROM_ADDRESS,
@@ -94,6 +109,13 @@ router.post("/newsletter/signup", async (req, res) => {
         subject: template.subject,
         text: template.text,
         html: template.html,
+        // RFC 8058 one-click unsubscribe — required by Gmail's bulk sender
+        // requirements and surfaces a native "Unsubscribe" button in Gmail
+        // and Apple Mail.
+        headers: {
+          "List-Unsubscribe": `<${unsubscribeUrl}>, <mailto:hello@petitmokus.com?subject=unsubscribe>`,
+          "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
+        },
       });
 
       if (emailError) {
@@ -110,5 +132,61 @@ router.post("/newsletter/signup", async (req, res) => {
 
   res.status(201).json({ status: "subscribed" });
 });
+
+const UnsubscribeSchema = z.object({
+  email: z.string().email(),
+  token: z.string().min(1),
+  lang: z.string().optional(),
+});
+
+async function handleUnsubscribe(req: Request, res: Response) {
+  // Accept params from query string (GET link click) or form body (POST
+  // one-click from mailbox providers per RFC 8058).
+  const source =
+    req.method === "POST" && req.body && Object.keys(req.body).length > 0
+      ? req.body
+      : req.query;
+  const parsed = UnsubscribeSchema.safeParse(source);
+
+  const lang = resolveLanguage(
+    typeof source?.lang === "string" ? source.lang : undefined,
+  );
+
+  if (!parsed.success) {
+    res.status(400).type("html").send(renderUnsubscribeErrorPage(lang));
+    return;
+  }
+
+  const email = parsed.data.email.trim().toLowerCase();
+  if (!verifyEmailToken(email, parsed.data.token)) {
+    req.log.warn({ email }, "Invalid unsubscribe token");
+    res.status(400).type("html").send(renderUnsubscribeErrorPage(lang));
+    return;
+  }
+
+  const supabase = getSupabase();
+  if (!supabase) {
+    req.log.error("Supabase env vars not configured");
+    res.status(503).type("html").send(renderUnsubscribeErrorPage(lang));
+    return;
+  }
+
+  const { error: deleteError } = await supabase
+    .from("newsletter_signups")
+    .delete()
+    .eq("email", email);
+
+  if (deleteError) {
+    req.log.error({ err: deleteError, email }, "Supabase delete error");
+    res.status(500).type("html").send(renderUnsubscribeErrorPage(lang));
+    return;
+  }
+
+  req.log.info({ email, lang }, "Newsletter unsubscribe");
+  res.status(200).type("html").send(renderUnsubscribeSuccessPage(lang));
+}
+
+router.get("/newsletter/unsubscribe", handleUnsubscribe);
+router.post("/newsletter/unsubscribe", handleUnsubscribe);
 
 export default router;
