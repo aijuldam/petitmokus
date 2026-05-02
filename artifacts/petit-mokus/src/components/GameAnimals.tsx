@@ -97,10 +97,9 @@ export function GameAnimals({ language, ageMode }: GameAnimalsProps) {
 
   // Auto-play sound at round start for sound-based modes
   useEffect(() => {
-    if ((ageMode === 2 || ageMode === 3) && rounds[round]) {
-      const t = setTimeout(() => playAnimalSound(rounds[round].target.id), 450);
-      return () => clearTimeout(t);
-    }
+    if (!((ageMode === 2 || ageMode === 3) && rounds[round])) return;
+    const t = setTimeout(() => playAnimalSound(rounds[round].target.id), 450);
+    return () => clearTimeout(t);
   }, [round, ageMode, rounds]);
 
   const current = rounds[round];
