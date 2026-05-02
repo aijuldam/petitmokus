@@ -4,14 +4,12 @@ import { z } from "zod";
 
 const router: IRouter = Router();
 
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_ANON_KEY;
-
-if (!supabaseUrl || !supabaseKey) {
-  throw new Error("SUPABASE_URL and SUPABASE_ANON_KEY must be set");
+function getSupabase() {
+  const url = process.env.SUPABASE_URL;
+  const key = process.env.SUPABASE_ANON_KEY;
+  if (!url || !key) return null;
+  return createClient(url, key);
 }
-
-const supabase = createClient(supabaseUrl, supabaseKey);
 
 const CONSENT_TEXT =
   "I agree to receive the Petit Mokus newsletter with updates about new features and special offers. I understand I can unsubscribe at any time.";
@@ -24,6 +22,13 @@ const SignupSchema = z.object({
 });
 
 router.post("/newsletter/signup", async (req, res) => {
+  const supabase = getSupabase();
+  if (!supabase) {
+    req.log.error("Supabase env vars not configured");
+    res.status(503).json({ error: "Service not configured" });
+    return;
+  }
+
   const parsed = SignupSchema.safeParse(req.body);
   if (!parsed.success) {
     res.status(400).json({ error: "Invalid request", details: parsed.error.flatten() });
