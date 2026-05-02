@@ -5,19 +5,21 @@ import { RefreshCw } from "lucide-react";
 import { ShapeSvg, ShapeId } from "../lib/ShapeSvg";
 import { GameFind } from "./GameFind";
 import { GameColorHunt } from "./GameColorHunt";
+import { GameShapeParking } from "./GameShapeParking";
 
 interface TabGamesProps {
   language: Language;
 }
 
-type GameMode = 'colors' | 'find' | 'shapes' | 'colorhunt';
+type GameMode = 'colors' | 'find' | 'shapes' | 'colorhunt' | 'shapeparking';
 type AgeFilter = null | 1 | 2 | 3 | 5;
 
 const GAME_MODES: { id: GameMode; minAge: number }[] = [
   { id: 'colors',    minAge: 1 },
   { id: 'find',      minAge: 1 },
   { id: 'shapes',    minAge: 1 },
-  { id: 'colorhunt', minAge: 2 },
+  { id: 'colorhunt',    minAge: 2 },
+  { id: 'shapeparking', minAge: 2 },
 ];
 
 const AGE_OPTIONS: AgeFilter[] = [null, 1, 2, 3, 5];

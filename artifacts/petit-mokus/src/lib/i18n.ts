@@ -107,6 +107,8 @@ export const dictionary = {
     gameTipShape:    { EN: 'Find the same shape somewhere in the room!', FR: 'Cherchez la même forme dans la pièce !', HU: 'Keressetek ugyanolyan formát a szobában!' },
     gameFindLabel:       { EN: 'Find Match',                    FR: 'Trouve le pair',                 HU: 'Keresd a párját'        },
     gameColorHuntLabel:  { EN: 'Color Hunt',                    FR: 'Chasse aux couleurs',             HU: 'Színvadászat'           },
+    gameShapeParkingLabel:       { EN: 'Shape Parking',         FR: 'Parking formes',                  HU: 'Formás parkoló'         },
+    gameShapeParkingInstruction: { EN: 'Park each car in its spot!', FR: 'Gare chaque voiture à sa place !', HU: 'Parkold be az autókat!' },
     gameFindInstruction: { EN: 'Which one is the same?',        FR: 'Lequel est pareil ?',             HU: 'Melyik ugyanolyan?'     },
     gameFilterAll:   { EN: 'All ages', FR: 'Tous âges', HU: 'Minden kor' },
     gameFilterHelp:  { EN: 'Suitable from age and up.', FR: 'Adapté à partir de cet âge.', HU: 'Alkalmas ettől a kortól.' },
