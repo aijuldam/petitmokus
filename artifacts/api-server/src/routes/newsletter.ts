@@ -1,6 +1,8 @@
 import { Router, type IRouter } from "express";
 import { createClient } from "@supabase/supabase-js";
+import { Resend } from "resend";
 import { z } from "zod";
+import { getEmailTemplate, resolveLanguage } from "../lib/email.js";
 
 const router: IRouter = Router();
 
@@ -11,8 +13,16 @@ function getSupabase() {
   return createClient(url, key);
 }
 
+function getResend() {
+  const key = process.env.RESEND_API_KEY;
+  if (!key) return null;
+  return new Resend(key);
+}
+
 const CONSENT_TEXT =
   "I agree to receive the Petit Mokus newsletter with updates about new features and special offers. I understand I can unsubscribe at any time.";
+
+const FROM_ADDRESS = "Petit Mokus <hello@petitmokus.com>";
 
 const SignupSchema = z.object({
   email: z.string().email(),
@@ -36,10 +46,8 @@ router.post("/newsletter/signup", async (req, res) => {
   }
 
   const { email, language, signup_page } = parsed.data;
+  const emailLang = resolveLanguage(language);
 
-  // Atomic upsert: insert if not exists, silently ignore duplicates.
-  // ignoreDuplicates: true maps to ON CONFLICT DO NOTHING so no row is
-  // overwritten; an empty result means the email was already present.
   const { data, error: upsertError } = await supabase
     .from("newsletter_signups")
     .upsert(
@@ -49,7 +57,7 @@ router.post("/newsletter/signup", async (req, res) => {
         consent_text: CONSENT_TEXT,
         source: "floating_newsletter_bar",
         signup_page: signup_page ?? "/",
-        language: language ?? "EN",
+        language: emailLang,
         user_agent: req.headers["user-agent"] ?? null,
       },
       { onConflict: "email", ignoreDuplicates: true },
@@ -62,9 +70,36 @@ router.post("/newsletter/signup", async (req, res) => {
     return;
   }
 
-  if (!data || data.length === 0) {
+  const isNewSignup = data && data.length > 0;
+
+  if (!isNewSignup) {
     res.status(200).json({ status: "already_subscribed" });
     return;
+  }
+
+  // Send welcome email only for new signups with consent
+  const resend = getResend();
+  if (resend) {
+    const template = getEmailTemplate(emailLang);
+    try {
+      const { error: emailError } = await resend.emails.send({
+        from: FROM_ADDRESS,
+        to: email,
+        subject: template.subject,
+        text: template.text,
+        html: template.html,
+      });
+
+      if (emailError) {
+        req.log.error({ err: emailError }, "Resend email error");
+      } else {
+        req.log.info({ email, lang: emailLang }, "Welcome email sent");
+      }
+    } catch (err) {
+      req.log.error({ err }, "Resend unexpected error");
+    }
+  } else {
+    req.log.warn("RESEND_API_KEY not configured — welcome email skipped");
   }
 
   res.status(201).json({ status: "subscribed" });

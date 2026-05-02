@@ -1,30 +1,19 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Mail, Squirrel } from "lucide-react";
-import { createClient } from "@supabase/supabase-js";
 import { Language, dictionary } from "../lib/i18n";
 
 interface NewsletterBarProps {
   language: Language;
 }
 
-const CONSENT_TEXT =
-  "I agree to receive the Petit Mokus newsletter with updates about new features and special offers. I understand I can unsubscribe at any time.";
-
-// Supabase anon key is intentionally public — it's embedded in every
-// Supabase frontend app and protected by Row-Level Security policies.
-const supabase = createClient(
-  "https://labkfyhjvzlifgamjbur.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxhYmtmeWhqdnpsaWZnYW1qYnVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc3MzkwODcsImV4cCI6MjA5MzMxNTA4N30._-_Inw8UgJNXy2ya-tGDxpk7ar-Y18TylFGz3XTQAyY",
-);
-
 type State = "idle" | "loading" | "success" | "already" | "error";
 
 export function NewsletterBar({ language }: NewsletterBarProps) {
   const ui = dictionary.ui;
-  const [email, setEmail]       = useState("");
-  const [consent, setConsent]   = useState(false);
-  const [state, setState]       = useState<State>("idle");
+  const [email, setEmail]         = useState("");
+  const [consent, setConsent]     = useState(false);
+  const [state, setState]         = useState<State>("idle");
   const [dismissed, setDismissed] = useState(false);
 
   const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -32,31 +21,28 @@ export function NewsletterBar({ language }: NewsletterBarProps) {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!canSubmit || !supabase) return;
+    if (!canSubmit) return;
     setState("loading");
 
     try {
-      const { data, error } = await supabase
-        .from("newsletter_signups")
-        .upsert(
-          {
-            email: email.toLowerCase().trim(),
-            consent_given: true,
-            consent_text: CONSENT_TEXT,
-            source: "floating_newsletter_bar",
-            signup_page: window.location.pathname,
-            language,
-          },
-          { onConflict: "email", ignoreDuplicates: true },
-        )
-        .select("id");
+      const res = await fetch("/api/newsletter/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: email.toLowerCase().trim(),
+          consent_given: true as const,
+          language,
+          signup_page: window.location.pathname,
+        }),
+      });
 
-      if (error) {
+      if (!res.ok) {
         setState("error");
         return;
       }
 
-      setState(!data || data.length === 0 ? "already" : "success");
+      const json = await res.json() as { status: string };
+      setState(json.status === "already_subscribed" ? "already" : "success");
     } catch {
       setState("error");
     }
@@ -145,7 +131,7 @@ export function NewsletterBar({ language }: NewsletterBarProps) {
                     className="mt-0.5 shrink-0 accent-[#D897A8] w-3.5 h-3.5 cursor-pointer"
                   />
                   <span className="text-[10px] text-[#5C4A3D]/50 leading-snug group-hover:text-[#5C4A3D]/70 transition-colors">
-                    {CONSENT_TEXT}
+                    {ui.newsletterConsent[language]}
                   </span>
                 </label>
 
