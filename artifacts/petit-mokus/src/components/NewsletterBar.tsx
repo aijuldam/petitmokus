@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Mail, Squirrel } from "lucide-react";
+import { createClient } from "@supabase/supabase-js";
 import { Language, dictionary } from "../lib/i18n";
 
 interface NewsletterBarProps {
@@ -10,39 +11,52 @@ interface NewsletterBarProps {
 const CONSENT_TEXT =
   "I agree to receive the Petit Mokus newsletter with updates about new features and special offers. I understand I can unsubscribe at any time.";
 
+// Supabase anon key is intentionally public — it's embedded in every
+// Supabase frontend app and protected by Row-Level Security policies.
+const supabase = createClient(
+  "https://labkfyhjvzlifgamjbur.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxhYmtmeWhqdnpsaWZnYW1qYnVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc3MzkwODcsImV4cCI6MjA5MzMxNTA4N30._-_Inw8UgJNXy2ya-tGDxpk7ar-Y18TylFGz3XTQAyY",
+);
+
 type State = "idle" | "loading" | "success" | "already" | "error";
 
 export function NewsletterBar({ language }: NewsletterBarProps) {
   const ui = dictionary.ui;
-  const [email, setEmail] = useState("");
-  const [consent, setConsent] = useState(false);
-  const [state, setState] = useState<State>("idle");
+  const [email, setEmail]       = useState("");
+  const [consent, setConsent]   = useState(false);
+  const [state, setState]       = useState<State>("idle");
   const [dismissed, setDismissed] = useState(false);
 
   const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  const canSubmit = emailValid && consent && state === "idle";
+  const canSubmit  = emailValid && consent && state === "idle";
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!canSubmit) return;
+    if (!canSubmit || !supabase) return;
     setState("loading");
+
     try {
-      const res = await fetch("/api/newsletter/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email,
-          consent_given: true,
-          language,
-          signup_page: window.location.pathname,
-        }),
-      });
-      if (res.ok) {
-        const data = await res.json();
-        setState(data.status === "already_subscribed" ? "already" : "success");
-      } else {
+      const { data, error } = await supabase
+        .from("newsletter_signups")
+        .upsert(
+          {
+            email: email.toLowerCase().trim(),
+            consent_given: true,
+            consent_text: CONSENT_TEXT,
+            source: "floating_newsletter_bar",
+            signup_page: window.location.pathname,
+            language,
+          },
+          { onConflict: "email", ignoreDuplicates: true },
+        )
+        .select("id");
+
+      if (error) {
         setState("error");
+        return;
       }
+
+      setState(!data || data.length === 0 ? "already" : "success");
     } catch {
       setState("error");
     }
@@ -62,11 +76,9 @@ export function NewsletterBar({ language }: NewsletterBarProps) {
         className="fixed bottom-[72px] left-0 right-0 z-40 px-3 pb-2"
       >
         <div className="max-w-md mx-auto bg-[#FDFDFC] border border-[#D897A8]/30 rounded-2xl shadow-xl overflow-hidden">
-          {/* Top accent line */}
           <div className="h-0.5 w-full bg-gradient-to-r from-[#D897A8]/40 via-[#D897A8] to-[#D897A8]/40" />
 
-          <div className="px-4 pt-3 pb-4">
-            {/* Dismiss button */}
+          <div className="relative px-4 pt-3 pb-4">
             <button
               onClick={() => setDismissed(true)}
               aria-label="Dismiss"
@@ -93,7 +105,6 @@ export function NewsletterBar({ language }: NewsletterBarProps) {
               </motion.div>
             ) : (
               <form onSubmit={handleSubmit} noValidate>
-                {/* Header row */}
                 <div className="flex items-start gap-2.5 mb-2.5">
                   <div className="mt-0.5 w-7 h-7 rounded-full bg-[#D897A8]/15 flex items-center justify-center shrink-0">
                     <Mail size={14} className="text-[#D897A8]" />
@@ -108,7 +119,6 @@ export function NewsletterBar({ language }: NewsletterBarProps) {
                   </div>
                 </div>
 
-                {/* Email + button row */}
                 <div className="flex gap-2 mb-2.5">
                   <input
                     type="email"
@@ -123,13 +133,10 @@ export function NewsletterBar({ language }: NewsletterBarProps) {
                     disabled={!canSubmit}
                     className="shrink-0 px-4 py-2 rounded-xl bg-[#D897A8] text-white text-[12px] font-bold shadow-sm transition-all active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed"
                   >
-                    {state === "loading"
-                      ? "…"
-                      : ui.newsletterSubmit[language]}
+                    {state === "loading" ? "…" : ui.newsletterSubmit[language]}
                   </button>
                 </div>
 
-                {/* Consent checkbox */}
                 <label className="flex items-start gap-2 cursor-pointer group">
                   <input
                     type="checkbox"

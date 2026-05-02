@@ -67,7 +67,7 @@ catalogs:
       specifier: ^7.3.2
       version: 7.3.2
     zod:
-      specifier: 3.25.76
+      specifier: ^3.25.76
       version: 3.25.76
 
 overrides:
@@ -413,6 +413,10 @@ importers:
         version: 3.25.76
 
   artifacts/petit-mokus:
+    dependencies:
+      '@supabase/supabase-js':
+        specifier: ^2.105.1
+        version: 2.105.1
     devDependencies:
       '@hookform/resolvers':
         specifier: ^3.10.0
