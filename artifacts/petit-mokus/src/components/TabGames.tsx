@@ -7,18 +7,20 @@ import { GameFind } from "./GameFind";
 import { GameColorHunt } from "./GameColorHunt";
 import { GameColorBasket } from "./GameColorBasket";
 import { GameFlags } from "./GameFlags";
+import { GameAnimals } from "./GameAnimals";
 
 interface TabGamesProps {
   language: Language;
 }
 
-type GameMode = 'colors' | 'find' | 'shapes' | 'colorhunt' | 'colorbasket' | 'flags';
+type GameMode = 'colors' | 'find' | 'shapes' | 'colorhunt' | 'colorbasket' | 'flags' | 'animals';
 type AgeFilter = null | 1 | 2 | 3 | 5;
 
 const GAME_MODES: { id: GameMode; minAge: number }[] = [
   { id: 'colors',    minAge: 1 },
   { id: 'find',      minAge: 1 },
   { id: 'shapes',    minAge: 1 },
+  { id: 'animals',     minAge: 1 },
   { id: 'colorhunt',   minAge: 2 },
   { id: 'colorbasket', minAge: 2 },
   { id: 'flags',       minAge: 2 },
@@ -87,7 +89,7 @@ export function TabGames({ language }: TabGamesProps) {
     setSelected(null);
     setMatched(new Set());
     setWrong(null);
-    if (m !== 'find' && m !== 'colorhunt' && m !== 'colorbasket' && m !== 'flags') {
+    if (m !== 'find' && m !== 'colorhunt' && m !== 'colorbasket' && m !== 'flags' && m !== 'animals') {
       setTargetOrder(shuffle(getIds(m)));
       setItemOrder(shuffle(getIds(m)));
     }
@@ -122,6 +124,7 @@ export function TabGames({ language }: TabGamesProps) {
     if (id === 'colorhunt')    return ui.gameColorHuntLabel[language];
     if (id === 'colorbasket')  return ui.gameColorBasketLabel[language];
     if (id === 'flags')        return ui.gameFlagsLabel[language];
+    if (id === 'animals')      return ui.gameAnimalsLabel[language];
     return ui.gameShapes[language];
   };
   const modeMinAge = (id: GameMode) => GAME_MODES.find(m => m.id === id)!.minAge;
@@ -215,8 +218,11 @@ export function TabGames({ language }: TabGamesProps) {
           {/* Flags game */}
           {mode === 'flags' && <GameFlags key="flags" language={language} />}
 
+          {/* Animals game */}
+          {mode === 'animals' && <GameAnimals key="animals" language={language} />}
+
           {/* Color / Shape match games */}
-          {mode !== 'find' && mode !== 'colorhunt' && mode !== 'colorbasket' && mode !== 'flags' && (
+          {mode !== 'find' && mode !== 'colorhunt' && mode !== 'colorbasket' && mode !== 'flags' && mode !== 'animals' && (
             <>
               <p className="text-sm text-foreground/55 text-center mb-5">{instruction}</p>
 
