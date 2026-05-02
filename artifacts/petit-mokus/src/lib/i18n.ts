@@ -144,6 +144,8 @@ export const dictionary = {
     gameFlagsLabel: { EN: 'Flags',                          FR: 'Drapeaux',                          HU: 'Zászlók',                             DE: 'Flaggen'                             },
     gameFlagsFind:  { EN: 'Find the same flag!',            FR: 'Trouve le même drapeau !',           HU: 'Keresd az egyforma zászlót!',         DE: 'Finde dieselbe Flagge!'              },
     gameFlagsMatch: { EN: 'Find the flag for the country!', FR: 'Trouve le drapeau du pays !',        HU: 'Keresd az ország zászlóját!',         DE: 'Finde die Flagge des Landes!'        },
+    gameFlagMatchInstruction: { EN: 'Tap the correct flag!', FR: 'Appuie sur le bon drapeau !', HU: 'Koppints a helyes zászlóra!', DE: 'Tippe auf die richtige Flagge!' },
+    gameFlagMatchHear:        { EN: 'Hear it again',         FR: 'Réentendre',                  HU: 'Halld újra',                  DE: 'Nochmal hören'                  },
     gameFindInstruction: { EN: 'Which one is the same?',        FR: 'Lequel est pareil ?',             HU: 'Melyik ugyanolyan?',     DE: 'Welches ist dasselbe?'  },
     gameFilterAll:   { EN: 'All ages', FR: 'Tous âges', HU: 'Minden kor', DE: 'Alle Altersgruppen' },
     gameFilterHelp:  { EN: 'Showing games designed for age+ year olds.', FR: 'Jeux conçus pour les enfants de age+ ans.', HU: 'Játékok age+ éves gyerekeknek.', DE: 'Spiele für Kinder ab age+ Jahren.' },

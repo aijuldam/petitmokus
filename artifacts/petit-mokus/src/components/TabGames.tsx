@@ -7,6 +7,7 @@ import { GameFind } from "./GameFind";
 import { GameColorHunt } from "./GameColorHunt";
 import { GameColorBasket } from "./GameColorBasket";
 import { GameFlags } from "./GameFlags";
+import { GameFlagMatch } from "./GameFlagMatch";
 import { GameAnimals } from "./GameAnimals";
 
 interface TabGamesProps {
@@ -243,8 +244,13 @@ export function TabGames({ language }: TabGamesProps) {
           {/* Color Basket Sort game */}
           {mode === 'colorbasket' && <GameColorBasket key="colorbasket" language={language} />}
 
-          {/* Flags — each variant has its own ageMode prop, no internal selector */}
-          {isFlags && currentEntry?.ageMode !== undefined && (
+          {/* Flags 3+ — name + audio matching game (2 choices) */}
+          {mode === 'flags-3' && (
+            <GameFlagMatch key="flags-3" language={language} />
+          )}
+
+          {/* Flags 2+ and 5+ — visual find/match games */}
+          {isFlags && currentEntry?.ageMode !== undefined && mode !== 'flags-3' && (
             <GameFlags
               key={mode}
               language={language}

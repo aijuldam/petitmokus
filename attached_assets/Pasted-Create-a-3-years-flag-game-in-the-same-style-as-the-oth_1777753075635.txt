@@ -1,0 +1,111 @@
+Create a 3+ years flag game in the same style as the other games in the app.
+
+Game concept:
+The child sees a country name at the top of the screen, and also hears the country name spoken aloud in the currently selected app language. At the bottom of the screen, show 2 flag options from the available flag selection. The child must tap the correct flag that matches the country name.
+
+Core gameplay:
+
+Show the country name in text at the top.
+
+Automatically play the country name as audio in the currently selected language.
+
+At the bottom, display 2 large flag choices.
+
+One flag is correct, one is incorrect.
+
+The child taps the correct flag.
+
+On success, show warm, encouraging feedback and move to the next round.
+
+On an incorrect choice, give gentle feedback and allow another try.
+
+Language behavior:
+
+The country name text and audio must follow the language currently selected in the app.
+
+If the app language changes, the text and audio in this game should also change.
+
+Keep the flag image itself the same, only localize the country name and pronunciation.
+
+Support multilingual playback cleanly and consistently.
+
+Difficulty for 3+ years:
+
+Use only 2 choices per round.
+
+Start with highly visually distinct flags.
+
+Keep the interaction simple, clear, and confidence-building.
+
+Do not make it feel like a quiz for older children.
+
+No timer, no score pressure, no penalties.
+
+UI layout:
+
+Top area: country name text and optional replay-audio button.
+
+Bottom area: 2 large flag cards side by side or stacked responsively on small screens.
+
+Large touch targets for young children.
+
+Clear spacing and uncluttered layout.
+
+Audio behavior:
+
+Play the country name once automatically when the round starts.
+
+Include a replay button so the child or parent can hear it again.
+
+Use the same app language selection logic already used elsewhere in the product.
+
+Content and data model:
+
+Each flag item should support:
+```js
+{
+id: "fr",
+flagImage: "...",
+names: {
+en: "France",
+fr: "France",
+hu: "Franciaország",
+nl: "Frankrijk"
+},
+audio: {
+en: "...",
+fr: "...",
+hu: "...",
+nl: "..."
+}
+}
+```
+
+The game should read from the currently selected language and use the matching localized text and audio.
+
+Style requirements:
+
+Match the same visual language as the rest of the app.
+
+Keep it soft, playful, calm, and child-friendly.
+
+Use the same spacing, cards, buttons, and feedback patterns as the other games.
+
+Make it work well on mobile and tablet.
+
+Feedback requirements:
+
+Correct answer: gentle celebration, warm sound, positive transition.
+
+Incorrect answer: soft retry state, no harsh sounds, no penalty.
+
+Nice-to-have:
+
+Randomize which side the correct flag appears on.
+
+Reuse the existing flag assets and language system already in the app.
+
+Keep the code modular so the same game can later support 3 choices or harder levels.
+
+Goal:
+Create a simple, multilingual flag-matching game for 3+ years where the child connects a country name in text and sound with the correct flag from 2 options.
