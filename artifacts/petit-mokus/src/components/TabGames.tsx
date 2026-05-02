@@ -4,18 +4,20 @@ import { motion, AnimatePresence } from "framer-motion";
 import { RefreshCw } from "lucide-react";
 import { ShapeSvg, ShapeId } from "../lib/ShapeSvg";
 import { GameFind } from "./GameFind";
+import { GameColorHunt } from "./GameColorHunt";
 
 interface TabGamesProps {
   language: Language;
 }
 
-type GameMode = 'colors' | 'find' | 'shapes';
+type GameMode = 'colors' | 'find' | 'shapes' | 'colorhunt';
 type AgeFilter = null | 1 | 2 | 3 | 5;
 
 const GAME_MODES: { id: GameMode; minAge: number }[] = [
-  { id: 'colors', minAge: 1 },
-  { id: 'find',   minAge: 1 },
-  { id: 'shapes', minAge: 1 },
+  { id: 'colors',    minAge: 1 },
+  { id: 'find',      minAge: 1 },
+  { id: 'shapes',    minAge: 1 },
+  { id: 'colorhunt', minAge: 2 },
 ];
 
 const AGE_OPTIONS: AgeFilter[] = [null, 1, 2, 3, 5];
@@ -81,7 +83,7 @@ export function TabGames({ language }: TabGamesProps) {
     setSelected(null);
     setMatched(new Set());
     setWrong(null);
-    if (m !== 'find') {
+    if (m !== 'find' && m !== 'colorhunt') {
       setTargetOrder(shuffle(getIds(m)));
       setItemOrder(shuffle(getIds(m)));
     }
@@ -111,8 +113,9 @@ export function TabGames({ language }: TabGamesProps) {
   const instruction = mode === 'colors' ? ui.gameMatchColor[language] : ui.gameMatchShape[language];
 
   const modeLabel = (id: GameMode) => {
-    if (id === 'colors') return ui.gameColors[language];
-    if (id === 'find')   return ui.gameFindLabel[language];
+    if (id === 'colors')    return ui.gameColors[language];
+    if (id === 'find')      return ui.gameFindLabel[language];
+    if (id === 'colorhunt') return ui.gameColorHuntLabel[language];
     return ui.gameShapes[language];
   };
   const modeMinAge = (id: GameMode) => GAME_MODES.find(m => m.id === id)!.minAge;
@@ -197,8 +200,11 @@ export function TabGames({ language }: TabGamesProps) {
           {/* Find Match game */}
           {mode === 'find' && <GameFind key="find" language={language} />}
 
+          {/* Color Hunt game */}
+          {mode === 'colorhunt' && <GameColorHunt key="colorhunt" language={language} />}
+
           {/* Color / Shape match games */}
-          {mode !== 'find' && (
+          {mode !== 'find' && mode !== 'colorhunt' && (
             <>
               <p className="text-sm text-foreground/55 text-center mb-5">{instruction}</p>
 

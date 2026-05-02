@@ -106,6 +106,7 @@ export const dictionary = {
     gameTipColor:    { EN: 'Name the color out loud together!', FR: 'Nommez la couleur ensemble à voix haute !', HU: 'Mondjátok hangosan együtt a színt!' },
     gameTipShape:    { EN: 'Find the same shape somewhere in the room!', FR: 'Cherchez la même forme dans la pièce !', HU: 'Keressetek ugyanolyan formát a szobában!' },
     gameFindLabel:       { EN: 'Find Match',                    FR: 'Trouve le pair',                 HU: 'Keresd a párját'        },
+    gameColorHuntLabel:  { EN: 'Color Hunt',                    FR: 'Chasse aux couleurs',             HU: 'Színvadászat'           },
     gameFindInstruction: { EN: 'Which one is the same?',        FR: 'Lequel est pareil ?',             HU: 'Melyik ugyanolyan?'     },
     gameFilterAll:   { EN: 'All ages', FR: 'Tous âges', HU: 'Minden kor' },
     gameFilterHelp:  { EN: 'Suitable from age and up.', FR: 'Adapté à partir de cet âge.', HU: 'Alkalmas ettől a kortól.' },
