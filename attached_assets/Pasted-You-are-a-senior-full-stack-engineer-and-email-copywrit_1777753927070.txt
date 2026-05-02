@@ -1,0 +1,205 @@
+You are a senior full-stack engineer and email copywriter for Petit Mokus.
+
+Goal
+
+Implement a welcome email that is sent only when:
+
+a user submits their email address
+
+marketing consent is explicitly given
+
+Also support language-based welcome emails in:
+
+English
+
+French
+
+Hungarian
+
+German
+
+The system should send the welcome email in the user’s selected language whenever possible.
+
+Language requirement
+
+Add support so that if the user has selected or clicked a language option in the product, the welcome email is sent in that language.
+
+Supported languages:
+
+en = English
+
+fr = French
+
+hu = Hungarian
+
+de = German
+
+Language behavior:
+
+If the user has a stored language preference, use it.
+
+If the UI already has language switch buttons, a language selector, locale state, or an i18n system, inspect how the current language is stored when the user clicks it.
+
+Reuse that existing language state for the welcome email whenever possible instead of creating a separate parallel language system.
+
+If the user selected a language during signup or from the UI, use that language.
+
+If no language is available, default to English.
+
+Keep all four language versions aligned in tone, structure, and CTA.
+
+Email copy task
+
+Write a short, warm, GDPR-compliant welcome email for Petit Mokus in:
+
+English
+
+French
+
+Hungarian
+
+German
+
+Use the About section below as the brand voice and inspiration.
+
+About section
+
+“Petit Mokus is a gentle digital companion for families, supporting children's growth through calming routines, soothing sounds, and simple learning — wherever life takes you.
+Petit Mokus is multicultural at its core, crafted by a French & Hungarian family in Amsterdam. Mokus means squirrel in Hungarian — a small, curious animal that thrives through play, exploration, and a love of small, meaningful moments. This mirrors the way Petit Mokus turns bedtime songs, quiet sounds, and simple games into building blocks for children's emotional and cognitive development.
+Like a little squirrel gathering nuts, Petit Mokus gathers gentle interactions that help families feel more connected and secure, one small moment at a time.”
+
+Copy requirements
+
+Tone: gentle, warm, family-friendly, calm, and reassuring
+
+Use Petit Mokus as a “gentle digital companion for families”
+
+Highlight calming routines, soothing sounds, and simple learning
+
+Mention that Petit Mokus is made by a French-Hungarian family in Amsterdam
+
+Use “Mokus” (squirrel) as a light, playful metaphor
+
+Keep each email short and scannable, around 80–120 words
+
+Include one clear call to action, such as:
+
+“Open your dashboard”
+
+“Start your first routine”
+
+Make it GDPR-compliant:
+
+make clear this is a marketing email
+
+include a line like: “This is a marketing email. You can unsubscribe at any time.”
+
+include an unsubscribe link placeholder: {[UNSUBSCRIBE_URL]}
+
+Implementation
+
+Inspect the codebase and identify:
+
+where a user submits an email address
+
+where marketing consent is stored (marketing_consent, marketing_consent_at, etc.)
+
+where language preference is stored (language, locale, preferred_language, etc.)
+
+whether the app already has a UI language switcher or selected-language state
+
+where email sending is triggered
+
+Implement sending rules:
+
+Only send the welcome email if:
+
+email is present
+
+marketing_consent is true
+
+Do NOT send if consent is false or missing
+
+Choose the email language based on this priority:
+
+explicit stored language preference
+
+existing selected/clicked UI language
+
+fallback to English
+
+Safeguards:
+
+Do not send to old leads without explicit consent
+
+Do not send duplicate welcome emails unnecessarily
+
+Log the decision safely, including:
+
+whether email was sent
+
+whether consent was present
+
+which language was chosen
+
+why the send was skipped if skipped
+
+Email template structure:
+
+Create one maintainable template system with localized content for:
+
+English
+
+French
+
+Hungarian
+
+German
+
+Keep the same structure and CTA across languages
+
+Make the implementation easy to extend later
+
+Email event tracking / persistence:
+
+Store the language actually used for the sent welcome email
+
+Add fields such as:
+
+welcome_email_language
+
+welcome_email_sent_at
+
+If there is an existing email events table or log, store the chosen language there
+
+If not, add the minimum safe tracking needed so it is easy to debug which localized version was sent
+
+Reuse existing localization logic:
+
+Do not invent a second language-selection system if the app already has one
+
+Reuse the same locale codes and state management already used in the UI
+
+Keep the backend and email logic aligned with the frontend language model
+
+Output format
+
+First: short email copy in all 4 languages, in plain text and basic HTML structure
+
+Second: brief audit of email capture, consent logic, language selection logic, and whether existing UI language state can be reused
+
+Third: minimal implementation plan
+
+Fourth: apply the welcome-email trigger with language-aware selection
+
+Fifth: show diffs
+
+Sixth: explain how to test:
+
+consent checked vs unchecked
+
+English vs French vs Hungarian vs German
+
+missing language fallback to English
+
+logging / storage of the actual sent language
