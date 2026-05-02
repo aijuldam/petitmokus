@@ -1,4 +1,4 @@
-import { Language } from "../lib/i18n";
+import { Language, dictionary } from "../lib/i18n";
 import { cn } from "../lib/utils";
 import logoSrc from "@assets/petitmokus-logo-128_1777320029918.png";
 
@@ -20,7 +20,7 @@ export function Header({ language, setLanguage }: HeaderProps) {
         </div>
 
         <p className="hidden md:block flex-1 text-sm text-foreground/55 font-medium leading-snug">
-          Your digital companion supporting children's growth through calming routines, soothing sounds, and simple learning.
+          {dictionary.ui.tagline[language]}
         </p>
 
         <div className="flex bg-muted rounded-full p-1 border border-border/50 shrink-0">

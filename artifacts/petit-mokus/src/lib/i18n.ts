@@ -178,6 +178,12 @@ export const dictionary = {
     newsletterSuccessSub:       { EN: "You'll hear from us when something lovely is ready.",   FR: 'Nous vous écrirons quand quelque chose de beau sera prêt.', HU: 'Írunk, ha valami szép készen van.',              DE: 'Wir melden uns, wenn etwas Schönes fertig ist.'       },
     newsletterAlready:          { EN: "You're already on the list.",                           FR: 'Vous êtes déjà inscrit.',                          HU: 'Már fel vagy iratkozva.',                            DE: 'Du stehst bereits auf der Liste.'                     },
     newsletterError:            { EN: 'Something went wrong — please try again.',             FR: 'Une erreur est survenue — veuillez réessayer.',    HU: 'Valami hiba történt — próbáld újra.',                DE: 'Etwas ist schiefgelaufen — bitte versuche es erneut.' },
+    tagline: {
+      EN: "Your digital companion supporting children's growth through calming routines, soothing sounds, and simple learning.",
+      FR: "Votre compagnon numérique pour soutenir la croissance de vos enfants grâce à des routines apaisantes, des sons doux et un apprentissage simple.",
+      HU: "Digitális társad a gyermekek fejlődéséhez — nyugtató rutinok, lágy hangok és egyszerű tanulás révén.",
+      DE: "Dein digitaler Begleiter für das Wachstum deiner Kinder — durch beruhigende Routinen, sanfte Klänge und einfaches Lernen.",
+    },
     aboutTitle: { EN: 'About Petit Mokus', FR: 'À propos de Petit Mokus', HU: 'A Petit Mokusról', DE: 'Über Petit Mokus' },
     aboutP1: {
       EN: 'Petit Mokus is a gentle digital companion for families, supporting children\'s growth through calming routines, soothing sounds, and simple learning — wherever life takes you.',
