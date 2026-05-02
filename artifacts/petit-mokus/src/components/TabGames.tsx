@@ -13,17 +13,30 @@ interface TabGamesProps {
   language: Language;
 }
 
-type GameMode = 'colors' | 'find' | 'shapes' | 'colorhunt' | 'colorbasket' | 'flags' | 'animals';
+type GameId =
+  | 'colors' | 'find' | 'shapes'
+  | 'animals-1' | 'animals-2' | 'animals-3' | 'animals-5'
+  | 'colorhunt' | 'colorbasket' | 'flags';
+
 type AgeFilter = null | 1 | 2 | 3 | 5;
 
-const GAME_MODES: { id: GameMode; minAge: number }[] = [
-  { id: 'colors',    minAge: 1 },
-  { id: 'find',      minAge: 1 },
-  { id: 'shapes',    minAge: 1 },
-  { id: 'animals',     minAge: 1 },
+interface GameEntry {
+  id: GameId;
+  minAge: number;
+  ageMode?: 1 | 2 | 3 | 5;
+}
+
+const GAME_MODES: GameEntry[] = [
+  { id: 'colors',      minAge: 1 },
+  { id: 'find',        minAge: 1 },
+  { id: 'shapes',      minAge: 1 },
+  { id: 'animals-1',   minAge: 1, ageMode: 1 },
+  { id: 'animals-2',   minAge: 2, ageMode: 2 },
   { id: 'colorhunt',   minAge: 2 },
   { id: 'colorbasket', minAge: 2 },
   { id: 'flags',       minAge: 2 },
+  { id: 'animals-3',   minAge: 3, ageMode: 3 },
+  { id: 'animals-5',   minAge: 5, ageMode: 5 },
 ];
 
 const AGE_OPTIONS: AgeFilter[] = [null, 1, 2, 3, 5];
@@ -51,24 +64,35 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-function getIds(m: GameMode) {
+function getIds(m: 'colors' | 'shapes') {
   return m === 'colors' ? COLORS.map(c => c.id) : SHAPES.map(s => s.id);
 }
 
 export function TabGames({ language }: TabGamesProps) {
   const ui = dictionary.ui;
 
-  const [ageFilter, setAgeFilter] = useState<AgeFilter>(null);
-  const [mode, setMode] = useState<GameMode>('colors');
-  const [selected, setSelected] = useState<string | null>(null);
-  const [matched, setMatched] = useState<Set<string>>(new Set());
-  const [wrong, setWrong] = useState<string | null>(null);
+  const [ageFilter,   setAgeFilter]   = useState<AgeFilter>(null);
+  const [mode,        setMode]        = useState<GameId>('colors');
+  const [selected,    setSelected]    = useState<string | null>(null);
+  const [matched,     setMatched]     = useState<Set<string>>(new Set());
+  const [wrong,       setWrong]       = useState<string | null>(null);
   const [targetOrder, setTargetOrder] = useState(() => shuffle(getIds('colors')));
-  const [itemOrder, setItemOrder] = useState(() => shuffle(getIds('colors')));
+  const [itemOrder,   setItemOrder]   = useState(() => shuffle(getIds('colors')));
 
   const visibleModes = ageFilter === null
     ? GAME_MODES
-    : GAME_MODES.filter(m => m.minAge <= ageFilter);
+    : GAME_MODES.filter(m => m.minAge >= ageFilter);
+
+  const switchMode = (id: GameId) => {
+    setMode(id);
+    setSelected(null);
+    setMatched(new Set());
+    setWrong(null);
+    if (id === 'colors' || id === 'shapes') {
+      setTargetOrder(shuffle(getIds(id)));
+      setItemOrder(shuffle(getIds(id)));
+    }
+  };
 
   useEffect(() => {
     if (visibleModes.length > 0 && !visibleModes.find(m => m.id === mode)) {
@@ -80,20 +104,11 @@ export function TabGames({ language }: TabGamesProps) {
     setSelected(null);
     setMatched(new Set());
     setWrong(null);
-    setTargetOrder(shuffle(getIds(mode)));
-    setItemOrder(shuffle(getIds(mode)));
-  }, [mode]);
-
-  const switchMode = (m: GameMode) => {
-    setMode(m);
-    setSelected(null);
-    setMatched(new Set());
-    setWrong(null);
-    if (m !== 'find' && m !== 'colorhunt' && m !== 'colorbasket' && m !== 'flags' && m !== 'animals') {
-      setTargetOrder(shuffle(getIds(m)));
-      setItemOrder(shuffle(getIds(m)));
+    if (mode === 'colors' || mode === 'shapes') {
+      setTargetOrder(shuffle(getIds(mode)));
+      setItemOrder(shuffle(getIds(mode)));
     }
-  };
+  }, [mode]);
 
   const handleItemTap = (id: string) => {
     if (matched.has(id)) return;
@@ -113,21 +128,23 @@ export function TabGames({ language }: TabGamesProps) {
   };
 
   const total = mode === 'colors' ? COLORS.length : SHAPES.length;
-  const isComplete = mode !== 'find' && matched.size === total;
-
+  const isComplete = (mode === 'colors' || mode === 'shapes') && matched.size === total;
   const tip = mode === 'colors' ? ui.gameTipColor[language] : ui.gameTipShape[language];
   const instruction = mode === 'colors' ? ui.gameMatchColor[language] : ui.gameMatchShape[language];
 
-  const modeLabel = (id: GameMode) => {
-    if (id === 'colors')    return ui.gameColors[language];
-    if (id === 'find')      return ui.gameFindLabel[language];
-    if (id === 'colorhunt')    return ui.gameColorHuntLabel[language];
-    if (id === 'colorbasket')  return ui.gameColorBasketLabel[language];
-    if (id === 'flags')        return ui.gameFlagsLabel[language];
-    if (id === 'animals')      return ui.gameAnimalsLabel[language];
+  const modeLabel = (entry: GameEntry): string => {
+    const animalBase = ui.gameAnimalsLabel[language];
+    if (entry.ageMode !== undefined) return `${animalBase} ${entry.ageMode}+`;
+    if (entry.id === 'colors')      return ui.gameColors[language];
+    if (entry.id === 'find')        return ui.gameFindLabel[language];
+    if (entry.id === 'colorhunt')   return ui.gameColorHuntLabel[language];
+    if (entry.id === 'colorbasket') return ui.gameColorBasketLabel[language];
+    if (entry.id === 'flags')       return ui.gameFlagsLabel[language];
     return ui.gameShapes[language];
   };
-  const modeMinAge = (id: GameMode) => GAME_MODES.find(m => m.id === id)!.minAge;
+
+  const currentEntry = GAME_MODES.find(m => m.id === mode)!;
+  const isAnimals    = currentEntry.ageMode !== undefined;
 
   return (
     <div className="px-4 pt-4 pb-36 max-w-md mx-auto">
@@ -184,24 +201,27 @@ export function TabGames({ language }: TabGamesProps) {
         </motion.div>
       ) : (
         <>
-          {/* Mode switch — horizontally scrollable for many games */}
+          {/* Mode switcher — horizontally scrollable */}
           <div className="flex gap-1 mb-5 bg-muted rounded-2xl p-1 overflow-x-auto" style={{ scrollbarWidth: 'none' }}>
-            {visibleModes.map(({ id }) => (
+            {visibleModes.map((entry) => (
               <button
-                key={id}
-                onClick={() => switchMode(id)}
-                className={`flex-shrink-0 py-2 px-3 rounded-xl text-xs font-bold transition-all duration-200 flex items-center gap-1.5 whitespace-nowrap ${
-                  mode === id
+                key={entry.id}
+                onClick={() => switchMode(entry.id)}
+                className={`flex-shrink-0 py-2 px-3 rounded-xl text-xs font-bold transition-all duration-200 whitespace-nowrap ${
+                  mode === entry.id
                     ? 'bg-card shadow text-primary'
                     : 'text-muted-foreground hover:text-foreground/70'
                 }`}
               >
-                {modeLabel(id)}
-                <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full ${
-                  mode === id ? 'bg-primary/15 text-primary' : 'bg-foreground/8 text-foreground/40'
-                }`}>
-                  {modeMinAge(id)}+
-                </span>
+                {modeLabel(entry)}
+                {/* Show age badge only for non-animals entries (animals already encode age in label) */}
+                {entry.ageMode === undefined && (
+                  <span className={`ml-1.5 text-[9px] font-bold px-1.5 py-0.5 rounded-full ${
+                    mode === entry.id ? 'bg-primary/15 text-primary' : 'bg-foreground/8 text-foreground/40'
+                  }`}>
+                    {entry.minAge}+
+                  </span>
+                )}
               </button>
             ))}
           </div>
@@ -218,18 +238,24 @@ export function TabGames({ language }: TabGamesProps) {
           {/* Flags game */}
           {mode === 'flags' && <GameFlags key="flags" language={language} />}
 
-          {/* Animals game */}
-          {mode === 'animals' && <GameAnimals key="animals" language={language} />}
+          {/* Animals — each variant has its own ageMode prop, no internal selector */}
+          {isAnimals && (
+            <GameAnimals
+              key={mode}
+              language={language}
+              ageMode={currentEntry.ageMode as 1 | 2 | 3 | 5}
+            />
+          )}
 
           {/* Color / Shape match games */}
-          {mode !== 'find' && mode !== 'colorhunt' && mode !== 'colorbasket' && mode !== 'flags' && mode !== 'animals' && (
+          {(mode === 'colors' || mode === 'shapes') && (
             <>
               <p className="text-sm text-foreground/55 text-center mb-5">{instruction}</p>
 
               {/* Item pieces (top) */}
               <div className="grid grid-cols-2 gap-3 mb-3">
                 {itemOrder.map(id => {
-                  const isMatched = matched.has(id);
+                  const isMatched  = matched.has(id);
                   const isSelected = selected === id;
 
                   if (isMatched) return <div key={id} className="h-[4.5rem] rounded-[1.25rem] bg-muted/20" />;
@@ -287,7 +313,7 @@ export function TabGames({ language }: TabGamesProps) {
               <div className="grid grid-cols-2 gap-3 mb-5">
                 {targetOrder.map(id => {
                   const isMatched = matched.has(id);
-                  const isWrong = wrong === id;
+                  const isWrong   = wrong === id;
 
                   if (mode === 'colors') {
                     const color = COLORS.find(c => c.id === id)!;
@@ -367,7 +393,7 @@ export function TabGames({ language }: TabGamesProps) {
         </>
       )}
 
-      {/* Success overlay (color/shape match) */}
+      {/* Success overlay (color/shape match only) */}
       <AnimatePresence>
         {isComplete && (
           <motion.div

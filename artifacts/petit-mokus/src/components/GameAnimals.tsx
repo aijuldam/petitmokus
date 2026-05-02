@@ -75,10 +75,10 @@ const names  = dictionary.animals;
 
 interface GameAnimalsProps {
   language: Language;
+  ageMode: AgeMode;
 }
 
-export function GameAnimals({ language }: GameAnimalsProps) {
-  const [ageMode, setAgeMode] = useState<AgeMode>(1);
+export function GameAnimals({ language, ageMode }: GameAnimalsProps) {
   const [rounds,  setRounds]  = useState<Round[]>([]);
   const [round,   setRound]   = useState(0);
   const [wrong,   setWrong]   = useState<string | null>(null);
@@ -135,23 +135,6 @@ export function GameAnimals({ language }: GameAnimalsProps) {
 
   return (
     <div className="w-full flex flex-col items-center gap-4">
-      {/* Age mode selector */}
-      <div className="flex gap-1 w-full bg-muted rounded-2xl p-1">
-        {([1, 2, 3, 5] as AgeMode[]).map((age) => (
-          <button
-            key={age}
-            onClick={() => setAgeMode(age)}
-            className={`flex-1 py-2 rounded-xl text-xs font-bold transition-all duration-200 ${
-              ageMode === age
-                ? "bg-card shadow text-primary"
-                : "text-muted-foreground hover:text-foreground/70"
-            }`}
-          >
-            {age}+
-          </button>
-        ))}
-      </div>
-
       {/* Instruction */}
       <p className="text-[10px] font-bold tracking-widest uppercase text-foreground/40 text-center">
         {instruction}
