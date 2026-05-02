@@ -15,6 +15,7 @@ export const FLAGS: FlagItem[] = [
   { code: 'br', countryName: { EN: 'Brazil',          FR: 'Brésil',         HU: 'Brazília'           }, difficulty: 1 },
   { code: 'gb', countryName: { EN: 'United Kingdom',  FR: 'Royaume-Uni',    HU: 'Egyesült Királyság' }, difficulty: 1 },
   // Difficulty 2 — moderately distinct (3+ adds these)
+  { code: 'hu', countryName: { EN: 'Hungary',         FR: 'Hongrie',        HU: 'Magyarország'       }, difficulty: 2 },
   { code: 'fr', countryName: { EN: 'France',          FR: 'France',         HU: 'Franciaország'      }, difficulty: 2 },
   { code: 'de', countryName: { EN: 'Germany',         FR: 'Allemagne',      HU: 'Németország'        }, difficulty: 2 },
   { code: 'it', countryName: { EN: 'Italy',           FR: 'Italie',         HU: 'Olaszország'        }, difficulty: 2 },
