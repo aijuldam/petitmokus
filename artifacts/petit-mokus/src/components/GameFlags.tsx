@@ -220,9 +220,11 @@ export function GameFlags({ language, ageMode }: GameFlagsProps) {
                     className="w-full h-full object-cover select-none"
                   />
                 </div>
-                <span className={`text-center w-full ${nameCls}`}>
-                  {flag.countryName[language]}
-                </span>
+                {ageMode !== 5 && (
+                  <span className={`text-center w-full ${nameCls}`}>
+                    {flag.countryName[language]}
+                  </span>
+                )}
                 {isCorrect && (
                   <motion.span
                     initial={{ scale: 0 }}
