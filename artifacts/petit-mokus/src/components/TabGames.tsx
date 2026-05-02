@@ -94,10 +94,15 @@ export function TabGames({ language }: TabGamesProps) {
     }
   };
 
+  // When the age filter changes, auto-jump to the first visible mode if
+  // the current one is no longer in the filtered list.
+  // minAge >= selectedAge is intentional: "2+" shows games for 2, 3, 5 year-olds
+  // and hides 1+ games that are too easy for the chosen age group.
   useEffect(() => {
-    if (visibleModes.length > 0 && !visibleModes.find(m => m.id === mode)) {
+    if (visibleModes.length > 0 && !visibleModes.some(m => m.id === mode)) {
       switchMode(visibleModes[0].id);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ageFilter]);
 
   const reset = useCallback(() => {
@@ -143,8 +148,8 @@ export function TabGames({ language }: TabGamesProps) {
     return ui.gameShapes[language];
   };
 
-  const currentEntry = GAME_MODES.find(m => m.id === mode)!;
-  const isAnimals    = currentEntry.ageMode !== undefined;
+  const currentEntry = GAME_MODES.find(m => m.id === mode);
+  const isAnimals    = currentEntry?.ageMode !== undefined;
 
   return (
     <div className="px-4 pt-4 pb-36 max-w-md mx-auto">
@@ -239,11 +244,11 @@ export function TabGames({ language }: TabGamesProps) {
           {mode === 'flags' && <GameFlags key="flags" language={language} />}
 
           {/* Animals — each variant has its own ageMode prop, no internal selector */}
-          {isAnimals && (
+          {isAnimals && currentEntry?.ageMode !== undefined && (
             <GameAnimals
               key={mode}
               language={language}
-              ageMode={currentEntry.ageMode as 1 | 2 | 3 | 5}
+              ageMode={currentEntry.ageMode}
             />
           )}
 
