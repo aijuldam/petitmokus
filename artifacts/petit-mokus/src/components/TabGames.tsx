@@ -85,7 +85,7 @@ export function TabGames({ language }: TabGamesProps) {
     setSelected(null);
     setMatched(new Set());
     setWrong(null);
-    if (m !== 'find' && m !== 'colorhunt') {
+    if (m !== 'find' && m !== 'colorhunt' && m !== 'shapeparking') {
       setTargetOrder(shuffle(getIds(m)));
       setItemOrder(shuffle(getIds(m)));
     }
@@ -117,7 +117,8 @@ export function TabGames({ language }: TabGamesProps) {
   const modeLabel = (id: GameMode) => {
     if (id === 'colors')    return ui.gameColors[language];
     if (id === 'find')      return ui.gameFindLabel[language];
-    if (id === 'colorhunt') return ui.gameColorHuntLabel[language];
+    if (id === 'colorhunt')    return ui.gameColorHuntLabel[language];
+    if (id === 'shapeparking') return ui.gameShapeParkingLabel[language];
     return ui.gameShapes[language];
   };
   const modeMinAge = (id: GameMode) => GAME_MODES.find(m => m.id === id)!.minAge;
@@ -205,8 +206,11 @@ export function TabGames({ language }: TabGamesProps) {
           {/* Color Hunt game */}
           {mode === 'colorhunt' && <GameColorHunt key="colorhunt" language={language} />}
 
+          {/* Shape Parking game */}
+          {mode === 'shapeparking' && <GameShapeParking key="shapeparking" language={language} />}
+
           {/* Color / Shape match games */}
-          {mode !== 'find' && mode !== 'colorhunt' && (
+          {mode !== 'find' && mode !== 'colorhunt' && mode !== 'shapeparking' && (
             <>
               <p className="text-sm text-foreground/55 text-center mb-5">{instruction}</p>
 
