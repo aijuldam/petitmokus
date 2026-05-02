@@ -208,7 +208,7 @@ export function GameAnimals({ language, ageMode }: GameAnimalsProps) {
               >
                 <Volume2 className="w-4 h-4 text-foreground/45" />
                 <span className="text-[11px] text-foreground/45 font-medium">
-                  {ui.gameAnimalsPlaySound[language]}
+                  {ui.gameAnimalsListenSound[language]}
                 </span>
               </button>
             </div>
