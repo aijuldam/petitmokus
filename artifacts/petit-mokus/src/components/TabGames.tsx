@@ -66,7 +66,7 @@ export function TabGames({ language }: TabGamesProps) {
 
   const visibleModes = ageFilter === null
     ? GAME_MODES
-    : GAME_MODES.filter(m => m.minAge >= ageFilter);
+    : GAME_MODES.filter(m => m.minAge <= ageFilter);
 
   useEffect(() => {
     if (visibleModes.length > 0 && !visibleModes.find(m => m.id === mode)) {
