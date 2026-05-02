@@ -108,6 +108,8 @@ export function GameFlags({ language }: GameFlagsProps) {
 
   const optCount = getOptCount(ageMode);
   const gridCols = optCount === 3 ? "grid-cols-3" : "grid-cols-2";
+  const gridGap  = ageMode === 5 ? "gap-2" : "gap-3";
+  const btnPad   = ageMode === 5 ? "p-1.5" : "p-2.5";
 
   const nameCls =
     ageMode === 2
@@ -201,7 +203,7 @@ export function GameFlags({ language }: GameFlagsProps) {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -8 }}
           transition={{ duration: 0.24 }}
-          className={`grid ${gridCols} gap-3 w-full`}
+          className={`grid ${gridCols} ${gridGap} w-full`}
         >
           {current.options.map((flag) => {
             const isWrong = wrong === flag.code;
@@ -218,7 +220,7 @@ export function GameFlags({ language }: GameFlagsProps) {
                     : {}
                 }
                 transition={{ duration: 0.3 }}
-                className={`flex flex-col items-center gap-1 p-2.5 rounded-2xl border-2 transition-colors shadow-sm ${
+                className={`flex flex-col items-center gap-1 ${btnPad} rounded-2xl border-2 transition-colors shadow-sm ${
                   isCorrect
                     ? "border-green-400 bg-green-50/80"
                     : isWrong
@@ -226,11 +228,13 @@ export function GameFlags({ language }: GameFlagsProps) {
                     : "border-transparent bg-card hover:border-primary/25 active:scale-95"
                 }`}
               >
-                {/* Flag image — 3:2 aspect ratio container */}
-                <div className="w-full rounded-lg overflow-hidden bg-muted/20" style={{ aspectRatio: "3/2" }}>
-                  <FlagImage
-                    code={flag.code}
+                {/* Flag image — 3:2 aspect ratio, cover fills edge-to-edge */}
+                <div className="w-full rounded-lg overflow-hidden" style={{ aspectRatio: "3/2" }}>
+                  <img
+                    src={flagUrl(flag.code)}
                     alt={flag.countryName[language]}
+                    draggable={false}
+                    className="w-full h-full object-cover select-none"
                   />
                 </div>
                 <span className={`text-center w-full ${nameCls}`}>
