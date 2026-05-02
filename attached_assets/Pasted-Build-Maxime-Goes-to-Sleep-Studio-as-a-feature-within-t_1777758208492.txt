@@ -1,0 +1,52 @@
+Build "Maxime Goes to Sleep Studio" as a feature within the existing Petit Mokus web app.
+
+Goal: Create an end-to-end bedtime story generation workflow. When approved, stories must automatically populate the "Bedtime Stories" tab in the Petit Mokus app.
+
+---
+Character specs (critical for consistency):
+- Papa (Julien): in his 30s, tall, average/thin build, fair skin, short dark hair, beard. Resemble the uploaded reference photo. Warm, gentle, protective presence.
+- Maxime: toddler boy, around 18 months, round cheeks, slightly lighter brown hair, soft sleepy expression.
+- Clothing continuity:
+  - Before pajamas: Maxime wears a brown outfit.
+  - Pajama scenes: Maxime wears blue pajamas.
+- Papa should look consistent across all illustrations.
+- Maxime should look consistent across all illustrations.
+---
+
+INITIAL CONTENT (Seed the app with this approved manuscript):
+Title: "Maxime Goes to Sleep"
+Recurring phrase: "Soft and slow, here we go."
+Pages:
+1. "Maxime plays with blocks."
+2. "Warm milk in bottle."
+3. "Soft and slow, here we go."
+4. "Brush teeth up and down."
+5. "Smile shines bright!"
+6. "Soft pajamas now."
+7. "Soft and slow, here we go."
+8. "Find fluffy teddy bear."
+9. "Bear says shhh so soft."
+10. "Papa's big warm hug."
+11. "Rock and hum lullaby."
+12. "Soft and slow, asleep."
+
+(Include this manuscript as the default active project in the database.)
+
+---
+
+Workflow Requirements:
+1. App includes a "Bedtime Stories" management tab.
+2. Feature must integrate natively: published books appear immediately in the existing Bedtime Stories tab for app users.
+3. Keep the 3-checkpoint workflow (Brief, Manuscript, Illustrations).
+4. Use the manuscript above as the first version in the database.
+5. Create a "Publish to Bedtime Stories" trigger that writes the book into the existing app's story content collection.
+
+Technical:
+- Use full-stack React + Express + SQLite.
+- Pluggable ImageProvider interface.
+- Store all story data, versions, and stage metadata in SQLite.
+- Ensure the character descriptions provided are used as system-level constants for all future generation prompts.
+
+UI/UX:
+- Seamless transition between generation stages and the final "Bedtime Stories" display.
+- Maintain the calm, watercolor Petit Mokus brand language throughout.
