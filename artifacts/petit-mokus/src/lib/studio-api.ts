@@ -1,8 +1,10 @@
 // Lightweight fetch helpers for the Studio + Bedtime Stories APIs.
-// In production the petit-mokus frontend is hosted on petitmokus.com (Cloudflare)
-// while the API runs on petit-mokus.replit.app, so we resolve API_BASE accordingly.
+// Bedtime Stories API is now served by Cloudflare Worker (multilingual support)
+// Studio API still comes from petit-mokus.replit.app
 
-function resolveApiBase(): string {
+const STORIES_API_BASE = "https://petit-mokus-stories-api.aijuldam.workers.dev";
+
+function resolveStudioApiBase(): string {
   if (typeof window === "undefined") return "";
   const host = window.location.hostname;
   if (host === "petitmokus.com" || host.endsWith(".petitmokus.com")) {
@@ -11,7 +13,7 @@ function resolveApiBase(): string {
   return "";
 }
 
-const API_BASE = resolveApiBase();
+const STUDIO_API_BASE = resolveStudioApiBase();
 const ADMIN_PW_STORAGE_KEY = "petitmokus.studio.adminPassword";
 
 export function getStoredAdminPassword(): string | null {
@@ -40,14 +42,15 @@ export function clearAdminPassword(): void {
 
 async function request<T>(
   path: string,
-  opts: { method?: string; body?: unknown; admin?: boolean } = {},
+  opts: { method?: string; body?: unknown; admin?: boolean; baseUrl?: string } = {},
 ): Promise<T> {
   const headers: Record<string, string> = { "Content-Type": "application/json" };
   if (opts.admin) {
     const pw = getStoredAdminPassword();
     if (pw) headers["X-Admin-Password"] = pw;
   }
-  const res = await fetch(`${API_BASE}/api${path}`, {
+  const baseUrl = opts.baseUrl || STUDIO_API_BASE;
+  const res = await fetch(`${baseUrl}/api${path}`, {
     method: opts.method ?? "GET",
     headers,
     body: opts.body !== undefined ? JSON.stringify(opts.body) : undefined,
@@ -298,7 +301,73 @@ export function unwrapBookPages(book: BedtimeStory): {
   };
 }
 
+// ---- Cloudflare Worker Bedtime Stories API ----
+// Transforms Worker response format to expected component format
+
+interface CloudflareStory {
+  id: string;
+  slug: string;
+  title: string;
+  language: string;
+  cover: string;
+  pages: Array<{
+    number: number;
+    text: string;
+    image: string;
+  }>;
+}
+
+interface CloudflareStoriesResponse {
+  stories: CloudflareStory[];
+}
+
+function transformCloudflareStory(story: CloudflareStory): BedtimeStory {
+  return {
+    id: story.id,
+    slug: story.slug,
+    title: story.title,
+    language: story.language,
+    cover_image_url: story.cover,
+    published_at: new Date().toISOString(),
+    pages: {
+      pages: story.pages.map((p) => ({
+        page: p.number,
+        text: p.text,
+        imageUrl: p.image,
+      })),
+    },
+    recurring_phrase: null,
+  };
+}
+
+async function fetchStoriesFromWorker(path: string): Promise<CloudflareStoriesResponse> {
+  const res = await fetch(`${STORIES_API_BASE}${path}`);
+  if (!res.ok) {
+    throw new Error(`Failed to fetch stories: ${res.status}`);
+  }
+  return res.json() as Promise<CloudflareStoriesResponse>;
+}
+
 export const bedtimeStoriesApi = {
-  list: () => request<{ books: BedtimeStorySummary[] }>("/bedtime-stories"),
-  get: (slug: string) => request<{ book: BedtimeStory }>(`/bedtime-stories/${slug}`),
+  list: async () => {
+    const data = await fetchStoriesFromWorker("/api/stories");
+    const books: BedtimeStorySummary[] = data.stories.map((story) => ({
+      id: story.id,
+      slug: story.slug,
+      title: story.title,
+      language: story.language,
+      cover_image_url: story.cover,
+      published_at: new Date().toISOString(),
+    }));
+    return { books };
+  },
+  get: async (slug: string) => {
+    const data = await fetchStoriesFromWorker("/api/stories");
+    const story = data.stories.find((s) => s.slug === slug);
+    if (!story) {
+      throw new Error(`Story ${slug} not found`);
+    }
+    const book = transformCloudflareStory(story);
+    return { book };
+  },
 };
