@@ -42,13 +42,14 @@ export function TabStories({ language }: TabStoriesProps) {
   // Filter books by selected language
   const languageCode = language.toLowerCase();
   const filteredBooks = books?.filter((b) => {
-    // Match stories that either have matching language field or have language suffix in slug
-    const bookLanguage = b.language?.toLowerCase() || "";
-    return (
-      bookLanguage === languageCode ||
-      b.slug.endsWith(`-${languageCode}`) ||
-      (languageCode === "en" && !b.slug.match(/-[a-z]{2}$/))
-    );
+    // Get the book's language from the language field
+    const bookLanguage = (b.language || "").toLowerCase();
+    // For English, match either "en" language or stories without language suffix
+    if (languageCode === "en") {
+      return bookLanguage === "en" || bookLanguage === "";
+    }
+    // For other languages, match the language code
+    return bookLanguage === languageCode;
   });
 
   return (
