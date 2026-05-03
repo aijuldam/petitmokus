@@ -130,6 +130,22 @@ function Reader({
       .catch((e: Error) => setError(e.message));
   }, [slug]);
 
+  // Derive page count for keyboard nav. Compute here (before early returns)
+  // so hooks below stay in a stable order across renders.
+  const bookPages = book ? unwrapBookPages(book).pages : [];
+  const totalPages = bookPages.length;
+
+  useEffect(() => {
+    if (!book) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "ArrowLeft") setPage((p) => Math.max(0, p - 1));
+      else if (e.key === "ArrowRight") setPage((p) => Math.min(totalPages - 1, p + 1));
+      else if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [book, totalPages, onClose]);
+
   if (error)
     return (
       <div className="fixed inset-0 bg-background z-50 flex flex-col items-center justify-center p-6">
@@ -150,27 +166,16 @@ function Reader({
       </div>
     );
 
-  const { pages: bookPages, title_i18n } = unwrapBookPages(book);
-  const totalPages = bookPages.length;
-  const current = bookPages[page]!;
-  const isFirst = page === 0;
-  const isLast = page === totalPages - 1;
+  const { title_i18n } = unwrapBookPages(book);
+  const safePage = Math.min(page, Math.max(0, totalPages - 1));
+  const current = bookPages[safePage]!;
+  const isFirst = safePage === 0;
+  const isLast = safePage === totalPages - 1;
   const displayTitle = pickText(title_i18n, lang, book.title);
   const currentText = pickText(current.texts ?? current.text, lang, current.text ?? "");
 
   const goPrev = () => setPage((p) => Math.max(0, p - 1));
   const goNext = () => setPage((p) => Math.min(totalPages - 1, p + 1));
-
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "ArrowLeft") goPrev();
-      else if (e.key === "ArrowRight") goNext();
-      else if (e.key === "Escape") onClose();
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [totalPages]);
 
   return (
     <div className="fixed inset-0 bg-gradient-to-br from-amber-50 via-rose-50 to-sky-50 z-50 flex flex-col">
