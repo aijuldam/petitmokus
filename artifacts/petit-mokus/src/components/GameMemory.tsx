@@ -132,9 +132,13 @@ export function GameMemory({ language, pairCount = 6 }: GameMemoryProps) {
   const isComplete = matched.size === safePairs;
 
   // Choose grid columns adaptively: keep cards comfortably tappable on phones.
-  // 6 pairs (12 cards) → 3 cols × 4 rows. 8 pairs (16) → 4 × 4. 10 pairs (20) → 4 × 5.
+  // 3 pairs (6 cards) → 3 cols × 2 rows. 6 pairs (12) → 3 × 4. 8+ → 4-wide.
   const totalCards = safePairs * 2;
-  const cols = useMemo(() => (totalCards <= 12 ? 3 : 4), [totalCards]);
+  const cols = useMemo(() => {
+    if (totalCards <= 6) return 3;
+    if (totalCards <= 12) return 3;
+    return 4;
+  }, [totalCards]);
 
   return (
     <div className="px-1">
