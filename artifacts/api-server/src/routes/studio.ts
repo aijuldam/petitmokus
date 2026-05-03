@@ -169,7 +169,12 @@ router.post("/studio/projects/:id/brief", async (req, res) => {
     return;
   }
   try {
-    const brief = await generateBrief(project.seed);
+    const rawPrompt = (req.body as { customPrompt?: unknown } | undefined)?.customPrompt;
+    const customPrompt =
+      typeof rawPrompt === "string" && rawPrompt.trim().length > 0
+        ? rawPrompt.slice(0, 4000)
+        : undefined;
+    const brief = await generateBrief(project.seed, customPrompt);
     await saveVersion(project.id, "brief", brief);
     const updated = await updateProject(project.id, {
       brief_data: brief,

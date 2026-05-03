@@ -86,7 +86,10 @@ export function getSeedBrief(): BriefData {
 
 // ---- LLM-driven generation (used when user requests revisions) ----
 
-export async function generateBrief(seed: string): Promise<BriefData> {
+export async function generateBrief(
+  seed: string,
+  customPrompt?: string,
+): Promise<BriefData> {
   const client = getOpenAI();
   if (!client) {
     // Fallback when LLM unavailable — return canonical seed brief.
@@ -94,9 +97,12 @@ export async function generateBrief(seed: string): Promise<BriefData> {
   }
 
   const sys = `You are an expert children's board book editor for the Petit Mokus brand (calm bedtime stories for toddlers 12-24 months). Always reply with strict valid JSON matching the schema. No prose outside JSON.`;
+  const guidance = customPrompt && customPrompt.trim().length > 0
+    ? `\n\nAdditional guidance from the editor (treat as high-priority creative direction, but never break the schema or core brand constraints):\n"""\n${customPrompt.trim()}\n"""`
+    : "";
   const user = `Create a story brief for a 12-page board book seeded by: "${seed}".
 Schema: { "title": string, "audience": string, "tone": string, "themes": string[], "pageCount": 12, "recurringPhrase": string, "styleSummary": string }
-Constraints: 3-8 words per page, recurring phrase repeats on pages 3, 7, and a closing variant on 12. Style is soft watercolor pastel.`;
+Constraints: 3-8 words per page, recurring phrase repeats on pages 3, 7, and a closing variant on 12. Style is soft watercolor pastel.${guidance}`;
 
   const resp = await client.chat.completions.create({
     model: "gpt-5.4",

@@ -293,6 +293,7 @@ function ProjectView({
   const [project, setProject] = useState<StudioProject | null>(null);
   const [err, setErr] = useState<string | null>(null);
   const [busy, setBusy] = useState<string | null>(null);
+  const [briefPrompt, setBriefPrompt] = useState<string>("");
 
   async function reload() {
     try {
@@ -353,10 +354,40 @@ function ProjectView({
         title="Brief"
         approvedAt={project.brief_approved_at}
       >
+        {!project.brief_approved_at && (
+          <div className="mb-4">
+            <label
+              htmlFor="brief-prompt"
+              className="block text-xs font-bold uppercase tracking-wide text-amber-900/70 mb-1.5"
+            >
+              Custom prompt <span className="font-normal normal-case text-slate-500">(optional)</span>
+            </label>
+            <textarea
+              id="brief-prompt"
+              value={briefPrompt}
+              onChange={(e) => setBriefPrompt(e.target.value)}
+              disabled={busy !== null}
+              rows={4}
+              maxLength={4000}
+              placeholder={
+                'Guide the AI: e.g. "Set the story in a snowy cabin, focus on a grandparent reading by candlelight, gentle wintry tone."'
+              }
+              className="w-full rounded-lg border border-amber-200 bg-white/70 px-3 py-2 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-400 disabled:opacity-60"
+            />
+            <div className="flex justify-between mt-1 text-[11px] text-slate-500">
+              <span>The AI will follow this guidance while keeping the Petit Mokus brand and 12-page format.</span>
+              <span>{briefPrompt.length}/4000</span>
+            </div>
+          </div>
+        )}
         {!project.brief_data && (
           <button
             disabled={busy !== null}
-            onClick={() => action("brief", () => studioApi.generateBrief(project.id))}
+            onClick={() =>
+              action("brief", () =>
+                studioApi.generateBrief(project.id, briefPrompt.trim() || undefined),
+              )
+            }
             className="bg-amber-600 hover:bg-amber-700 text-white font-bold px-4 py-2 rounded-lg disabled:opacity-50"
           >
             {busy === "brief" ? "Generating…" : "Generate brief"}
@@ -369,10 +400,14 @@ function ProjectView({
               <div className="flex gap-3 mt-3">
                 <button
                   disabled={busy !== null}
-                  onClick={() => action("brief", () => studioApi.generateBrief(project.id))}
+                  onClick={() =>
+                    action("brief", () =>
+                      studioApi.generateBrief(project.id, briefPrompt.trim() || undefined),
+                    )
+                  }
                   className="border border-amber-300 text-amber-800 font-bold px-4 py-2 rounded-lg disabled:opacity-50"
                 >
-                  Regenerate
+                  {busy === "brief" ? "Regenerating…" : "Regenerate"}
                 </button>
                 <button
                   disabled={busy !== null}

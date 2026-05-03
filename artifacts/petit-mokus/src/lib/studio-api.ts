@@ -118,9 +118,10 @@ export const studioApi = {
       body: { seed },
       admin: true,
     }),
-  generateBrief: (id: string) =>
+  generateBrief: (id: string, customPrompt?: string) =>
     request<{ project: StudioProject }>(`/studio/projects/${id}/brief`, {
       method: "POST",
+      body: customPrompt ? { customPrompt } : undefined,
       admin: true,
     }),
   approveBrief: (id: string) =>
