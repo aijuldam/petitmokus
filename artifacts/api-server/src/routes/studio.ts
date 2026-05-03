@@ -372,8 +372,91 @@ router.put("/studio/projects/:id/manuscript", async (req, res) => {
     wordsPerPageRange: parsed.data.manuscript.wordsPerPageRange ?? [3, 8],
   };
   await saveVersion(project.id, "manuscript", manuscript);
-  const updated = await updateProject(project.id, { manuscript_data: manuscript });
+  // Editing the manuscript invalidates any downstream illustrations (their
+  // prompts were derived from the previous text/scenes) and the manuscript
+  // approval. The user must re-approve and re-generate illustrations so the
+  // next image batch reflects the new text.
+  const updated = await updateProject(project.id, {
+    manuscript_data: manuscript,
+    manuscript_approved_at: null,
+    illustrations_data: null,
+    illustrations_approved_at: null,
+    status: "manuscript",
+  });
   res.json({ project: updated });
+});
+
+// Reject illustrations: clears the generated illustrations so the user can
+// re-run "Prepare illustration prompts" (picking up any character-bible or
+// manuscript edits made since the last batch). Manuscript approval is
+// preserved — only the illustration stage is reset.
+router.post("/studio/projects/:id/illustrations/reset", async (req, res) => {
+  const project = await loadProject(req.params.id!);
+  if (!project) {
+    res.status(404).json({ error: "Not found" });
+    return;
+  }
+  if (!project.manuscript_approved_at) {
+    res.status(400).json({ error: "No illustrations to reset" });
+    return;
+  }
+  const updated = await updateProject(project.id, {
+    illustrations_data: null,
+    illustrations_approved_at: null,
+    status: "illustrations",
+  });
+  res.json({ project: updated });
+});
+
+// Skip the brief stage entirely: build a minimal canonical brief from the
+// project's title (already supplied at creation), approve it, and generate
+// the manuscript so the user can start editing copy immediately.
+router.post("/studio/projects/:id/skip-brief", async (req, res) => {
+  const project = await loadProject(req.params.id!);
+  if (!project) {
+    res.status(404).json({ error: "Not found" });
+    return;
+  }
+  if (project.brief_approved_at) {
+    res.status(400).json({ error: "Brief already approved" });
+    return;
+  }
+  try {
+    const bible = await loadActiveCharacterBible();
+    const brief: BriefData = { ...getSeedBrief(bible), title: project.seed };
+    await saveVersion(project.id, "brief", brief);
+    let manuscript: ManuscriptData;
+    try {
+      manuscript = await generateManuscript(brief);
+    } catch (err) {
+      req.log.error({ err }, "Skip-brief: manuscript generation failed");
+      const partial = await updateProject(project.id, {
+        brief_data: brief,
+        brief_approved_at: new Date().toISOString(),
+        title: brief.title,
+        status: "manuscript",
+      });
+      res.status(500).json({
+        error:
+          "Brief auto-created and approved, but manuscript generation failed. Try 'Generate manuscript' from the manuscript step.",
+        project: partial,
+      });
+      return;
+    }
+    await saveVersion(project.id, "manuscript", manuscript);
+    const now = new Date().toISOString();
+    const updated = await updateProject(project.id, {
+      brief_data: brief,
+      brief_approved_at: now,
+      title: brief.title,
+      manuscript_data: manuscript,
+      status: "manuscript",
+    });
+    res.json({ project: updated });
+  } catch (err) {
+    req.log.error({ err }, "Skip-brief failed");
+    res.status(500).json({ error: "Failed to skip brief" });
+  }
 });
 
 router.post("/studio/projects/:id/manuscript/approve", async (req, res) => {

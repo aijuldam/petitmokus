@@ -198,6 +198,16 @@ export const studioApi = {
       method: "POST",
       admin: true,
     }),
+  resetIllustrations: (id: string) =>
+    request<{ project: StudioProject }>(`/studio/projects/${id}/illustrations/reset`, {
+      method: "POST",
+      admin: true,
+    }),
+  skipBrief: (id: string) =>
+    request<{ project: StudioProject }>(`/studio/projects/${id}/skip-brief`, {
+      method: "POST",
+      admin: true,
+    }),
   publish: (id: string) =>
     request<{ project: StudioProject }>(`/studio/projects/${id}/publish`, {
       method: "POST",

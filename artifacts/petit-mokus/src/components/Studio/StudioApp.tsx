@@ -726,9 +726,12 @@ function ProjectView({
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <button onClick={onBack} className="text-sm text-slate-500 hover:text-slate-800">
-          ← All projects
+      <div className="sticky top-0 z-20 -mx-4 px-4 py-3 bg-amber-50/90 backdrop-blur border-b border-amber-100 flex items-center justify-between">
+        <button
+          onClick={onBack}
+          className="inline-flex items-center gap-1.5 text-sm font-bold text-amber-800 hover:text-amber-950 bg-white/80 hover:bg-white border border-amber-200 px-3 py-1.5 rounded-lg shadow-sm"
+        >
+          ← Studio home
         </button>
         <StatusBadge status={project.status} />
       </div>
@@ -794,27 +797,39 @@ function ProjectView({
           </div>
         )}
         {!project.brief_data && (
-          <button
-            disabled={busy !== null}
-            onClick={() =>
-              action("brief", () =>
-                studioApi.generateBrief(
-                  project.id,
-                  briefPrompt.trim() || undefined,
-                  autoApprove,
-                ),
-              )
-            }
-            className="bg-amber-600 hover:bg-amber-700 text-white font-bold px-4 py-2 rounded-lg disabled:opacity-50"
-          >
-            {busy === "brief"
-              ? autoApprove
-                ? "Generating brief + manuscript…"
-                : "Generating…"
-              : autoApprove
-                ? "Generate & auto-approve"
-                : "Generate brief"}
-          </button>
+          <div className="flex flex-wrap gap-3 items-center">
+            <button
+              disabled={busy !== null}
+              onClick={() =>
+                action("brief", () =>
+                  studioApi.generateBrief(
+                    project.id,
+                    briefPrompt.trim() || undefined,
+                    autoApprove,
+                  ),
+                )
+              }
+              className="bg-amber-600 hover:bg-amber-700 text-white font-bold px-4 py-2 rounded-lg disabled:opacity-50"
+            >
+              {busy === "brief"
+                ? autoApprove
+                  ? "Generating brief + manuscript…"
+                  : "Generating…"
+                : autoApprove
+                  ? "Generate & auto-approve"
+                  : "Generate brief"}
+            </button>
+            <button
+              disabled={busy !== null}
+              onClick={() => action("skip-brief", () => studioApi.skipBrief(project.id))}
+              title="Use the title as-is, skip the brief, and jump straight to writing the manuscript."
+              className="border border-slate-300 text-slate-700 font-bold px-4 py-2 rounded-lg disabled:opacity-50 hover:bg-slate-50"
+            >
+              {busy === "skip-brief"
+                ? "Skipping brief…"
+                : "Skip brief → start manuscript"}
+            </button>
+          </div>
         )}
         {project.brief_data && (
           <>
@@ -921,6 +936,15 @@ function ProjectView({
               onApprove={() =>
                 action("approve-ill", () => studioApi.approveIllustrations(project.id))
               }
+              onReset={() => {
+                if (
+                  window.confirm(
+                    "Discard the current illustration prompts and images? You'll be able to re-prepare prompts (picking up any character or manuscript edits) and regenerate the images.",
+                  )
+                ) {
+                  void action("reset-ill", () => studioApi.resetIllustrations(project.id));
+                }
+              }}
             />
           )}
         </CheckpointCard>
@@ -1068,6 +1092,13 @@ function ManuscriptEditor({
           </div>
         ))}
       </div>
+      {dirty && project.illustrations_data && (
+        <p className="mt-3 text-xs text-amber-900 bg-amber-100/60 border border-amber-200 rounded-lg px-3 py-2">
+          ⚠️ Saving these edits will clear the current illustrations (12 generated
+          images) and reset the manuscript approval — so the next image batch
+          reflects the new text.
+        </p>
+      )}
       <div className="flex gap-3 mt-4">
         <button
           disabled={busy !== null}
@@ -1079,7 +1110,17 @@ function ManuscriptEditor({
         {dirty && (
           <button
             disabled={busy !== null}
-            onClick={() => onSave(pages)}
+            onClick={() => {
+              if (
+                project.illustrations_data &&
+                !window.confirm(
+                  "Saving these manuscript edits will reset the existing illustrations and the manuscript approval. Continue?",
+                )
+              ) {
+                return;
+              }
+              onSave(pages);
+            }}
             className="bg-sky-600 hover:bg-sky-700 text-white font-bold px-4 py-2 rounded-lg disabled:opacity-50"
           >
             Save edits
@@ -1105,12 +1146,14 @@ function IllustrationsPanel({
   onGenerateAll,
   onRegen,
   onApprove,
+  onReset,
 }: {
   project: StudioProject;
   busy: string | null;
   onGenerateAll: () => void;
   onRegen: (page: number) => void;
   onApprove: () => void;
+  onReset: () => void;
 }) {
   const items = project.illustrations_data!.items;
   const allHaveImages = items.every((i) => !!i.imageUrl);
@@ -1118,7 +1161,7 @@ function IllustrationsPanel({
 
   return (
     <div>
-      <div className="flex items-center gap-3 mb-4">
+      <div className="flex flex-wrap items-center gap-3 mb-4">
         {someMissing && (
           <button
             disabled={busy !== null}
@@ -1137,6 +1180,16 @@ function IllustrationsPanel({
             className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-2 rounded-lg disabled:opacity-50"
           >
             ✓ Approve illustrations
+          </button>
+        )}
+        {!project.illustrations_approved_at && (
+          <button
+            disabled={busy !== null}
+            onClick={onReset}
+            title="Discard these prompts and images so you can re-prepare them with the latest character bible or manuscript edits."
+            className="border border-rose-300 text-rose-700 font-bold px-4 py-2 rounded-lg disabled:opacity-50 hover:bg-rose-50"
+          >
+            {busy === "reset-ill" ? "Resetting…" : "✗ Reject & rework"}
           </button>
         )}
       </div>
