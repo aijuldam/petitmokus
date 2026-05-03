@@ -52,6 +52,13 @@ export function TabStories({ language }: TabStoriesProps) {
     return bookLanguage === languageCode;
   });
 
+  // Debug logging
+  useEffect(() => {
+    console.log("Language:", language, "Code:", languageCode);
+    console.log("All books:", books?.map((b) => ({ title: b.title, language: b.language })));
+    console.log("Filtered books:", filteredBooks?.map((b) => ({ title: b.title, language: b.language })));
+  }, [language, books, filteredBooks]);
+
   return (
     <>
       <div className="px-6 pt-6 max-w-md mx-auto">
