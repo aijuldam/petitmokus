@@ -159,6 +159,106 @@ Generate the manuscript with this schema:
   };
 }
 
+// ---- Translation ----
+
+export const SUPPORTED_LANGUAGES = ["EN", "FR", "HU", "DE"] as const;
+export type SupportedLanguage = (typeof SUPPORTED_LANGUAGES)[number];
+export type Translatable = Record<SupportedLanguage, string>;
+
+export interface TranslatedBook {
+  title: Translatable;
+  recurringPhrase: Translatable;
+  pageTexts: Translatable[]; // length = 12, parallel to manuscript.pages
+}
+
+const LANGUAGE_NAMES: Record<SupportedLanguage, string> = {
+  EN: "English",
+  FR: "French",
+  HU: "Hungarian",
+  DE: "German",
+};
+
+function identityTranslation(text: string): Translatable {
+  return { EN: text, FR: text, HU: text, DE: text };
+}
+
+export async function translateBook(
+  title: string,
+  recurringPhrase: string,
+  pageTexts: string[],
+): Promise<TranslatedBook> {
+  const client = getOpenAI();
+
+  // Defaults: English-only fallback if LLM unavailable.
+  const fallback: TranslatedBook = {
+    title: identityTranslation(title),
+    recurringPhrase: identityTranslation(recurringPhrase),
+    pageTexts: pageTexts.map(identityTranslation),
+  };
+
+  if (!client) return fallback;
+  const llm = client;
+
+  // Translate each non-EN language with a single LLM call. Run all 3 in parallel.
+  const targets: SupportedLanguage[] = ["FR", "HU", "DE"];
+
+  const sys = `You translate short toddler bedtime board book text. Keep each page 3-8 words, calm, soothing, simple toddler vocabulary. Preserve a recurring refrain phrase exactly the same way each time. Reply with strict valid JSON only.`;
+
+  async function translateTo(lang: SupportedLanguage): Promise<{ title: string; recurringPhrase: string; pageTexts: string[] }> {
+    const langName = LANGUAGE_NAMES[lang];
+    const user = `Translate the following toddler board book to ${langName}.
+Schema: { "title": string, "recurringPhrase": string, "pageTexts": string[] }
+- "pageTexts" must have exactly ${pageTexts.length} entries, in the same order.
+- The "recurringPhrase" must be a calm, rhythmic ${langName} phrase that fits a toddler bedtime book.
+- Wherever the English page text equals the English recurring phrase, the ${langName} page text MUST equal the ${langName} recurring phrase exactly.
+- Each page is 3-8 words.
+
+English source:
+${JSON.stringify({ title, recurringPhrase, pageTexts }, null, 2)}`;
+
+    try {
+      const resp = await llm.chat.completions.create({
+        model: "gpt-5.4",
+        max_completion_tokens: 2048,
+        response_format: { type: "json_object" },
+        messages: [
+          { role: "system", content: sys },
+          { role: "user", content: user },
+        ],
+      });
+      const raw = resp.choices[0]?.message?.content ?? "{}";
+      const parsed = JSON.parse(raw) as Partial<{ title: string; recurringPhrase: string; pageTexts: string[] }>;
+      const pages = parsed.pageTexts ?? [];
+      if (pages.length !== pageTexts.length) {
+        return { title, recurringPhrase, pageTexts };
+      }
+      return {
+        title: parsed.title ?? title,
+        recurringPhrase: parsed.recurringPhrase ?? recurringPhrase,
+        pageTexts: pages,
+      };
+    } catch {
+      return { title, recurringPhrase, pageTexts };
+    }
+  }
+
+  const results = await Promise.all(targets.map((l) => translateTo(l).then((r) => [l, r] as const)));
+
+  const titleI18n: Translatable = { EN: title, FR: title, HU: title, DE: title };
+  const refrainI18n: Translatable = { EN: recurringPhrase, FR: recurringPhrase, HU: recurringPhrase, DE: recurringPhrase };
+  const pageTextsI18n: Translatable[] = pageTexts.map((t) => identityTranslation(t));
+
+  for (const [lang, r] of results) {
+    titleI18n[lang] = r.title;
+    refrainI18n[lang] = r.recurringPhrase;
+    r.pageTexts.forEach((txt, i) => {
+      if (pageTextsI18n[i]) pageTextsI18n[i]![lang] = txt;
+    });
+  }
+
+  return { title: titleI18n, recurringPhrase: refrainI18n, pageTexts: pageTextsI18n };
+}
+
 // Builds the 12 illustration prompts deterministically from the manuscript +
 // character bible — does NOT call the LLM, ensuring consistency.
 export function buildIllustrationItems(manuscript: ManuscriptData): IllustrationItem[] {

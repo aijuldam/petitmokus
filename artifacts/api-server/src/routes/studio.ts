@@ -9,10 +9,12 @@ import {
   generateManuscript,
   getSeedBrief,
   getSeedManuscript,
+  translateBook,
   type BriefData,
   type IllustrationItem,
   type IllustrationsData,
   type ManuscriptData,
+  type Translatable,
 } from "../lib/studio-llm.js";
 
 const router: IRouter = Router();
@@ -435,17 +437,43 @@ router.post("/studio/projects/:id/publish", async (req, res) => {
     return;
   }
 
-  const pages = project.manuscript_data.pages.map((p) => {
+  // Translate title + recurring phrase + every page text into FR/HU/DE.
+  const englishPageTexts = project.manuscript_data.pages.map((p) => p.text);
+  let translated;
+  try {
+    translated = await translateBook(
+      project.title,
+      project.manuscript_data.recurringPhrase,
+      englishPageTexts,
+    );
+  } catch (e) {
+    req.log.error({ err: e }, "Translation failed; publishing English-only");
+    const idTrans = (s: string): Translatable => ({ EN: s, FR: s, HU: s, DE: s });
+    translated = {
+      title: idTrans(project.title),
+      recurringPhrase: idTrans(project.manuscript_data.recurringPhrase),
+      pageTexts: englishPageTexts.map(idTrans),
+    };
+  }
+
+  const pages = project.manuscript_data.pages.map((p, idx) => {
     const ill = project.illustrations_data!.items.find((i) => i.page === p.page);
     return {
       page: p.page,
-      text: p.text,
+      text: p.text, // legacy field — English text, kept for backwards compat
+      texts: translated.pageTexts[idx], // new multilingual field
       imageUrl: ill?.imageUrl ?? null,
     };
   });
   const coverImageUrl = pages[0]?.imageUrl ?? null;
   const baseSlug = slugify(project.title || "bedtime-story");
   const slug = `${baseSlug}-${project.id.slice(0, 6)}`;
+
+  const pagesPayload = {
+    pages,
+    title_i18n: translated.title,
+    recurring_phrase_i18n: translated.recurringPhrase,
+  };
 
   const { data: published, error: pubErr } = await supabase
     .from("published_books")
@@ -455,7 +483,7 @@ router.post("/studio/projects/:id/publish", async (req, res) => {
         title: project.title,
         language: "EN",
         recurring_phrase: project.manuscript_data.recurringPhrase,
-        pages,
+        pages: pagesPayload,
         cover_image_url: coverImageUrl,
         source_project_id: project.id,
         published_at: new Date().toISOString(),

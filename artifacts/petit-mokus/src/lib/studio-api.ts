@@ -173,6 +173,9 @@ export const studioApi = {
 };
 
 // ---- Public Bedtime Stories API ----
+export type BookLanguage = "EN" | "FR" | "HU" | "DE";
+export type Translatable = Partial<Record<BookLanguage, string>>;
+
 export interface BedtimeStorySummary {
   id: string;
   slug: string;
@@ -180,17 +183,71 @@ export interface BedtimeStorySummary {
   language: string;
   cover_image_url: string | null;
   published_at: string;
+  // pages JSONB may carry title_i18n for the localized list view.
+  pages?:
+    | unknown[]
+    | { pages?: unknown; title_i18n?: Partial<Record<"EN" | "FR" | "HU" | "DE", string>> };
+}
+
+export function pickSummaryTitle(
+  summary: BedtimeStorySummary,
+  lang: BookLanguage,
+): string {
+  const p = summary.pages;
+  if (p && !Array.isArray(p) && typeof p === "object" && "title_i18n" in p && p.title_i18n) {
+    const t = p.title_i18n as Partial<Record<BookLanguage, string>>;
+    return t[lang] ?? t.EN ?? summary.title;
+  }
+  return summary.title;
 }
 
 export interface BedtimeStoryPage {
   page: number;
-  text: string;
+  text: string; // legacy English fallback
+  texts?: Translatable; // multilingual (newer books)
   imageUrl: string | null;
 }
 
+// `pages` field can be either:
+//  - legacy: BedtimeStoryPage[]
+//  - new:    { pages: BedtimeStoryPage[], title_i18n?: Translatable, recurring_phrase_i18n?: Translatable }
+export type BedtimeStoryPagesField =
+  | BedtimeStoryPage[]
+  | {
+      pages: BedtimeStoryPage[];
+      title_i18n?: Translatable;
+      recurring_phrase_i18n?: Translatable;
+    };
+
 export interface BedtimeStory extends BedtimeStorySummary {
   recurring_phrase: string | null;
+  pages: BedtimeStoryPagesField;
+}
+
+// Helper to safely pick localized text with EN/source fallback.
+export function pickText(
+  value: string | Translatable | null | undefined,
+  lang: BookLanguage,
+  fallback = "",
+): string {
+  if (value == null) return fallback;
+  if (typeof value === "string") return value;
+  return value[lang] ?? value.EN ?? Object.values(value)[0] ?? fallback;
+}
+
+// Normalize either pages shape into { pages, title_i18n?, recurring_phrase_i18n? }
+export function unwrapBookPages(book: BedtimeStory): {
   pages: BedtimeStoryPage[];
+  title_i18n?: Translatable;
+  recurring_phrase_i18n?: Translatable;
+} {
+  const f = book.pages;
+  if (Array.isArray(f)) return { pages: f };
+  return {
+    pages: f.pages,
+    title_i18n: f.title_i18n,
+    recurring_phrase_i18n: f.recurring_phrase_i18n,
+  };
 }
 
 export const bedtimeStoriesApi = {

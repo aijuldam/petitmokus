@@ -13,7 +13,7 @@ router.get("/bedtime-stories", async (_req, res) => {
   }
   const { data, error } = await supabase
     .from("published_books")
-    .select("id, slug, title, language, cover_image_url, published_at")
+    .select("id, slug, title, language, cover_image_url, published_at, pages")
     .order("published_at", { ascending: false });
   if (error) {
     res.status(500).json({ error: error.message });

@@ -4,8 +4,12 @@ import { Language, dictionary } from "../lib/i18n";
 import { TabIntro } from "./TabIntro";
 import {
   bedtimeStoriesApi,
+  pickSummaryTitle,
+  pickText,
+  unwrapBookPages,
   type BedtimeStory,
   type BedtimeStorySummary,
+  type BookLanguage,
 } from "../lib/studio-api";
 
 interface TabStoriesProps {
@@ -26,7 +30,13 @@ export function TabStories({ language }: TabStoriesProps) {
   }, []);
 
   if (openSlug) {
-    return <Reader slug={openSlug} onClose={() => setOpenSlug(null)} />;
+    return (
+      <Reader
+        slug={openSlug}
+        language={language}
+        onClose={() => setOpenSlug(null)}
+      />
+    );
   }
 
   return (
@@ -80,7 +90,9 @@ export function TabStories({ language }: TabStoriesProps) {
                   )}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-extrabold text-foreground truncate">{b.title}</h3>
+                  <h3 className="font-extrabold text-foreground truncate">
+                    {pickSummaryTitle(b, language as BookLanguage)}
+                  </h3>
                   <p className="text-xs text-muted-foreground">
                     Tap to read
                   </p>
@@ -97,7 +109,16 @@ export function TabStories({ language }: TabStoriesProps) {
 // ============================================================
 // Reader — page-by-page board book viewer
 // ============================================================
-function Reader({ slug, onClose }: { slug: string; onClose: () => void }) {
+function Reader({
+  slug,
+  language,
+  onClose,
+}: {
+  slug: string;
+  language: Language;
+  onClose: () => void;
+}) {
+  const lang = language as BookLanguage;
   const [book, setBook] = useState<BedtimeStory | null>(null);
   const [page, setPage] = useState(0);
   const [error, setError] = useState<string | null>(null);
@@ -129,10 +150,27 @@ function Reader({ slug, onClose }: { slug: string; onClose: () => void }) {
       </div>
     );
 
-  const totalPages = book.pages.length;
-  const current = book.pages[page]!;
+  const { pages: bookPages, title_i18n } = unwrapBookPages(book);
+  const totalPages = bookPages.length;
+  const current = bookPages[page]!;
   const isFirst = page === 0;
   const isLast = page === totalPages - 1;
+  const displayTitle = pickText(title_i18n, lang, book.title);
+  const currentText = pickText(current.texts ?? current.text, lang, current.text ?? "");
+
+  const goPrev = () => setPage((p) => Math.max(0, p - 1));
+  const goNext = () => setPage((p) => Math.min(totalPages - 1, p + 1));
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "ArrowLeft") goPrev();
+      else if (e.key === "ArrowRight") goNext();
+      else if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [totalPages]);
 
   return (
     <div className="fixed inset-0 bg-gradient-to-br from-amber-50 via-rose-50 to-sky-50 z-50 flex flex-col">
@@ -144,18 +182,18 @@ function Reader({ slug, onClose }: { slug: string; onClose: () => void }) {
         >
           <X className="w-5 h-5 text-slate-700" />
         </button>
-        <h2 className="font-extrabold text-amber-900 truncate px-3">{book.title}</h2>
+        <h2 className="font-extrabold text-amber-900 truncate px-3">{displayTitle}</h2>
         <span className="text-xs text-slate-500 font-bold">
           {page + 1} / {totalPages}
         </span>
       </div>
 
       <div className="flex-1 flex flex-col items-center justify-center p-4 max-w-md mx-auto w-full">
-        <div className="w-full aspect-square rounded-3xl overflow-hidden shadow-lg bg-white mb-6">
+        <div className="relative w-full aspect-square rounded-3xl overflow-hidden shadow-lg bg-white mb-6">
           {current.imageUrl ? (
             <img
               src={current.imageUrl}
-              alt={current.text}
+              alt={currentText}
               className="w-full h-full object-cover"
             />
           ) : (
@@ -163,38 +201,61 @@ function Reader({ slug, onClose }: { slug: string; onClose: () => void }) {
               <BookOpen className="w-16 h-16 text-primary/40" />
             </div>
           )}
+
+          {!isFirst && (
+            <button
+              onClick={goPrev}
+              aria-label="Previous page"
+              className="absolute left-2 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/90 shadow-lg flex items-center justify-center hover:bg-white active:scale-95 transition"
+            >
+              <ChevronLeft className="w-7 h-7 text-amber-800" />
+            </button>
+          )}
+          {!isLast && (
+            <button
+              onClick={goNext}
+              aria-label="Next page"
+              className="absolute right-2 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/90 shadow-lg flex items-center justify-center hover:bg-white active:scale-95 transition"
+            >
+              <ChevronRight className="w-7 h-7 text-amber-800" />
+            </button>
+          )}
         </div>
         <p className="text-2xl md:text-3xl font-extrabold text-center text-amber-900 leading-snug min-h-[3rem]">
-          {current.text}
+          {currentText}
         </p>
       </div>
 
-      <div className="flex items-center justify-between px-6 pb-8 pt-2">
+      <div className="flex items-center justify-between gap-3 px-4 pb-8 pt-2 max-w-md mx-auto w-full">
         <button
           disabled={isFirst}
-          onClick={() => setPage((p) => Math.max(0, p - 1))}
-          className="p-3 rounded-full bg-white shadow-sm disabled:opacity-30"
+          onClick={goPrev}
+          className="flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl bg-white shadow-sm font-bold text-amber-800 disabled:opacity-30 active:scale-95 transition"
           aria-label="Previous"
         >
-          <ChevronLeft className="w-6 h-6 text-amber-800" />
+          <ChevronLeft className="w-5 h-5" />
+          Prev
         </button>
-        <div className="flex gap-1">
-          {book.pages.map((_, i) => (
-            <span
+        <div className="flex gap-1 px-1">
+          {bookPages.map((_, i) => (
+            <button
               key={i}
-              className={`w-2 h-2 rounded-full transition ${
-                i === page ? "bg-amber-700 w-4" : "bg-amber-300"
+              onClick={() => setPage(i)}
+              aria-label={`Go to page ${i + 1}`}
+              className={`h-2 rounded-full transition ${
+                i === page ? "bg-amber-700 w-5" : "bg-amber-300 w-2 hover:bg-amber-400"
               }`}
             />
           ))}
         </div>
         <button
           disabled={isLast}
-          onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
-          className="p-3 rounded-full bg-white shadow-sm disabled:opacity-30"
+          onClick={goNext}
+          className="flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl bg-white shadow-sm font-bold text-amber-800 disabled:opacity-30 active:scale-95 transition"
           aria-label="Next"
         >
-          <ChevronRight className="w-6 h-6 text-amber-800" />
+          Next
+          <ChevronRight className="w-5 h-5" />
         </button>
       </div>
     </div>
