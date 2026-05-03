@@ -2,6 +2,7 @@ import { getOpenAI } from "./openai-client.js";
 import {
   CHARACTER_BIBLE,
   buildIllustrationPrompt,
+  type CharacterBible,
   type SceneSpec,
 } from "./character-specs.js";
 
@@ -13,7 +14,7 @@ export interface BriefData {
   pageCount: number;
   recurringPhrase: string;
   styleSummary: string;
-  characterBible: typeof CHARACTER_BIBLE;
+  characterBible: CharacterBible;
 }
 
 export interface ManuscriptPage {
@@ -71,7 +72,7 @@ export function getSeedManuscript(): ManuscriptData {
   };
 }
 
-export function getSeedBrief(): BriefData {
+export function getSeedBrief(bible: CharacterBible = CHARACTER_BIBLE): BriefData {
   return {
     title: "Maxime Goes to Sleep",
     audience: "Toddlers 12-24 months",
@@ -80,7 +81,7 @@ export function getSeedBrief(): BriefData {
     pageCount: 12,
     recurringPhrase: SEED_RECURRING_PHRASE,
     styleSummary: "Petit Mokus soft watercolor, pastel palette, rounded shapes, warm lamp-lit cozy domestic scenes, no text in illustrations",
-    characterBible: CHARACTER_BIBLE,
+    characterBible: bible,
   };
 }
 
@@ -89,11 +90,15 @@ export function getSeedBrief(): BriefData {
 export async function generateBrief(
   seed: string,
   customPrompt?: string,
+  bible: CharacterBible = CHARACTER_BIBLE,
 ): Promise<BriefData> {
   const client = getOpenAI();
   if (!client) {
     // Fallback when LLM unavailable — return canonical seed brief.
-    return { ...getSeedBrief(), title: seed.length > 0 ? seed : "Untitled Bedtime Book" };
+    return {
+      ...getSeedBrief(bible),
+      title: seed.length > 0 ? seed : "Untitled Bedtime Book",
+    };
   }
 
   const sys = `You are an expert children's board book editor for the Petit Mokus brand (calm bedtime stories for toddlers 12-24 months). Always reply with strict valid JSON matching the schema. No prose outside JSON.`;
@@ -124,7 +129,7 @@ Constraints: 3-8 words per page, recurring phrase repeats on pages 3, 7, and a c
     pageCount: 12,
     recurringPhrase: parsed.recurringPhrase ?? SEED_RECURRING_PHRASE,
     styleSummary: parsed.styleSummary ?? "Petit Mokus soft watercolor",
-    characterBible: CHARACTER_BIBLE,
+    characterBible: bible,
   };
 }
 
@@ -267,7 +272,10 @@ ${JSON.stringify({ title, recurringPhrase, pageTexts }, null, 2)}`;
 
 // Builds the 12 illustration prompts deterministically from the manuscript +
 // character bible — does NOT call the LLM, ensuring consistency.
-export function buildIllustrationItems(manuscript: ManuscriptData): IllustrationItem[] {
+export function buildIllustrationItems(
+  manuscript: ManuscriptData,
+  bible: CharacterBible = CHARACTER_BIBLE,
+): IllustrationItem[] {
   return manuscript.pages.map((page) => {
     const spec: SceneSpec = {
       page: page.page,
@@ -278,7 +286,7 @@ export function buildIllustrationItems(manuscript: ManuscriptData): Illustration
     return {
       page: page.page,
       text: page.text,
-      prompt: buildIllustrationPrompt(spec),
+      prompt: buildIllustrationPrompt(spec, bible),
     };
   });
 }

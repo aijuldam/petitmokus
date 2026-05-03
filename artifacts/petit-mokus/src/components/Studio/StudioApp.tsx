@@ -5,6 +5,7 @@ import {
   getStoredAdminPassword,
   storeAdminPassword,
   studioApi,
+  type CharacterBible,
   type IllustrationItem,
   type ManuscriptPage,
   type StudioProject,
@@ -174,6 +175,8 @@ function Dashboard({
   const [err, setErr] = useState<string | null>(null);
   const [seed, setSeed] = useState("");
   const [creating, setCreating] = useState(false);
+  const [deleteCandidate, setDeleteCandidate] = useState<StudioProjectSummary | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   async function reload() {
     setErr(null);
@@ -203,6 +206,23 @@ function Dashboard({
       setErr(e instanceof Error ? e.message : "Create failed");
     } finally {
       setCreating(false);
+    }
+  }
+
+  async function confirmDelete() {
+    if (!deleteCandidate) return;
+    setDeleting(true);
+    setErr(null);
+    try {
+      await studioApi.deleteProject(deleteCandidate.id);
+      setProjects((prev) => prev?.filter((p) => p.id !== deleteCandidate.id) ?? null);
+      setDeleteCandidate(null);
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : "Delete failed";
+      if (msg === "Unauthorized") onUnauthorized();
+      else setErr(msg);
+    } finally {
+      setDeleting(false);
     }
   }
 
@@ -244,23 +264,283 @@ function Dashboard({
           {projects?.map((p) => (
             <li
               key={p.id}
-              onClick={() => onOpen(p.id)}
-              className="bg-white/80 rounded-xl shadow-sm border border-amber-100 p-4 cursor-pointer hover:shadow-md transition"
+              className="bg-white/80 rounded-xl shadow-sm border border-amber-100 p-4 hover:shadow-md transition"
             >
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="font-bold text-amber-900">{p.title}</p>
+              <div className="flex items-center justify-between gap-3">
+                <div
+                  onClick={() => onOpen(p.id)}
+                  className="flex-1 min-w-0 cursor-pointer"
+                >
+                  <p className="font-bold text-amber-900 truncate">{p.title}</p>
                   <p className="text-xs text-slate-500">
                     Updated {new Date(p.updated_at).toLocaleString()}
                   </p>
                 </div>
-                <StatusBadge status={p.status} />
+                <div className="flex items-center gap-2 shrink-0">
+                  <StatusBadge status={p.status} />
+                  <button
+                    type="button"
+                    aria-label={`Delete ${p.title}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setDeleteCandidate(p);
+                    }}
+                    className="text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-md px-2 py-1 text-sm font-bold transition"
+                    title="Delete project"
+                  >
+                    🗑
+                  </button>
+                </div>
               </div>
             </li>
           ))}
         </ul>
       </section>
+
+      <CharacterBibleSection onUnauthorized={onUnauthorized} />
+
+      {deleteCandidate && (
+        <DeleteConfirmModal
+          project={deleteCandidate}
+          busy={deleting}
+          onCancel={() => (deleting ? undefined : setDeleteCandidate(null))}
+          onConfirm={() => void confirmDelete()}
+        />
+      )}
     </div>
+  );
+}
+
+// ============================================================
+// Delete confirmation modal
+// ============================================================
+function DeleteConfirmModal({
+  project,
+  busy,
+  onCancel,
+  onConfirm,
+}: {
+  project: StudioProjectSummary;
+  busy: boolean;
+  onCancel: () => void;
+  onConfirm: () => void;
+}) {
+  const isPublished = project.status === "published" || !!project.published_book_id;
+  return (
+    <div
+      role="dialog"
+      aria-modal="true"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4"
+      onClick={() => (busy ? undefined : onCancel())}
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="bg-white rounded-2xl shadow-xl border border-amber-100 p-6 max-w-md w-full"
+      >
+        <h3 className="text-lg font-extrabold text-rose-700 mb-2">Delete this project?</h3>
+        <p className="text-sm text-slate-700 mb-1">
+          You're about to permanently delete{" "}
+          <span className="font-bold text-amber-900">"{project.title}"</span>.
+        </p>
+        <p className="text-xs text-slate-500 mb-4">
+          The brief, manuscript, illustrations and version history will be removed.
+          {isPublished && (
+            <>
+              {" "}
+              The published book itself will stay live but will no longer be linked back to a source project.
+            </>
+          )}
+          {" "}
+          This cannot be undone.
+        </p>
+        <div className="flex gap-3 justify-end">
+          <button
+            type="button"
+            disabled={busy}
+            onClick={onCancel}
+            className="px-4 py-2 rounded-lg border border-slate-200 text-slate-700 font-bold hover:bg-slate-50 disabled:opacity-50"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            disabled={busy}
+            onClick={onConfirm}
+            className="px-4 py-2 rounded-lg bg-rose-600 hover:bg-rose-700 text-white font-bold disabled:opacity-50"
+          >
+            {busy ? "Deleting…" : "Yes, delete"}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ============================================================
+// Character bible editor (shared cast across all stories)
+// ============================================================
+const BIBLE_FIELDS: { key: keyof CharacterBible; label: string; hint: string }[] = [
+  { key: "papa", label: "Papa", hint: "Adult appearance: build, hair, beard, eyes, posture." },
+  { key: "maxime", label: "Maxime", hint: "Toddler appearance: age, hair, eyes, proportions." },
+  {
+    key: "clothing_before_pajamas",
+    label: "Clothing — daytime / pre-pajamas",
+    hint: "What everyone wears in early scenes (pages 1-5).",
+  },
+  {
+    key: "clothing_pajamas",
+    label: "Clothing — pajama scenes",
+    hint: "Outfits from page 6 onward (post-bath).",
+  },
+  {
+    key: "style",
+    label: "Illustration style",
+    hint: "Look & feel: medium, palette, lighting, composition.",
+  },
+];
+
+function CharacterBibleSection({
+  onUnauthorized,
+}: {
+  onUnauthorized: () => void;
+}) {
+  const [bible, setBible] = useState<CharacterBible | null>(null);
+  const [defaults, setDefaults] = useState<CharacterBible | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
+  const [savedAt, setSavedAt] = useState<number | null>(null);
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    studioApi
+      .getCharacterBible()
+      .then((res) => {
+        if (cancelled) return;
+        setBible(res.bible);
+        setDefaults(res.defaults);
+      })
+      .catch((e: unknown) => {
+        if (cancelled) return;
+        const msg = e instanceof Error ? e.message : "Load failed";
+        if (msg === "Unauthorized") onUnauthorized();
+        else setErr(msg);
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [onUnauthorized]);
+
+  async function save() {
+    if (!bible) return;
+    setSaving(true);
+    setErr(null);
+    try {
+      const res = await studioApi.saveCharacterBible(bible);
+      setBible(res.bible);
+      setSavedAt(Date.now());
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : "Save failed";
+      if (msg === "Unauthorized") onUnauthorized();
+      else setErr(msg);
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  function resetToDefaults() {
+    if (!defaults) return;
+    setBible({ ...defaults });
+  }
+
+  return (
+    <section className="bg-white/80 rounded-2xl shadow p-6 border border-amber-100">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        className="w-full flex items-center justify-between text-left"
+      >
+        <div>
+          <h2 className="text-lg font-bold text-amber-900">Characters & style</h2>
+          <p className="text-xs text-slate-500">
+            Shared across every story so the cast stays consistent in all illustrations.
+          </p>
+        </div>
+        <span className="text-amber-700 text-lg select-none">{open ? "▾" : "▸"}</span>
+      </button>
+
+      {open && (
+        <div className="mt-5">
+          {loading && <p className="text-sm text-slate-500">Loading…</p>}
+          {err && (
+            <div className="mb-3 p-3 rounded-lg bg-rose-50 border border-rose-200 text-rose-800 text-sm">
+              {err}
+            </div>
+          )}
+          {bible && (
+            <>
+              <div className="space-y-4">
+                {BIBLE_FIELDS.map((f) => (
+                  <div key={f.key}>
+                    <label
+                      htmlFor={`bible-${f.key}`}
+                      className="block text-xs font-bold uppercase tracking-wide text-amber-900/70 mb-1"
+                    >
+                      {f.label}
+                    </label>
+                    <textarea
+                      id={`bible-${f.key}`}
+                      value={bible[f.key]}
+                      onChange={(e) =>
+                        setBible((prev) => (prev ? { ...prev, [f.key]: e.target.value } : prev))
+                      }
+                      disabled={saving}
+                      rows={3}
+                      maxLength={2000}
+                      className="w-full rounded-lg border border-amber-200 bg-white/70 px-3 py-2 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-400 disabled:opacity-60"
+                    />
+                    <p className="text-[11px] text-slate-500 mt-0.5">{f.hint}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="flex items-center gap-3 mt-5">
+                <button
+                  type="button"
+                  disabled={saving}
+                  onClick={() => void save()}
+                  className="bg-amber-600 hover:bg-amber-700 text-white font-bold px-4 py-2 rounded-lg disabled:opacity-50"
+                >
+                  {saving ? "Saving…" : "Save characters"}
+                </button>
+                <button
+                  type="button"
+                  disabled={saving || !defaults}
+                  onClick={resetToDefaults}
+                  className="border border-amber-300 text-amber-800 font-bold px-4 py-2 rounded-lg disabled:opacity-50"
+                  title="Restore the original built-in descriptions (does not save)"
+                >
+                  Reset to defaults
+                </button>
+                {savedAt && !saving && (
+                  <span className="text-xs text-emerald-700">
+                    ✓ Saved {new Date(savedAt).toLocaleTimeString()}
+                  </span>
+                )}
+              </div>
+              <p className="text-[11px] text-slate-500 mt-3">
+                These descriptions are injected into every illustration prompt and into the brief
+                generator, so updates take effect on the next "Generate brief" or
+                "Prepare illustrations" run.
+              </p>
+            </>
+          )}
+        </div>
+      )}
+    </section>
   );
 }
 
@@ -294,6 +574,7 @@ function ProjectView({
   const [err, setErr] = useState<string | null>(null);
   const [busy, setBusy] = useState<string | null>(null);
   const [briefPrompt, setBriefPrompt] = useState<string>("");
+  const [autoApprove, setAutoApprove] = useState<boolean>(false);
 
   async function reload() {
     try {
@@ -378,6 +659,21 @@ function ProjectView({
               <span>The AI will follow this guidance while keeping the Petit Mokus brand and 12-page format.</span>
               <span>{briefPrompt.length}/4000</span>
             </div>
+            <label className="mt-3 flex items-start gap-2 text-sm text-slate-700 cursor-pointer select-none">
+              <input
+                type="checkbox"
+                checked={autoApprove}
+                onChange={(e) => setAutoApprove(e.target.checked)}
+                disabled={busy !== null}
+                className="mt-0.5 h-4 w-4 accent-amber-600"
+              />
+              <span>
+                <span className="font-bold text-amber-900">Skip Brief & Manuscript review</span>
+                <span className="block text-[11px] text-slate-500">
+                  Auto-approve both steps and jump straight to Illustrations. Slower (one extra AI call) but no manual approvals needed.
+                </span>
+              </span>
+            </label>
           </div>
         )}
         {!project.brief_data && (
@@ -385,12 +681,22 @@ function ProjectView({
             disabled={busy !== null}
             onClick={() =>
               action("brief", () =>
-                studioApi.generateBrief(project.id, briefPrompt.trim() || undefined),
+                studioApi.generateBrief(
+                  project.id,
+                  briefPrompt.trim() || undefined,
+                  autoApprove,
+                ),
               )
             }
             className="bg-amber-600 hover:bg-amber-700 text-white font-bold px-4 py-2 rounded-lg disabled:opacity-50"
           >
-            {busy === "brief" ? "Generating…" : "Generate brief"}
+            {busy === "brief"
+              ? autoApprove
+                ? "Generating brief + manuscript…"
+                : "Generating…"
+              : autoApprove
+                ? "Generate & auto-approve"
+                : "Generate brief"}
           </button>
         )}
         {project.brief_data && (
@@ -402,12 +708,16 @@ function ProjectView({
                   disabled={busy !== null}
                   onClick={() =>
                     action("brief", () =>
-                      studioApi.generateBrief(project.id, briefPrompt.trim() || undefined),
+                      studioApi.generateBrief(
+                        project.id,
+                        briefPrompt.trim() || undefined,
+                        autoApprove,
+                      ),
                     )
                   }
                   className="border border-amber-300 text-amber-800 font-bold px-4 py-2 rounded-lg disabled:opacity-50"
                 >
-                  {busy === "brief" ? "Regenerating…" : "Regenerate"}
+                  {busy === "brief" ? "Regenerating…" : autoApprove ? "Regenerate & auto-approve" : "Regenerate"}
                 </button>
                 <button
                   disabled={busy !== null}

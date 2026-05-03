@@ -16,6 +16,11 @@ import {
   type ManuscriptData,
   type Translatable,
 } from "../lib/studio-llm.js";
+import { CHARACTER_BIBLE, type CharacterBible } from "../lib/character-specs.js";
+import {
+  loadActiveCharacterBible,
+  saveCharacterBible,
+} from "../lib/character-bible-store.js";
 
 const router: IRouter = Router();
 
@@ -107,6 +112,34 @@ router.post("/studio/auth", (req: Request, res: Response) => {
 // All routes below require admin
 router.use("/studio/projects", requireAdmin);
 router.use("/studio/projects/:id", requireAdmin);
+router.use("/studio/character-bible", requireAdmin);
+
+// ---- Character bible (shared cast across all stories) ----
+router.get("/studio/character-bible", async (_req, res) => {
+  const bible = await loadActiveCharacterBible();
+  res.json({ bible, defaults: CHARACTER_BIBLE });
+});
+
+const CharacterBibleSchema = z.object({
+  papa: z.string().min(10).max(2000),
+  maxime: z.string().min(10).max(2000),
+  clothing_before_pajamas: z.string().min(10).max(2000),
+  clothing_pajamas: z.string().min(10).max(2000),
+  style: z.string().min(10).max(2000),
+});
+router.put("/studio/character-bible", async (req, res) => {
+  const parsed = CharacterBibleSchema.safeParse(req.body);
+  if (!parsed.success) {
+    res.status(400).json({ error: "Invalid character bible", details: parsed.error.flatten() });
+    return;
+  }
+  const saved = await saveCharacterBible(parsed.data as CharacterBible);
+  if (!saved) {
+    res.status(500).json({ error: "Failed to save character bible" });
+    return;
+  }
+  res.json({ bible: saved, defaults: CHARACTER_BIBLE });
+});
 
 // ---- Project CRUD ----
 router.get("/studio/projects", async (_req, res) => {
@@ -152,6 +185,31 @@ router.post("/studio/projects", async (req, res) => {
   res.status(201).json({ project: data });
 });
 
+router.delete("/studio/projects/:id", async (req, res) => {
+  const supabase = getSupabase();
+  if (!supabase) {
+    res.status(503).json({ error: "Database not configured" });
+    return;
+  }
+  const project = await loadProject(req.params.id!);
+  if (!project) {
+    res.status(404).json({ error: "Not found" });
+    return;
+  }
+  // studio_versions has ON DELETE CASCADE; published_books has ON DELETE SET NULL
+  // — published books survive the deletion of the source project.
+  const { error } = await supabase
+    .from("studio_projects")
+    .delete()
+    .eq("id", project.id);
+  if (error) {
+    req.log.error({ err: error }, "Project delete failed");
+    res.status(500).json({ error: error.message });
+    return;
+  }
+  res.json({ ok: true, deletedId: project.id });
+});
+
 router.get("/studio/projects/:id", async (req, res) => {
   const project = await loadProject(req.params.id!);
   if (!project) {
@@ -169,18 +227,47 @@ router.post("/studio/projects/:id/brief", async (req, res) => {
     return;
   }
   try {
-    const rawPrompt = (req.body as { customPrompt?: unknown } | undefined)?.customPrompt;
+    const body = (req.body ?? {}) as {
+      customPrompt?: unknown;
+      autoApprove?: unknown;
+    };
+    const rawPrompt = body.customPrompt;
     const customPrompt =
       typeof rawPrompt === "string" && rawPrompt.trim().length > 0
         ? rawPrompt.slice(0, 4000)
         : undefined;
-    const brief = await generateBrief(project.seed, customPrompt);
+    const autoApprove = body.autoApprove === true;
+    const bible = await loadActiveCharacterBible();
+
+    const brief = await generateBrief(project.seed, customPrompt, bible);
     await saveVersion(project.id, "brief", brief);
-    const updated = await updateProject(project.id, {
+
+    if (!autoApprove) {
+      const updated = await updateProject(project.id, {
+        brief_data: brief,
+        status: "brief",
+      });
+      res.json({ project: updated });
+      return;
+    }
+
+    // Auto-approve mode: brief → manuscript → both approved → illustrations stage
+    const nowBrief = new Date().toISOString();
+    await updateProject(project.id, {
       brief_data: brief,
-      status: "brief",
+      brief_approved_at: nowBrief,
+      status: "manuscript",
+      title: brief.title,
     });
-    res.json({ project: updated });
+
+    const manuscript = await generateManuscript(brief);
+    await saveVersion(project.id, "manuscript", manuscript);
+    const finalUpdate = await updateProject(project.id, {
+      manuscript_data: manuscript,
+      manuscript_approved_at: new Date().toISOString(),
+      status: "illustrations",
+    });
+    res.json({ project: finalUpdate });
   } catch (err) {
     req.log.error({ err }, "Brief generation failed");
     res.status(500).json({ error: "Brief generation failed" });
@@ -296,7 +383,8 @@ router.post("/studio/projects/:id/illustrations/prepare", async (req, res) => {
     res.status(400).json({ error: "Approve the manuscript first" });
     return;
   }
-  const items = buildIllustrationItems(project.manuscript_data);
+  const bible = await loadActiveCharacterBible();
+  const items = buildIllustrationItems(project.manuscript_data, bible);
   const data: IllustrationsData = {
     items,
     generationStartedAt: undefined,

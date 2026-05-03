@@ -44,25 +44,36 @@ export interface SceneSpec {
   isPajamaScene: boolean;
 }
 
-export function buildIllustrationPrompt(spec: SceneSpec): string {
-  const clothing = spec.isPajamaScene
-    ? CLOTHING_PAJAMAS_SCENE
-    : CLOTHING_BEFORE_PAJAMAS;
-  return [
-    `Children's board book illustration, page ${spec.page} of "Maxime Goes to Sleep".`,
-    `Scene: ${spec.scene}`,
-    `Characters present: ${PAPA_DESCRIPTION}. ${MAXIME_DESCRIPTION}.`,
-    `Clothing for this scene: ${clothing}.`,
-    `Style: ${STYLE_GUIDE}.`,
-    NEGATIVE_GUIDANCE,
-    "Square 1:1 composition, soft warm bedtime atmosphere.",
-  ].join(" ");
+export interface CharacterBible {
+  papa: string;
+  maxime: string;
+  clothing_before_pajamas: string;
+  clothing_pajamas: string;
+  style: string;
 }
 
-export const CHARACTER_BIBLE = {
+export const CHARACTER_BIBLE: CharacterBible = {
   papa: PAPA_DESCRIPTION,
   maxime: MAXIME_DESCRIPTION,
   clothing_before_pajamas: CLOTHING_BEFORE_PAJAMAS,
   clothing_pajamas: CLOTHING_PAJAMAS_SCENE,
   style: STYLE_GUIDE,
-} as const;
+};
+
+export function buildIllustrationPrompt(
+  spec: SceneSpec,
+  bible: CharacterBible = CHARACTER_BIBLE,
+): string {
+  const clothing = spec.isPajamaScene
+    ? bible.clothing_pajamas
+    : bible.clothing_before_pajamas;
+  return [
+    `Children's board book illustration, page ${spec.page} of "Maxime Goes to Sleep".`,
+    `Scene: ${spec.scene}`,
+    `Characters present: ${bible.papa}. ${bible.maxime}.`,
+    `Clothing for this scene: ${clothing}.`,
+    `Style: ${bible.style}.`,
+    NEGATIVE_GUIDANCE,
+    "Square 1:1 composition, soft warm bedtime atmosphere.",
+  ].join(" ");
+}

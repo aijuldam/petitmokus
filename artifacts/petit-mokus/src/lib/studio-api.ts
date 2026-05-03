@@ -94,6 +94,14 @@ export interface IllustrationItem {
   error?: string;
 }
 
+export interface CharacterBible {
+  papa: string;
+  maxime: string;
+  clothing_before_pajamas: string;
+  clothing_pajamas: string;
+  style: string;
+}
+
 export interface StudioProject extends StudioProjectSummary {
   brief_data: Record<string, unknown> | null;
   brief_approved_at: string | null;
@@ -118,12 +126,35 @@ export const studioApi = {
       body: { seed },
       admin: true,
     }),
-  generateBrief: (id: string, customPrompt?: string) =>
-    request<{ project: StudioProject }>(`/studio/projects/${id}/brief`, {
+  generateBrief: (
+    id: string,
+    customPrompt?: string,
+    autoApprove?: boolean,
+  ) => {
+    const body: Record<string, unknown> = {};
+    if (customPrompt) body.customPrompt = customPrompt;
+    if (autoApprove) body.autoApprove = true;
+    return request<{ project: StudioProject }>(`/studio/projects/${id}/brief`, {
       method: "POST",
-      body: customPrompt ? { customPrompt } : undefined,
+      body: Object.keys(body).length > 0 ? body : undefined,
+      admin: true,
+    });
+  },
+  deleteProject: (id: string) =>
+    request<{ ok: true; deletedId: string }>(`/studio/projects/${id}`, {
+      method: "DELETE",
       admin: true,
     }),
+  getCharacterBible: () =>
+    request<{ bible: CharacterBible; defaults: CharacterBible }>(
+      "/studio/character-bible",
+      { admin: true },
+    ),
+  saveCharacterBible: (bible: CharacterBible) =>
+    request<{ bible: CharacterBible; defaults: CharacterBible }>(
+      "/studio/character-bible",
+      { method: "PUT", body: bible, admin: true },
+    ),
   approveBrief: (id: string) =>
     request<{ project: StudioProject }>(`/studio/projects/${id}/brief/approve`, {
       method: "POST",
