@@ -84,18 +84,40 @@ function ObjectSvg({ id, size = 48 }: { id: ItemId; size?: number }) {
     case 'banana':
       return (
         <svg width={size} height={size} viewBox="0 0 48 48" aria-label="banana">
+          {/* Brown stem at the top */}
           <path
-            d="M 9 41 C 5 24 16 7 30 6 C 42 5 47 17 41 27"
-            fill="none" stroke="#C8900A" strokeWidth="11" strokeLinecap="round" strokeLinejoin="round"
+            d="M 21 5 L 21 11 L 26 11 L 26 5 Z"
+            fill="#6B4A2B"
+            stroke="#3F2A18"
+            strokeWidth="0.9"
+            strokeLinejoin="round"
           />
+          {/* Filled crescent body — fat in the middle, tapered ends */}
           <path
-            d="M 9 41 C 5 24 16 7 30 6 C 42 5 47 17 41 27"
-            fill="none" stroke="#F9C240" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round"
+            d="M 21 10
+               C 34 9 43 18 41 30
+               C 40 38 33 43 26 42
+               C 22 41 23 37 26 34
+               C 21 30 14 22 13 16
+               C 12 12 16 9 21 10 Z"
+            fill="#F9C240"
+            stroke="#B07F0E"
+            strokeWidth="1.8"
+            strokeLinejoin="round"
           />
+          {/* Darker brown tip at the bottom of the curve */}
           <path
-            d="M 9 41 C 5 24 16 7 30 6 C 42 5 47 17 41 27"
-            fill="none" stroke="#FDE88A" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"
-            opacity="0.6"
+            d="M 25 39 C 25 41.5 28 42.5 30.5 41.5 L 28 38 Z"
+            fill="#7A5230"
+          />
+          {/* Inner highlight stripe to read as a ripe banana */}
+          <path
+            d="M 24 14 C 32 16 38 24 36 32"
+            fill="none"
+            stroke="#FFE49A"
+            strokeWidth="2.3"
+            strokeLinecap="round"
+            opacity="0.75"
           />
         </svg>
       );
