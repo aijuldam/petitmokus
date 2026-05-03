@@ -251,20 +251,34 @@ router.post("/studio/projects/:id/brief", async (req, res) => {
       return;
     }
 
-    // Auto-approve mode: brief → manuscript → both approved → illustrations stage
-    const nowBrief = new Date().toISOString();
-    await updateProject(project.id, {
-      brief_data: brief,
-      brief_approved_at: nowBrief,
-      status: "manuscript",
-      title: brief.title,
-    });
-
-    const manuscript = await generateManuscript(brief);
+    // Auto-approve mode: only commit the brief approval AFTER the manuscript
+    // generates successfully, so a manuscript failure leaves the project in a
+    // clean "brief generated, awaiting approval" state instead of a half-
+    // approved limbo.
+    let manuscript: ManuscriptData;
+    try {
+      manuscript = await generateManuscript(brief);
+    } catch (err) {
+      req.log.error({ err }, "Auto-approve: manuscript generation failed");
+      const partial = await updateProject(project.id, {
+        brief_data: brief,
+        status: "brief",
+      });
+      res.status(500).json({
+        error:
+          "Brief generated, but manuscript generation failed. The brief is saved — review it, then approve manually or retry auto-approve.",
+        project: partial,
+      });
+      return;
+    }
     await saveVersion(project.id, "manuscript", manuscript);
+    const now = new Date().toISOString();
     const finalUpdate = await updateProject(project.id, {
+      brief_data: brief,
+      brief_approved_at: now,
+      title: brief.title,
       manuscript_data: manuscript,
-      manuscript_approved_at: new Date().toISOString(),
+      manuscript_approved_at: now,
       status: "illustrations",
     });
     res.json({ project: finalUpdate });

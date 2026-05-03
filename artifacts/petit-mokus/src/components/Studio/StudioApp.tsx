@@ -267,15 +267,16 @@ function Dashboard({
               className="bg-white/80 rounded-xl shadow-sm border border-amber-100 p-4 hover:shadow-md transition"
             >
               <div className="flex items-center justify-between gap-3">
-                <div
+                <button
+                  type="button"
                   onClick={() => onOpen(p.id)}
-                  className="flex-1 min-w-0 cursor-pointer"
+                  className="flex-1 min-w-0 text-left rounded-md focus:outline-none focus:ring-2 focus:ring-amber-400 cursor-pointer"
                 >
                   <p className="font-bold text-amber-900 truncate">{p.title}</p>
                   <p className="text-xs text-slate-500">
                     Updated {new Date(p.updated_at).toLocaleString()}
                   </p>
-                </div>
+                </button>
                 <div className="flex items-center gap-2 shrink-0">
                   <StatusBadge status={p.status} />
                   <button
@@ -326,10 +327,19 @@ function DeleteConfirmModal({
   onConfirm: () => void;
 }) {
   const isPublished = project.status === "published" || !!project.published_book_id;
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape" && !busy) onCancel();
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [busy, onCancel]);
   return (
     <div
       role="dialog"
       aria-modal="true"
+      aria-labelledby="delete-modal-title"
+      aria-describedby="delete-modal-desc"
       className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4"
       onClick={() => (busy ? undefined : onCancel())}
     >
@@ -337,12 +347,14 @@ function DeleteConfirmModal({
         onClick={(e) => e.stopPropagation()}
         className="bg-white rounded-2xl shadow-xl border border-amber-100 p-6 max-w-md w-full"
       >
-        <h3 className="text-lg font-extrabold text-rose-700 mb-2">Delete this project?</h3>
+        <h3 id="delete-modal-title" className="text-lg font-extrabold text-rose-700 mb-2">
+          Delete this project?
+        </h3>
         <p className="text-sm text-slate-700 mb-1">
           You're about to permanently delete{" "}
           <span className="font-bold text-amber-900">"{project.title}"</span>.
         </p>
-        <p className="text-xs text-slate-500 mb-4">
+        <p id="delete-modal-desc" className="text-xs text-slate-500 mb-4">
           The brief, manuscript, illustrations and version history will be removed.
           {isPublished && (
             <>
