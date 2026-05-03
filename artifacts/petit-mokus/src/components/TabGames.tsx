@@ -1,8 +1,8 @@
 import { useState, useCallback, useEffect } from "react";
 import { Language, dictionary } from "../lib/i18n";
-import { motion, AnimatePresence } from "framer-motion";
-import { RefreshCw } from "lucide-react";
+import { motion } from "framer-motion";
 import { ShapeSvg, ShapeId } from "../lib/ShapeSvg";
+import { SuccessOverlay } from "./shared/SuccessOverlay";
 import { GameFind } from "./GameFind";
 import { GameColorHunt } from "./GameColorHunt";
 import { GameColorBasket } from "./GameColorBasket";
@@ -424,37 +424,12 @@ export function TabGames({ language }: TabGamesProps) {
       )}
 
       {/* Success overlay (color/shape match only) */}
-      <AnimatePresence>
-        {isComplete && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 flex items-center justify-center z-50 bg-background/80 backdrop-blur-sm px-8"
-          >
-            <motion.div
-              initial={{ scale: 0.85, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.85, opacity: 0 }}
-              transition={{ type: 'spring', stiffness: 340, damping: 24 }}
-              className="bg-card border border-card-border rounded-[2rem] p-8 text-center shadow-xl w-full max-w-sm"
-            >
-              <div className="text-6xl mb-4">🌟</div>
-              <h2 className="text-2xl font-bold text-foreground mb-1">{ui.gameBravo[language]}</h2>
-              <p className="text-sm text-foreground/45 mb-7">
-                {total} {ui.gameOf[language]} {total} {ui.gameMatched[language]}
-              </p>
-              <button
-                onClick={reset}
-                className="inline-flex items-center gap-2 bg-primary text-white font-bold py-3 px-7 rounded-full text-sm hover:bg-primary/90 active:scale-95 transition-all"
-              >
-                <RefreshCw size={15} />
-                {ui.gamePlayAgain[language]}
-              </button>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <SuccessOverlay
+        show={isComplete}
+        language={language}
+        subtitle={`${total} ${ui.gameOf[language]} ${total} ${ui.gameMatched[language]}`}
+        onPlayAgain={reset}
+      />
     </div>
   );
 }
