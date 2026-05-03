@@ -39,6 +39,18 @@ export function TabStories({ language }: TabStoriesProps) {
     );
   }
 
+  // Filter books by selected language
+  const languageCode = language.toLowerCase();
+  const filteredBooks = books?.filter((b) => {
+    // Match stories that either have matching language field or have language suffix in slug
+    const bookLanguage = b.language?.toLowerCase() || "";
+    return (
+      bookLanguage === languageCode ||
+      b.slug.endsWith(`-${languageCode}`) ||
+      (languageCode === "en" && !b.slug.match(/-[a-z]{2}$/))
+    );
+  });
+
   return (
     <>
       <div className="px-6 pt-6 max-w-md mx-auto">
@@ -58,18 +70,18 @@ export function TabStories({ language }: TabStoriesProps) {
             Couldn't load stories. {error}
           </p>
         )}
-        {books && books.length === 0 && (
+        {filteredBooks && filteredBooks.length === 0 && (
           <div className="flex flex-col items-center justify-center py-16 text-center">
             <div className="w-20 h-20 mb-4 bg-primary/10 rounded-full flex items-center justify-center">
               <BookOpen className="w-10 h-10 text-primary" />
             </div>
             <p className="text-muted-foreground">
-              No bedtime stories published yet.
+              No bedtime stories available in this language yet.
             </p>
           </div>
         )}
         <ul className="space-y-4 mt-4">
-          {books?.map((b) => (
+          {filteredBooks?.map((b) => (
             <li
               key={b.id}
               onClick={() => setOpenSlug(b.slug)}
