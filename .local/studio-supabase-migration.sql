@@ -61,8 +61,12 @@ create table if not exists studio_character_bible (
   clothing_before_pajamas text not null,
   clothing_pajamas text not null,
   style text not null,
+  additional_characters jsonb not null default '[]'::jsonb,
   updated_at timestamptz not null default now()
 );
+
+alter table studio_character_bible
+  add column if not exists additional_characters jsonb not null default '[]'::jsonb;
 
 -- 2. Row-Level Security --------------------------------------------
 

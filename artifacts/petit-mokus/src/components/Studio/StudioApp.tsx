@@ -5,6 +5,7 @@ import {
   getStoredAdminPassword,
   storeAdminPassword,
   studioApi,
+  type AdditionalCharacter,
   type CharacterBible,
   type IllustrationItem,
   type ManuscriptPage,
@@ -391,7 +392,8 @@ function DeleteConfirmModal({
 // ============================================================
 // Character bible editor (shared cast across all stories)
 // ============================================================
-const BIBLE_FIELDS: { key: keyof CharacterBible; label: string; hint: string }[] = [
+type BibleStringKey = Exclude<keyof CharacterBible, "additional_characters">;
+const BIBLE_FIELDS: { key: BibleStringKey; label: string; hint: string }[] = [
   { key: "papa", label: "Papa", hint: "Adult appearance: build, hair, beard, eyes, posture." },
   { key: "maxime", label: "Maxime", hint: "Toddler appearance: age, hair, eyes, proportions." },
   {
@@ -519,6 +521,109 @@ function CharacterBibleSection({
                   </div>
                 ))}
               </div>
+              <div className="mt-6 pt-5 border-t border-amber-100">
+                <div className="flex items-center justify-between mb-2">
+                  <div>
+                    <h3 className="text-sm font-bold text-amber-900">
+                      Additional characters
+                    </h3>
+                    <p className="text-[11px] text-slate-500">
+                      Add Mama, siblings, pets, friends. They'll be referenced in every
+                      brief and only appear in illustrations when the scene calls for them.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    disabled={saving || (bible.additional_characters ?? []).length >= 20}
+                    onClick={() =>
+                      setBible((prev) =>
+                        prev
+                          ? {
+                              ...prev,
+                              additional_characters: [
+                                ...(prev.additional_characters ?? []),
+                                { name: "", description: "" },
+                              ],
+                            }
+                          : prev,
+                      )
+                    }
+                    className="text-sm font-bold text-amber-700 hover:text-amber-900 px-3 py-1.5 rounded-lg border border-amber-300 disabled:opacity-50"
+                  >
+                    + Add character
+                  </button>
+                </div>
+                <div className="space-y-3 mt-3">
+                  {(bible.additional_characters ?? []).length === 0 && (
+                    <p className="text-xs text-slate-400 italic">
+                      No additional characters yet. Click "+ Add character" to start.
+                    </p>
+                  )}
+                  {(bible.additional_characters ?? []).map(
+                    (c: AdditionalCharacter, idx: number) => (
+                      <div
+                        key={idx}
+                        className="rounded-lg border border-amber-200 bg-amber-50/40 p-3"
+                      >
+                        <div className="flex items-center gap-2 mb-2">
+                          <input
+                            type="text"
+                            value={c.name}
+                            placeholder="Character name (e.g. Mama, Léo, Biscuit the dog)"
+                            maxLength={60}
+                            onChange={(e) => {
+                              const v = e.target.value;
+                              setBible((prev) => {
+                                if (!prev) return prev;
+                                const next = [...(prev.additional_characters ?? [])];
+                                next[idx] = { ...next[idx], name: v };
+                                return { ...prev, additional_characters: next };
+                              });
+                            }}
+                            disabled={saving}
+                            className="flex-1 rounded-md border border-amber-200 bg-white px-2.5 py-1.5 text-sm font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-400 disabled:opacity-60"
+                          />
+                          <button
+                            type="button"
+                            disabled={saving}
+                            onClick={() =>
+                              setBible((prev) => {
+                                if (!prev) return prev;
+                                const next = (prev.additional_characters ?? []).filter(
+                                  (_, i) => i !== idx,
+                                );
+                                return { ...prev, additional_characters: next };
+                              })
+                            }
+                            aria-label={`Remove character ${c.name || idx + 1}`}
+                            className="text-rose-600 hover:text-rose-800 text-sm font-bold px-2 py-1 disabled:opacity-50"
+                          >
+                            Remove
+                          </button>
+                        </div>
+                        <textarea
+                          value={c.description}
+                          placeholder="Appearance: age, hair, eyes, clothing, distinctive traits…"
+                          rows={3}
+                          maxLength={2000}
+                          onChange={(e) => {
+                            const v = e.target.value;
+                            setBible((prev) => {
+                              if (!prev) return prev;
+                              const next = [...(prev.additional_characters ?? [])];
+                              next[idx] = { ...next[idx], description: v };
+                              return { ...prev, additional_characters: next };
+                            });
+                          }}
+                          disabled={saving}
+                          className="w-full rounded-md border border-amber-200 bg-white/80 px-2.5 py-1.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-400 disabled:opacity-60"
+                        />
+                      </div>
+                    ),
+                  )}
+                </div>
+              </div>
+
               <div className="flex items-center gap-3 mt-5">
                 <button
                   type="button"

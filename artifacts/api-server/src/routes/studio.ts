@@ -126,6 +126,15 @@ const CharacterBibleSchema = z.object({
   clothing_before_pajamas: z.string().min(10).max(2000),
   clothing_pajamas: z.string().min(10).max(2000),
   style: z.string().min(10).max(2000),
+  additional_characters: z
+    .array(
+      z.object({
+        name: z.string().min(1).max(60),
+        description: z.string().min(1).max(2000),
+      }),
+    )
+    .max(20)
+    .default([]),
 });
 router.put("/studio/character-bible", async (req, res) => {
   const parsed = CharacterBibleSchema.safeParse(req.body);

@@ -44,12 +44,18 @@ export interface SceneSpec {
   isPajamaScene: boolean;
 }
 
+export interface AdditionalCharacter {
+  name: string;
+  description: string;
+}
+
 export interface CharacterBible {
   papa: string;
   maxime: string;
   clothing_before_pajamas: string;
   clothing_pajamas: string;
   style: string;
+  additional_characters: AdditionalCharacter[];
 }
 
 export const CHARACTER_BIBLE: CharacterBible = {
@@ -58,6 +64,7 @@ export const CHARACTER_BIBLE: CharacterBible = {
   clothing_before_pajamas: CLOTHING_BEFORE_PAJAMAS,
   clothing_pajamas: CLOTHING_PAJAMAS_SCENE,
   style: STYLE_GUIDE,
+  additional_characters: [],
 };
 
 export function buildIllustrationPrompt(
@@ -67,13 +74,23 @@ export function buildIllustrationPrompt(
   const clothing = spec.isPajamaScene
     ? bible.clothing_pajamas
     : bible.clothing_before_pajamas;
+  const extras = (bible.additional_characters ?? [])
+    .filter((c) => c.name.trim() && c.description.trim())
+    .map((c) => `${c.name.trim()}: ${c.description.trim()}`)
+    .join(" ");
+  const extrasLine = extras
+    ? `Other recurring cast (only include in the illustration when the scene clearly involves them): ${extras}.`
+    : "";
   return [
     `Children's board book illustration, page ${spec.page} of "Maxime Goes to Sleep".`,
     `Scene: ${spec.scene}`,
     `Characters present: ${bible.papa}. ${bible.maxime}.`,
+    extrasLine,
     `Clothing for this scene: ${clothing}.`,
     `Style: ${bible.style}.`,
     NEGATIVE_GUIDANCE,
     "Square 1:1 composition, soft warm bedtime atmosphere.",
-  ].join(" ");
+  ]
+    .filter(Boolean)
+    .join(" ");
 }

@@ -94,12 +94,18 @@ export interface IllustrationItem {
   error?: string;
 }
 
+export interface AdditionalCharacter {
+  name: string;
+  description: string;
+}
+
 export interface CharacterBible {
   papa: string;
   maxime: string;
   clothing_before_pajamas: string;
   clothing_pajamas: string;
   style: string;
+  additional_characters: AdditionalCharacter[];
 }
 
 export interface StudioProject extends StudioProjectSummary {
