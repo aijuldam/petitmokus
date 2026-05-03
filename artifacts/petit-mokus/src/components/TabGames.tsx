@@ -9,6 +9,7 @@ import { GameColorBasket } from "./GameColorBasket";
 import { GameFlags } from "./GameFlags";
 import { GameFlagMatch } from "./GameFlagMatch";
 import { GameAnimals } from "./GameAnimals";
+import { GameMemory } from "./GameMemory";
 
 interface TabGamesProps {
   language: Language;
@@ -18,7 +19,8 @@ type GameId =
   | 'colors' | 'find' | 'shapes'
   | 'animals-1' | 'animals-2' | 'animals-3' | 'animals-5'
   | 'colorhunt' | 'colorbasket'
-  | 'flags-2' | 'flags-3' | 'flags-5';
+  | 'flags-2' | 'flags-3' | 'flags-5'
+  | 'memory';
 
 type AgeFilter = null | 1 | 2 | 3 | 5;
 
@@ -42,6 +44,7 @@ const GAME_MODES: GameEntry[] = [
   { id: 'flags-3',     minAge: 3, baseId: 'flags',   ageMode: 3 },
   { id: 'animals-5',   minAge: 5, baseId: 'animals', ageMode: 5 },
   { id: 'flags-5',     minAge: 5, baseId: 'flags',   ageMode: 5 },
+  { id: 'memory',      minAge: 5 },
 ];
 
 const AGE_OPTIONS: AgeFilter[] = [null, 1, 2, 3, 5];
@@ -148,6 +151,7 @@ export function TabGames({ language }: TabGamesProps) {
     if (entry.id === 'find')        return ui.gameFindLabel[language];
     if (entry.id === 'colorhunt')   return ui.gameColorHuntLabel[language];
     if (entry.id === 'colorbasket') return ui.gameColorBasketLabel[language];
+    if (entry.id === 'memory')      return ui.gameMemoryLabel[language];
     return ui.gameShapes[language];
   };
 
@@ -243,6 +247,9 @@ export function TabGames({ language }: TabGamesProps) {
 
           {/* Color Basket Sort game */}
           {mode === 'colorbasket' && <GameColorBasket key="colorbasket" language={language} />}
+
+          {/* Animal Memory Grid — match face-down pairs */}
+          {mode === 'memory' && <GameMemory key="memory" language={language} />}
 
           {/* Flags 3+ — name + audio matching game (2 choices) */}
           {mode === 'flags-3' && (
