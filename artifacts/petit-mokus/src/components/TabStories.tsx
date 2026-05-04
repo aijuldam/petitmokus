@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight, X, BookOpen } from "lucide-react";
 import { Language, dictionary } from "../lib/i18n";
 import { TabIntro } from "./TabIntro";
-import { LanguageBadge } from "./LanguageBadge";
 import {
   bedtimeStoriesApi,
   pickSummaryTitle,
@@ -15,10 +14,9 @@ import {
 
 interface TabStoriesProps {
   language: Language;
-  setLanguage: (lang: Language) => void;
 }
 
-export function TabStories({ language, setLanguage }: TabStoriesProps) {
+export function TabStories({ language }: TabStoriesProps) {
   const ui = dictionary.ui;
   const [books, setBooks] = useState<BedtimeStorySummary[] | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -62,7 +60,7 @@ export function TabStories({ language, setLanguage }: TabStoriesProps) {
           title={ui.storiesIntroTitle[language]}
           body={ui.storiesIntroBody[language]}
         />
-        <LanguageBadge language={language} setLanguage={setLanguage} />
+
       </div>
 
       <div className="px-6 pb-32 max-w-md mx-auto">
