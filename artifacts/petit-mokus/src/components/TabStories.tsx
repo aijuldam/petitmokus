@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight, X, BookOpen } from "lucide-react";
 import { Language, dictionary } from "../lib/i18n";
 import { TabIntro } from "./TabIntro";
+import { LanguageBadge } from "./LanguageBadge";
 import {
   bedtimeStoriesApi,
   pickSummaryTitle,
@@ -14,9 +15,10 @@ import {
 
 interface TabStoriesProps {
   language: Language;
+  setLanguage: (lang: Language) => void;
 }
 
-export function TabStories({ language }: TabStoriesProps) {
+export function TabStories({ language, setLanguage }: TabStoriesProps) {
   const ui = dictionary.ui;
   const [books, setBooks] = useState<BedtimeStorySummary[] | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -52,13 +54,6 @@ export function TabStories({ language }: TabStoriesProps) {
     return bookLanguage === languageCode;
   });
 
-  // Debug logging
-  useEffect(() => {
-    console.log("Language:", language, "Code:", languageCode);
-    console.log("All books:", books?.map((b) => ({ title: b.title, language: b.language })));
-    console.log("Filtered books:", filteredBooks?.map((b) => ({ title: b.title, language: b.language })));
-  }, [language, books, filteredBooks]);
-
   return (
     <>
       <div className="px-6 pt-6 max-w-md mx-auto">
@@ -67,6 +62,7 @@ export function TabStories({ language }: TabStoriesProps) {
           title={ui.storiesIntroTitle[language]}
           body={ui.storiesIntroBody[language]}
         />
+        <LanguageBadge language={language} setLanguage={setLanguage} />
       </div>
 
       <div className="px-6 pb-32 max-w-md mx-auto">

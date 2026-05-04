@@ -46,7 +46,7 @@ function App() {
         <main className="flex-1 overflow-y-auto">
           {currentTab === 'sounds' && <TabSounds language={language} />}
           {currentTab === 'music' && <TabMusic language={language} />}
-          {currentTab === 'stories' && <TabStories language={language} />}
+          {currentTab === 'stories' && <TabStories language={language} setLanguage={setLanguage} />}
           {currentTab === 'games' && <TabGames language={language} />}
           {currentTab === 'about' && <TabAbout language={language} />}
         </main>
