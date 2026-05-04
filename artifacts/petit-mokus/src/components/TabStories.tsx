@@ -110,9 +110,16 @@ export function TabStories({ language }: TabStoriesProps) {
                   )}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-extrabold text-foreground truncate">
-                    {pickSummaryTitle(b, language as BookLanguage)}
-                  </h3>
+                  <div className="flex items-center gap-1.5 min-w-0">
+                    <h3 className="font-extrabold text-foreground truncate">
+                      {pickSummaryTitle(b, language as BookLanguage)}
+                    </h3>
+                    {b.language && (
+                      <span className="flex-shrink-0 text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-foreground/8 text-foreground/40">
+                        {b.language.toLowerCase()}
+                      </span>
+                    )}
+                  </div>
                   <p className="text-xs text-muted-foreground">
                     Tap to read
                   </p>
@@ -207,7 +214,14 @@ function Reader({
         >
           <X className="w-5 h-5 text-slate-700" />
         </button>
-        <h2 className="font-extrabold text-amber-900 truncate px-3">{displayTitle}</h2>
+        <div className="flex items-center gap-1.5 min-w-0 px-3">
+          <h2 className="font-extrabold text-amber-900 truncate">{displayTitle}</h2>
+          {book.language && (
+            <span className="flex-shrink-0 text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-700">
+              {book.language.toLowerCase()}
+            </span>
+          )}
+        </div>
         <span className="text-xs text-slate-500 font-bold">
           {page + 1} / {totalPages}
         </span>
