@@ -1,5 +1,5 @@
 import { Language, dictionary } from "../lib/i18n";
-import { cn } from "../lib/utils";
+import { LanguageSelector } from "./LanguageSelector";
 import logoSrc from "@assets/petitmokus-logo-128_1777320029918.png";
 
 interface HeaderProps {
@@ -23,23 +23,7 @@ export function Header({ language, setLanguage }: HeaderProps) {
           {dictionary.ui.tagline[language]}
         </p>
 
-        <div className="flex bg-muted rounded-full p-1 border border-border/50 shrink-0">
-          {(['EN', 'FR', 'HU', 'DE'] as Language[]).map(lang => (
-            <button
-              key={lang}
-              data-testid={`lang-toggle-${lang}`}
-              onClick={() => setLanguage(lang)}
-              className={cn(
-                "px-3 py-1.5 rounded-full text-sm font-bold transition-all duration-300",
-                language === lang
-                  ? "bg-card text-foreground shadow-sm"
-                  : "text-muted-foreground hover:text-foreground"
-              )}
-            >
-              {lang}
-            </button>
-          ))}
-        </div>
+        <LanguageSelector language={language} setLanguage={setLanguage} />
       </div>
     </header>
   );
