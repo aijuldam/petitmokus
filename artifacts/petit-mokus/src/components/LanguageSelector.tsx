@@ -1,4 +1,5 @@
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { Globe, Check, Search, X } from "lucide-react";
 import { Language } from "../lib/i18n";
 import { useIsMobile } from "../hooks/use-mobile";
@@ -14,111 +15,226 @@ function resolveLanguage(code: string): Language {
   return available.includes(code as Language) ? (code as Language) : 'EN';
 }
 
-function currentNative(language: Language): string {
-  return ALL_LANGUAGES.find(l => l.code === language)?.native ?? language;
+function currentLang(language: Language) {
+  return ALL_LANGUAGES.find(l => l.code === language);
 }
 
-// ── Available language pills ──────────────────────────────────────────────────
+// ── Dual-label row ────────────────────────────────────────────────────────────
 
-function AvailablePills({
+function LangRow({
+  native,
+  english,
+  selected,
+  available,
+  onClick,
+}: {
+  native: string;
+  english: string;
+  selected: boolean;
+  available: boolean;
+  onClick?: () => void;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      disabled={!available}
+      className={`w-full flex items-center justify-between px-5 py-0
+                  min-h-[52px] transition-colors duration-150
+                  ${available
+                    ? selected
+                      ? 'bg-primary/10'
+                      : 'hover:bg-muted/60 active:bg-muted'
+                    : 'opacity-40 cursor-default'
+                  }`}
+    >
+      <span className="flex items-baseline gap-2">
+        <span className={`text-[15px] font-semibold ${selected ? 'text-primary' : 'text-foreground'}`}>
+          {native}
+        </span>
+        <span className="text-[12px] text-muted-foreground">
+          · {english}
+        </span>
+      </span>
+      {available && !selected && (
+        <span className="hidden" />
+      )}
+      {selected && (
+        <Check className="w-4 h-4 text-primary shrink-0" />
+      )}
+      {!available && (
+        <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-foreground/8 text-foreground/40">
+          soon
+        </span>
+      )}
+    </button>
+  );
+}
+
+// ── Full-screen mobile overlay ────────────────────────────────────────────────
+
+function FullScreenPicker({
   language,
   onSelect,
-  compact,
+  onClose,
 }: {
   language: Language;
   onSelect: (code: string) => void;
-  compact?: boolean;
+  onClose: () => void;
 }) {
-  return (
-    <div className={`grid grid-cols-2 gap-2 ${compact ? 'px-3 py-3' : 'px-4 pt-4 pb-3'}`}>
-      {SUGGESTED.map(l => {
-        const selected = l.code === language;
-        return (
-          <button
-            key={l.code}
-            role="option"
-            aria-selected={selected}
-            onClick={() => onSelect(l.code)}
-            className={`flex items-center justify-between px-3 rounded-xl
-                        text-sm font-semibold transition-all duration-150 active:scale-[0.97]
-                        ${compact ? 'py-2.5 min-h-[44px]' : 'py-3.5 min-h-[52px]'}
-                        ${selected
-                          ? 'bg-primary/15 text-primary border border-primary/30'
-                          : 'bg-muted/60 text-foreground/70 hover:bg-muted hover:text-foreground border border-transparent'
-                        }`}
-          >
-            <span>{l.native}</span>
-            {selected && <Check className="w-3.5 h-3.5 shrink-0" />}
-          </button>
-        );
-      })}
-    </div>
-  );
-}
+  const [query, setQuery] = useState('');
+  const shouldReduce = useReducedMotion();
 
-// ── Coming-soon search ────────────────────────────────────────────────────────
-
-function ComingSoonSearch({
-  query,
-  onChange,
-}: {
-  query: string;
-  onChange: (v: string) => void;
-}) {
   const filtered = REST.filter(l =>
-    l.native.toLowerCase().includes(query.toLowerCase()) ||
-    l.code.toLowerCase().includes(query.toLowerCase()),
+    query.length > 0 &&
+    (l.native.toLowerCase().includes(query.toLowerCase()) ||
+     l.english.toLowerCase().includes(query.toLowerCase()) ||
+     l.code.toLowerCase().includes(query.toLowerCase()))
   );
 
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    document.addEventListener('keydown', onKey);
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.body.style.overflow = '';
+    };
+  }, [onClose]);
+
+  const overlayVariants = shouldReduce
+    ? {
+        hidden: { opacity: 0 },
+        visible: { opacity: 1, transition: { duration: 0.15 } },
+        exit: { opacity: 0, transition: { duration: 0.12 } },
+      }
+    : {
+        hidden: { clipPath: 'inset(0% 0% 97% 82% round 24px)' },
+        visible: {
+          clipPath: 'inset(0% 0% 0% 0% round 0px)',
+          transition: { duration: 0.38, ease: [0.32, 0.72, 0, 1] },
+        },
+        exit: {
+          clipPath: 'inset(0% 0% 97% 82% round 24px)',
+          transition: { duration: 0.28, ease: [0.4, 0, 1, 1] },
+        },
+      };
+
+  const contentVariants = shouldReduce
+    ? {}
+    : {
+        hidden: { opacity: 0, y: -12 },
+        visible: { opacity: 1, y: 0, transition: { delay: 0.18, duration: 0.22 } },
+        exit: { opacity: 0, transition: { duration: 0.1 } },
+      };
+
   return (
-    <div className="border-t border-border/40">
-      <div className="relative px-3 py-2">
-        <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground pointer-events-none" />
-        <input
-          id="header-lang-search"
-          name="header-lang-search"
-          value={query}
-          onChange={e => onChange(e.target.value)}
-          placeholder="Search more languages…"
-          className="w-full pl-6 pr-7 py-1.5 text-sm bg-transparent outline-none
-                     text-foreground placeholder:text-muted-foreground/60"
-          aria-label="Search more languages"
-          autoComplete="off"
-          spellCheck={false}
-        />
-        {query && (
-          <button
-            onClick={() => onChange('')}
-            className="absolute right-5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-            aria-label="Clear search"
-          >
-            <X className="w-3 h-3" />
-          </button>
-        )}
+    <motion.div
+      key="fullscreen-picker"
+      variants={overlayVariants}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+      className="fixed inset-0 z-50 bg-card flex flex-col"
+    >
+      {/* Sticky top bar */}
+      <div className="shrink-0 flex items-center justify-between px-4 h-14 border-b border-border/40 bg-card/95 backdrop-blur-sm">
+        <p className="text-[15px] font-bold text-foreground">Choose language</p>
+        <button
+          onClick={onClose}
+          aria-label="Close language picker"
+          className="w-9 h-9 flex items-center justify-center rounded-full text-foreground/60 hover:text-foreground hover:bg-muted transition-colors"
+        >
+          <X className="w-5 h-5" />
+        </button>
       </div>
 
-      {query && (
-        <div className="pb-2">
-          {filtered.length === 0 ? (
-            <p className="px-4 py-4 text-sm text-muted-foreground text-center">
-              No language found — try another spelling.
-            </p>
-          ) : (
-            filtered.map(l => (
-              <div
-                key={l.code}
-                className="flex items-center justify-between px-4 py-2 opacity-40"
-              >
-                <span className="text-sm text-foreground/70">{l.native}</span>
-                <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-foreground/8 text-foreground/40">
-                  soon
-                </span>
-              </div>
-            ))
-          )}
+      <motion.div
+        variants={contentVariants}
+        initial="hidden"
+        animate="visible"
+        exit="exit"
+        className="flex-1 overflow-y-auto"
+      >
+        {/* Available languages */}
+        <div className="pt-3 pb-1">
+          <p className="px-5 pb-2 text-[10px] font-bold tracking-widest uppercase text-muted-foreground/60">
+            Available now
+          </p>
+          {SUGGESTED.map(l => (
+            <LangRow
+              key={l.code}
+              native={l.native}
+              english={l.english}
+              selected={l.code === language}
+              available={l.available}
+              onClick={() => onSelect(l.code)}
+            />
+          ))}
         </div>
-      )}
-    </div>
+
+        {/* Coming soon — search gate */}
+        <div className="border-t border-border/40 pt-3">
+          <p className="px-5 pb-2 text-[10px] font-bold tracking-widest uppercase text-muted-foreground/60">
+            Coming soon
+          </p>
+
+          {/* Search bar — no autoFocus */}
+          <div className="relative px-4 pb-2">
+            <Search className="absolute left-7 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+            <input
+              id="lang-search"
+              name="lang-search"
+              value={query}
+              onChange={e => setQuery(e.target.value)}
+              placeholder="Search a language…"
+              autoComplete="off"
+              spellCheck={false}
+              className="w-full pl-8 pr-8 py-2.5 text-[14px] rounded-xl border border-border/60 bg-muted/40
+                         text-foreground placeholder:text-muted-foreground/50 outline-none
+                         focus:border-primary/40 focus:ring-1 focus:ring-primary/20 transition-all"
+            />
+            {query && (
+              <button
+                onClick={() => setQuery('')}
+                aria-label="Clear search"
+                className="absolute right-7 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            )}
+          </div>
+
+          {/* Results or full list */}
+          {query.length === 0
+            ? REST.map(l => (
+                <LangRow
+                  key={l.code}
+                  native={l.native}
+                  english={l.english}
+                  selected={false}
+                  available={false}
+                />
+              ))
+            : filtered.length === 0
+              ? (
+                <p className="px-5 py-6 text-sm text-muted-foreground text-center">
+                  No language found — try another spelling.
+                </p>
+              )
+              : filtered.map(l => (
+                  <LangRow
+                    key={l.code}
+                    native={l.native}
+                    english={l.english}
+                    selected={false}
+                    available={false}
+                  />
+                ))
+          }
+          <div className="h-8" />
+        </div>
+      </motion.div>
+    </motion.div>
   );
 }
 
@@ -136,6 +252,13 @@ function Popover({
   const [query, setQuery] = useState('');
   const ref = useRef<HTMLDivElement>(null);
 
+  const filtered = REST.filter(l =>
+    query.length > 0 &&
+    (l.native.toLowerCase().includes(query.toLowerCase()) ||
+     l.english.toLowerCase().includes(query.toLowerCase()) ||
+     l.code.toLowerCase().includes(query.toLowerCase()))
+  );
+
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
     const onPointer = (e: MouseEvent) => {
@@ -150,80 +273,67 @@ function Popover({
   }, [onClose]);
 
   return (
-    <div
+    <motion.div
       ref={ref}
-      className="absolute top-full right-0 mt-2 w-64 rounded-2xl bg-card
+      initial={{ opacity: 0, scale: 0.95, y: -4 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.95, y: -4 }}
+      transition={{ duration: 0.15, ease: 'easeOut' }}
+      className="absolute top-full right-0 mt-2 w-72 rounded-2xl bg-card
                  border border-border/60 shadow-xl z-50 overflow-hidden"
       role="listbox"
       aria-label="Select language"
     >
-      <p className="px-4 pt-3 pb-0 text-[10px] font-bold tracking-widest uppercase text-muted-foreground/60 select-none">
+      <p className="px-5 pt-3 pb-1 text-[10px] font-bold tracking-widest uppercase text-muted-foreground/60">
         Available now
       </p>
-      <AvailablePills language={language} onSelect={onSelect} compact />
-      <ComingSoonSearch query={query} onChange={setQuery} />
-    </div>
-  );
-}
+      {SUGGESTED.map(l => (
+        <LangRow
+          key={l.code}
+          native={l.native}
+          english={l.english}
+          selected={l.code === language}
+          available={l.available}
+          onClick={() => onSelect(l.code)}
+        />
+      ))}
 
-// ── Mobile bottom sheet ───────────────────────────────────────────────────────
-
-function BottomSheet({
-  language,
-  onSelect,
-  onClose,
-}: {
-  language: Language;
-  onSelect: (code: string) => void;
-  onClose: () => void;
-}) {
-  const [query, setQuery] = useState('');
-
-  const onBackdrop = useCallback(
-    (e: React.MouseEvent) => { if (e.target === e.currentTarget) onClose(); },
-    [onClose],
-  );
-
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
-    document.addEventListener('keydown', onKey);
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.removeEventListener('keydown', onKey);
-      document.body.style.overflow = '';
-    };
-  }, [onClose]);
-
-  return (
-    <div
-      className="fixed inset-0 z-50 flex flex-col justify-end bg-black/40 backdrop-blur-sm
-                 animate-in fade-in duration-200"
-      onClick={onBackdrop}
-    >
-      <div
-        className="bg-card rounded-t-3xl flex flex-col overflow-hidden
-                   animate-in slide-in-from-bottom-4 duration-300"
-        style={{ maxHeight: '85dvh' }}
-      >
-        <div className="flex justify-center pt-3 pb-1 shrink-0">
-          <div className="w-10 h-1 rounded-full bg-foreground/20" />
-        </div>
-        <p className="text-base font-bold text-center text-foreground pt-2 px-4 shrink-0">
-          Choose your language
+      <div className="border-t border-border/40 pt-3 pb-1">
+        <p className="px-5 pb-2 text-[10px] font-bold tracking-widest uppercase text-muted-foreground/60">
+          Coming soon
         </p>
-        <p className="text-xs text-center text-muted-foreground pb-1 px-4 shrink-0">
-          Tap to switch instantly
-        </p>
-
-        <div className="shrink-0" role="listbox" aria-label="Available languages">
-          <AvailablePills language={language} onSelect={onSelect} />
+        <div className="relative px-4 pb-2">
+          <Search className="absolute left-7 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground pointer-events-none" />
+          <input
+            id="desktop-lang-search"
+            name="desktop-lang-search"
+            value={query}
+            onChange={e => setQuery(e.target.value)}
+            placeholder="Search more languages…"
+            autoComplete="off"
+            spellCheck={false}
+            className="w-full pl-7 pr-7 py-1.5 text-sm rounded-lg border border-border/50 bg-muted/40
+                       text-foreground placeholder:text-muted-foreground/50 outline-none
+                       focus:border-primary/40 transition-all"
+          />
+          {query && (
+            <button onClick={() => setQuery('')} aria-label="Clear" className="absolute right-7 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
+              <X className="w-3 h-3" />
+            </button>
+          )}
         </div>
-
-        <div className="overflow-y-auto flex-1 pb-8">
-          <ComingSoonSearch query={query} onChange={setQuery} />
+        <div className="max-h-44 overflow-y-auto">
+          {query.length === 0
+            ? null
+            : filtered.length === 0
+              ? <p className="px-5 py-3 text-sm text-muted-foreground text-center">No results.</p>
+              : filtered.map(l => (
+                  <LangRow key={l.code} native={l.native} english={l.english} selected={false} available={false} />
+                ))
+          }
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
@@ -233,6 +343,7 @@ export function LanguageSelector({ language, setLanguage }: LanguageSelectorProp
   const [open, setOpen] = useState(false);
   const isMobile = useIsMobile();
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const lang = currentLang(language);
 
   const handleSelect = useCallback(
     (code: string) => {
@@ -257,15 +368,19 @@ export function LanguageSelector({ language, setLanguage }: LanguageSelectorProp
           }`}
       >
         <Globe className="w-4 h-4 shrink-0" />
-        <span className="hidden md:inline">{currentNative(language)}</span>
+        <span className="text-[13px] font-semibold tracking-wide">
+          {lang?.code ?? language}
+        </span>
       </button>
 
-      {open && !isMobile && (
-        <Popover language={language} onSelect={handleSelect} onClose={() => setOpen(false)} />
-      )}
-      {open && isMobile && (
-        <BottomSheet language={language} onSelect={handleSelect} onClose={() => setOpen(false)} />
-      )}
+      <AnimatePresence>
+        {open && !isMobile && (
+          <Popover language={language} onSelect={handleSelect} onClose={() => setOpen(false)} />
+        )}
+        {open && isMobile && (
+          <FullScreenPicker language={language} onSelect={handleSelect} onClose={() => setOpen(false)} />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
