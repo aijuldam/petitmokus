@@ -12,7 +12,7 @@ interface LanguageSelectorProps {
 }
 
 function resolveLanguage(code: string): Language {
-  const available = ['EN', 'FR', 'HU', 'DE'] as Language[];
+  const available: Language[] = ['EN', 'FR', 'HU', 'DE', 'ES', 'PT', 'IT', 'NL', 'DA', 'SV', 'NB', 'IS', 'GA'];
   return available.includes(code as Language) ? (code as Language) : 'EN';
 }
 
