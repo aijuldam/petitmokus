@@ -12,7 +12,11 @@ interface LanguageSelectorProps {
 }
 
 function resolveLanguage(code: string): Language {
-  const available: Language[] = ['EN', 'FR', 'HU', 'DE', 'ES', 'PT', 'IT', 'NL', 'DA', 'SV', 'NB', 'IS', 'GA'];
+  const available: Language[] = [
+    'EN', 'FR', 'HU', 'DE',
+    'ES', 'PT', 'IT', 'NL', 'DA', 'SV', 'NB', 'IS', 'GA',
+    'PL', 'CS', 'SK', 'RO', 'HR', 'SR', 'SL', 'BS', 'MK', 'SQ', 'BG',
+  ];
   return available.includes(code as Language) ? (code as Language) : 'EN';
 }
 
