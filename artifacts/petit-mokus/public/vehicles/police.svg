@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 140" fill="none">
+  <!-- Body -->
+  <rect x="10" y="55" width="160" height="52" rx="8" fill="#1565C0"/>
+  <!-- White lower stripe -->
+  <rect x="10" y="85" width="160" height="22" rx="0" fill="#F5F5F5"/>
+  <rect x="10" y="85" width="160" height="4" fill="#F5F5F5"/>
+  <!-- Roof / Cab -->
+  <path d="M50 55 Q55 30 90 28 L140 28 Q165 28 170 55Z" fill="#0D47A1"/>
+  <!-- Windshield -->
+  <path d="M60 55 Q65 38 95 36 L140 36 Q158 38 160 55Z" fill="#B3E5FC"/>
+  <!-- Light bar -->
+  <rect x="70" y="22" width="70" height="10" rx="4" fill="#263238"/>
+  <rect x="72" y="24" width="20" height="6" rx="3" fill="#FF1744"/>
+  <rect x="94" y="24" width="20" height="6" rx="3" fill="#2196F3"/>
+  <rect x="116" y="24" width="20" height="6" rx="3" fill="#FF1744"/>
+  <!-- Door line -->
+  <line x1="110" y1="55" x2="110" y2="107" stroke="#1565C0" stroke-width="2"/>
+  <!-- Shield badge -->
+  <path d="M92 70 L98 66 L104 70 L104 80 Q98 84 92 80Z" fill="#FFEB3B" stroke="#F9A825" stroke-width="1"/>
+  <text x="98" y="78" text-anchor="middle" font-size="7" font-weight="bold" fill="#0D47A1">★</text>
+  <!-- Windows -->
+  <rect x="52" y="58" width="52" height="26" rx="4" fill="#B3E5FC" opacity="0.7"/>
+  <rect x="112" y="58" width="45" height="26" rx="4" fill="#B3E5FC" opacity="0.7"/>
+  <!-- Wheels -->
+  <circle cx="50" cy="114" r="18" fill="#212121"/>
+  <circle cx="50" cy="114" r="11" fill="#424242"/>
+  <circle cx="50" cy="114" r="5" fill="#9E9E9E"/>
+  <circle cx="145" cy="114" r="18" fill="#212121"/>
+  <circle cx="145" cy="114" r="11" fill="#424242"/>
+  <circle cx="145" cy="114" r="5" fill="#9E9E9E"/>
+  <!-- Front bumper -->
+  <rect x="165" y="76" width="16" height="25" rx="4" fill="#0D47A1"/>
+  <!-- "POLICE" text -->
+  <text x="98" y="101" text-anchor="middle" font-size="9" font-weight="bold" fill="#1565C0" letter-spacing="2">POLICE</text>
+</svg>

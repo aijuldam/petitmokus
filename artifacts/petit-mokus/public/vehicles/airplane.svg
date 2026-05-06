@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 140" fill="none">
+  <!-- Sky hint -->
+  <ellipse cx="160" cy="30" rx="30" ry="12" fill="#E3F2FD" opacity="0.6"/>
+  <ellipse cx="40" cy="20" rx="20" ry="8" fill="#E3F2FD" opacity="0.5"/>
+  <!-- Main fuselage -->
+  <path d="M20 68 Q30 60 80 60 L170 65 Q185 67 188 72 Q185 78 170 80 L80 80 Q30 80 20 72Z" fill="#ECEFF1"/>
+  <!-- Nose -->
+  <path d="M170 65 Q190 67 194 72 Q190 76 170 80Z" fill="#CFD8DC"/>
+  <!-- Cockpit windows -->
+  <ellipse cx="175" cy="72" rx="8" ry="5" fill="#B3E5FC"/>
+  <!-- Cabin windows -->
+  <ellipse cx="150" cy="70" rx="5" ry="4" fill="#B3E5FC"/>
+  <ellipse cx="132" cy="70" rx="5" ry="4" fill="#B3E5FC"/>
+  <ellipse cx="114" cy="70" rx="5" ry="4" fill="#B3E5FC"/>
+  <ellipse cx="96" cy="70" rx="5" ry="4" fill="#B3E5FC"/>
+  <ellipse cx="78" cy="70" rx="5" ry="4" fill="#B3E5FC"/>
+  <ellipse cx="60" cy="70" rx="5" ry="4" fill="#B3E5FC"/>
+  <!-- Color stripe -->
+  <rect x="20" y="70" width="174" height="4" rx="2" fill="#1565C0"/>
+  <!-- Main wings -->
+  <path d="M90 68 L110 30 L130 34 L115 70Z" fill="#B0BEC5"/>
+  <path d="M90 80 L110 115 L130 110 L115 75Z" fill="#B0BEC5"/>
+  <!-- Wing stripe -->
+  <line x1="105" y1="32" x2="116" y2="70" stroke="#1565C0" stroke-width="2.5"/>
+  <!-- Tail fin -->
+  <path d="M25 60 L22 40 L42 55 L40 68Z" fill="#CFD8DC"/>
+  <!-- Horizontal stabilizers -->
+  <path d="M30 68 L15 55 L22 55 L35 65Z" fill="#B0BEC5"/>
+  <path d="M30 80 L15 90 L22 90 L35 77Z" fill="#B0BEC5"/>
+  <!-- Engine nacelle left -->
+  <ellipse cx="105" cy="104" rx="10" ry="5" fill="#CFD8DC"/>
+  <rect x="95" y="102" width="20" height="6" rx="3" fill="#90A4AE"/>
+  <!-- Engine nacelle right (wing) -->
+  <ellipse cx="115" cy="38" rx="10" ry="5" fill="#CFD8DC"/>
+  <rect x="105" y="36" width="20" height="6" rx="3" fill="#90A4AE"/>
+  <!-- Exhaust glow -->
+  <ellipse cx="95" cy="105" rx="5" ry="3" fill="#FFA726" opacity="0.5"/>
+</svg>

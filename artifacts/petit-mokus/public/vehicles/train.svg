@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 140" fill="none">
+  <!-- Track -->
+  <rect x="0" y="120" width="200" height="6" rx="2" fill="#795548"/>
+  <rect x="5" y="118" width="10" height="10" rx="1" fill="#5D4037"/>
+  <rect x="30" y="118" width="10" height="10" rx="1" fill="#5D4037"/>
+  <rect x="55" y="118" width="10" height="10" rx="1" fill="#5D4037"/>
+  <rect x="80" y="118" width="10" height="10" rx="1" fill="#5D4037"/>
+  <rect x="105" y="118" width="10" height="10" rx="1" fill="#5D4037"/>
+  <rect x="130" y="118" width="10" height="10" rx="1" fill="#5D4037"/>
+  <rect x="155" y="118" width="10" height="10" rx="1" fill="#5D4037"/>
+  <rect x="180" y="118" width="10" height="10" rx="1" fill="#5D4037"/>
+  <!-- Locomotive body -->
+  <rect x="10" y="55" width="100" height="65" rx="6" fill="#C62828"/>
+  <!-- Front nose -->
+  <path d="M110 65 Q130 65 135 80 L135 108 Q110 110 110 108Z" fill="#B71C1C"/>
+  <!-- Cab windows -->
+  <rect x="20" y="62" width="30" height="22" rx="4" fill="#B3E5FC"/>
+  <rect x="58" y="62" width="30" height="22" rx="4" fill="#B3E5FC"/>
+  <!-- Number plate -->
+  <rect x="95" y="88" width="40" height="18" rx="3" fill="#FFEB3B"/>
+  <text x="115" y="100" text-anchor="middle" font-size="10" font-weight="bold" fill="#B71C1C">1</text>
+  <!-- Chimney / exhaust -->
+  <rect x="22" y="38" width="12" height="20" rx="4" fill="#424242"/>
+  <ellipse cx="28" cy="38" rx="9" ry="5" fill="#616161"/>
+  <!-- Steam puffs -->
+  <circle cx="28" cy="26" r="8" fill="#ECEFF1" opacity="0.8"/>
+  <circle cx="38" cy="20" r="6" fill="#ECEFF1" opacity="0.6"/>
+  <circle cx="46" cy="15" r="4" fill="#ECEFF1" opacity="0.4"/>
+  <!-- Side stripe -->
+  <rect x="10" y="95" width="100" height="6" fill="#FFEB3B"/>
+  <!-- Wheels -->
+  <circle cx="30" cy="118" r="13" fill="#212121"/>
+  <circle cx="30" cy="118" r="8" fill="#424242"/>
+  <circle cx="30" cy="118" r="3" fill="#9E9E9E"/>
+  <circle cx="60" cy="118" r="13" fill="#212121"/>
+  <circle cx="60" cy="118" r="8" fill="#424242"/>
+  <circle cx="60" cy="118" r="3" fill="#9E9E9E"/>
+  <circle cx="90" cy="118" r="13" fill="#212121"/>
+  <circle cx="90" cy="118" r="8" fill="#424242"/>
+  <circle cx="90" cy="118" r="3" fill="#9E9E9E"/>
+  <!-- Connecting rod -->
+  <rect x="25" y="115" width="70" height="4" rx="2" fill="#616161"/>
+  <!-- Rear car -->
+  <rect x="145" y="70" width="48" height="48" rx="5" fill="#1565C0"/>
+  <rect x="150" y="76" width="18" height="14" rx="3" fill="#B3E5FC"/>
+  <rect x="173" y="76" width="14" height="14" rx="3" fill="#B3E5FC"/>
+  <circle cx="158" cy="118" r="10" fill="#212121"/>
+  <circle cx="158" cy="118" r="6" fill="#424242"/>
+  <circle cx="183" cy="118" r="10" fill="#212121"/>
+  <circle cx="183" cy="118" r="6" fill="#424242"/>
+  <!-- Coupler -->
+  <rect x="137" y="92" width="10" height="6" rx="2" fill="#616161"/>
+</svg>

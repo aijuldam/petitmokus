@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 140" fill="none">
+  <!-- Body -->
+  <rect x="8" y="50" width="165" height="58" rx="8" fill="#FAFAFA"/>
+  <!-- Side stripe -->
+  <rect x="8" y="82" width="165" height="6" fill="#E53935"/>
+  <!-- Cab bump -->
+  <path d="M145 50 Q150 30 170 30 L178 30 Q188 32 190 50Z" fill="#EEEEEE"/>
+  <!-- Windshield -->
+  <path d="M150 50 Q154 36 168 35 L177 35 Q184 37 186 50Z" fill="#B3E5FC"/>
+  <!-- Light bar -->
+  <rect x="148" y="24" width="40" height="9" rx="4" fill="#BDBDBD"/>
+  <rect x="150" y="26" width="12" height="5" rx="2" fill="#FF1744"/>
+  <rect x="164" y="26" width="12" height="5" rx="2" fill="#2196F3"/>
+  <!-- Cross on side -->
+  <rect x="40" y="57" width="10" height="30" rx="2" fill="#E53935"/>
+  <rect x="28" y="67" width="34" height="10" rx="2" fill="#E53935"/>
+  <!-- Red stripe diagonal -->
+  <line x1="8" y1="82" x2="145" y2="82" stroke="#E53935" stroke-width="6"/>
+  <!-- Star of Life hint -->
+  <circle cx="90" cy="72" r="14" fill="none" stroke="#2196F3" stroke-width="2"/>
+  <line x1="90" y1="58" x2="90" y2="86" stroke="#2196F3" stroke-width="2"/>
+  <line x1="76" y1="65" x2="104" y2="79" stroke="#2196F3" stroke-width="2"/>
+  <line x1="76" y1="79" x2="104" y2="65" stroke="#2196F3" stroke-width="2"/>
+  <rect x="87" y="64" width="6" height="16" rx="1" fill="#2196F3"/>
+  <rect x="83" y="69" width="14" height="6" rx="1" fill="#2196F3"/>
+  <!-- Rear doors -->
+  <line x1="8" y1="72" x2="8" y2="108" stroke="#BDBDBD" stroke-width="2"/>
+  <!-- Wheels -->
+  <circle cx="50" cy="116" r="17" fill="#212121"/>
+  <circle cx="50" cy="116" r="10" fill="#424242"/>
+  <circle cx="50" cy="116" r="4" fill="#9E9E9E"/>
+  <circle cx="155" cy="116" r="17" fill="#212121"/>
+  <circle cx="155" cy="116" r="10" fill="#424242"/>
+  <circle cx="155" cy="116" r="4" fill="#9E9E9E"/>
+  <!-- Front bumper -->
+  <rect x="169" y="78" width="16" height="22" rx="4" fill="#BDBDBD"/>
+</svg>

@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 140" fill="none">
+  <!-- Body -->
+  <rect x="10" y="52" width="160" height="58" rx="8" fill="#F8BBD0"/>
+  <!-- Roof -->
+  <rect x="10" y="44" width="160" height="14" rx="8" fill="#F06292"/>
+  <!-- Cab -->
+  <rect x="140" y="35" width="30" height="35" rx="6" fill="#E91E63"/>
+  <!-- Windshield -->
+  <rect x="144" y="41" width="22" height="18" rx="4" fill="#B3E5FC"/>
+  <!-- Light bar with music notes feel -->
+  <rect x="15" y="44" width="125" height="8" rx="4" fill="#F06292"/>
+  <!-- Polka dots on body -->
+  <circle cx="45" cy="72" r="8" fill="#FCE4EC"/>
+  <circle cx="75" cy="78" r="6" fill="#FCE4EC"/>
+  <circle cx="100" cy="68" r="9" fill="#FCE4EC"/>
+  <circle cx="125" cy="75" r="7" fill="#FCE4EC"/>
+  <circle cx="32" cy="85" r="5" fill="#FCE4EC"/>
+  <!-- Serving window -->
+  <rect x="50" y="57" width="55" height="35" rx="5" fill="white"/>
+  <rect x="53" y="60" width="49" height="20" rx="3" fill="#B3E5FC"/>
+  <!-- Awning above window -->
+  <path d="M48 57 L48 50 L107 50 L107 57Z" fill="#E91E63"/>
+  <line x1="55" y1="50" x2="52" y2="57" stroke="#F8BBD0" stroke-width="2"/>
+  <line x1="66" y1="50" x2="63" y2="57" stroke="#F8BBD0" stroke-width="2"/>
+  <line x1="77" y1="50" x2="74" y2="57" stroke="#F8BBD0" stroke-width="2"/>
+  <line x1="88" y1="50" x2="85" y2="57" stroke="#F8BBD0" stroke-width="2"/>
+  <line x1="99" y1="50" x2="96" y2="57" stroke="#F8BBD0" stroke-width="2"/>
+  <!-- Ice cream cone in window -->
+  <polygon points="77,72 83,72 80,82" fill="#BCAAA4"/>
+  <circle cx="77" cy="70" r="5" fill="#F48FB1"/>
+  <circle cx="83" cy="70" r="5" fill="#FFF59D"/>
+  <!-- Music notes -->
+  <text x="24" y="70" font-size="14" fill="#E91E63" opacity="0.8">♪</text>
+  <text x="133" y="68" font-size="12" fill="#E91E63" opacity="0.8">♫</text>
+  <!-- Stripe bottom -->
+  <rect x="10" y="96" width="160" height="6" fill="#F06292"/>
+  <!-- Wheels -->
+  <circle cx="48" cy="116" r="17" fill="#212121"/>
+  <circle cx="48" cy="116" r="10" fill="#424242"/>
+  <circle cx="48" cy="116" r="4" fill="#F8BBD0"/>
+  <circle cx="148" cy="116" r="17" fill="#212121"/>
+  <circle cx="148" cy="116" r="10" fill="#424242"/>
+  <circle cx="148" cy="116" r="4" fill="#F8BBD0"/>
+  <!-- Front bumper -->
+  <rect x="165" y="75" width="15" height="25" rx="4" fill="#E91E63"/>
+</svg>

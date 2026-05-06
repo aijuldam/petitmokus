@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 140" fill="none">
+  <!-- Body -->
+  <rect x="10" y="55" width="150" height="55" rx="8" fill="#E53935"/>
+  <!-- Cab -->
+  <rect x="130" y="35" width="30" height="45" rx="6" fill="#C62828"/>
+  <!-- Windows -->
+  <rect x="135" y="42" width="20" height="16" rx="3" fill="#B3E5FC"/>
+  <!-- Ladder rack -->
+  <rect x="15" y="48" width="115" height="8" rx="2" fill="#B71C1C"/>
+  <line x1="15" y1="52" x2="130" y2="52" stroke="#FFCDD2" stroke-width="1.5"/>
+  <!-- Ladder rungs -->
+  <rect x="20" y="46" width="5" height="12" rx="1" fill="#EF9A9A"/>
+  <rect x="40" y="46" width="5" height="12" rx="1" fill="#EF9A9A"/>
+  <rect x="60" y="46" width="5" height="12" rx="1" fill="#EF9A9A"/>
+  <rect x="80" y="46" width="5" height="12" rx="1" fill="#EF9A9A"/>
+  <rect x="100" y="46" width="5" height="12" rx="1" fill="#EF9A9A"/>
+  <rect x="120" y="46" width="5" height="12" rx="1" fill="#EF9A9A"/>
+  <!-- Light bar -->
+  <rect x="135" y="30" width="20" height="7" rx="3" fill="#FF1744"/>
+  <rect x="137" y="31" width="7" height="5" rx="2" fill="#FFEB3B"/>
+  <rect x="146" y="31" width="7" height="5" rx="2" fill="#2196F3"/>
+  <!-- Hose connectors -->
+  <rect x="18" y="78" width="12" height="18" rx="3" fill="#B71C1C"/>
+  <rect x="38" y="80" width="10" height="16" rx="3" fill="#B71C1C"/>
+  <!-- Side stripe -->
+  <rect x="10" y="72" width="150" height="6" fill="#FFEB3B"/>
+  <!-- Wheels -->
+  <circle cx="45" cy="114" r="18" fill="#212121"/>
+  <circle cx="45" cy="114" r="11" fill="#424242"/>
+  <circle cx="45" cy="114" r="5" fill="#9E9E9E"/>
+  <circle cx="130" cy="114" r="18" fill="#212121"/>
+  <circle cx="130" cy="114" r="11" fill="#424242"/>
+  <circle cx="130" cy="114" r="5" fill="#9E9E9E"/>
+  <!-- Bumper -->
+  <rect x="155" y="75" width="16" height="30" rx="4" fill="#B71C1C"/>
+  <rect x="157" y="80" width="12" height="6" rx="2" fill="#FF8A80"/>
+</svg>
