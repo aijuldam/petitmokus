@@ -16,6 +16,7 @@ function resolveLanguage(code: string): Language {
     'EN', 'FR', 'HU', 'DE',
     'ES', 'PT', 'IT', 'NL', 'DA', 'SV', 'NB', 'IS', 'GA',
     'PL', 'CS', 'SK', 'RO', 'HR', 'SR', 'SL', 'BS', 'MK', 'SQ', 'BG',
+    'ET', 'LV', 'LT', 'EL', 'MT', 'ME',
   ];
   return available.includes(code as Language) ? (code as Language) : 'EN';
 }
