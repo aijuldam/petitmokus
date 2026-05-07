@@ -1,5 +1,5 @@
 import { Language, dictionary } from './i18n';
-import { playAnimalSound, playVehicleSound } from './audio';
+import { playAnimalSound, playVehicleSound, playNatureSound } from './audio';
 
 import dogPhoto from '@assets/fran-taylor-3VhTw1T0WwI-unsplash_1777220813646.jpg';
 import catPhoto from '@assets/animal-face_W8CE6CC9MP_1777221156438.jpg';
@@ -60,6 +60,17 @@ const vehicleItems: SoundItem[] = [
   { id: 'helicopter',   image: '/vehicles/helicopter.png',   objectPosition: 'center 50%', color: 'bg-sky-50',    getName: l => dictionary.vehicles['helicopter'][l],   playSound: () => playVehicleSound('helicopter'),   getFunFact: l => dictionary.vehicleFacts['helicopter'][l] },
 ];
 
+// ── Nature ────────────────────────────────────────────────────────────────────
+
+const natureItems: SoundItem[] = [
+  { id: 'waves',        image: '/Nature/waves.jpg',        objectPosition: 'center 50%', color: 'bg-blue-50',   getName: l => dictionary.nature.waves[l],          playSound: () => playNatureSound('waves'),        getFunFact: l => dictionary.natureFacts.waves[l] },
+  { id: 'fire',         image: '/Nature/fire.jpg',         objectPosition: 'center 50%', color: 'bg-orange-50', getName: l => dictionary.nature.fire[l],           playSound: () => playNatureSound('fire'),         getFunFact: l => dictionary.natureFacts.fire[l] },
+  { id: 'thunder',      image: '/Nature/thunder.jpg',      objectPosition: 'center 40%', color: 'bg-slate-100', getName: l => dictionary.nature.thunder[l],        playSound: () => playNatureSound('thunder'),      getFunFact: l => dictionary.natureFacts.thunder[l] },
+  { id: 'tornado',      image: '/Nature/tornado.jpg',      objectPosition: 'center 50%', color: 'bg-gray-100',  getName: l => dictionary.nature.tornado[l],        playSound: () => playNatureSound('tornado'),      getFunFact: l => dictionary.natureFacts.tornado[l] },
+  { id: 'waterfall',    image: '/Nature/waterfall.jpg',    objectPosition: 'center 50%', color: 'bg-cyan-50',   getName: l => dictionary.nature.waterfall[l],      playSound: () => playNatureSound('waterfall'),    getFunFact: l => dictionary.natureFacts.waterfall[l] },
+  { id: 'summer-night', image: '/Nature/Summer night.jpg', objectPosition: 'center 50%', color: 'bg-indigo-50', getName: l => dictionary.nature['summer-night'][l], playSound: () => playNatureSound('summer-night'), getFunFact: l => dictionary.natureFacts['summer-night'][l] },
+];
+
 // ── Categories ────────────────────────────────────────────────────────────────
 
 export const soundCategories: SoundCategory[] = [
@@ -74,5 +85,11 @@ export const soundCategories: SoundCategory[] = [
     getLabelKey: l => dictionary.ui.soundsCategoryVehicles[l],
     emoji: '🚗',
     items: vehicleItems,
+  },
+  {
+    id: 'nature',
+    getLabelKey: l => dictionary.ui.soundsCategoryNature[l],
+    emoji: '🌿',
+    items: natureItems,
   },
 ];

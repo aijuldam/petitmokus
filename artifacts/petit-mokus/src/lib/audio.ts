@@ -144,6 +144,22 @@ export const playVehicleSound = (vehicle: string) => {
   }
 };
 
+// ── Nature sounds ─────────────────────────────────────────────────────────────
+
+const natureSounds: Record<string, string> = {
+  waves:          '/Nature/waves.m4a',
+  fire:           '/Nature/fire.m4a',
+  thunder:        '/Nature/thunder.m4a',
+  tornado:        '/Nature/tornado.m4a',
+  waterfall:      '/Nature/waterfall.m4a',
+  'summer-night': '/Nature/night-insects.mp3',
+};
+
+export const playNatureSound = (id: string) => {
+  const url = natureSounds[id];
+  if (url) playAudioFile(url);
+};
+
 // ── Song / lullaby playback ───────────────────────────────────────────────────
 
 let currentSongOscillator: OscillatorNode | null = null;
