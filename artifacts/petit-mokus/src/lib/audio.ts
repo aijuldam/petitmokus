@@ -147,7 +147,7 @@ export const playVehicleSound = (vehicle: string) => {
 // ── Nature sounds ─────────────────────────────────────────────────────────────
 
 const natureSounds: Record<string, string> = {
-  waves:          '/Nature/waves.m4a',
+  waves:          '/Nature/waves2.m4a',
   fire:           '/Nature/fire.m4a',
   thunder:        '/Nature/thunder.m4a',
   tornado:        '/Nature/tornado.m4a',
