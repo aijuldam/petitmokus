@@ -47,3 +47,7 @@ Thumbs.db
 # Replit
 .cache/
 .local/
+
+# Parent site: assembled deploy folder and Astro's generated types
+artifacts/site-output/
+.astro/

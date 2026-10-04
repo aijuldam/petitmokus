@@ -1,0 +1,4 @@
+# Keep the Cloudflare Pages production alias out of search results.
+# petitmokus.com is the only canonical host and is not affected by this rule.
+https://:project.pages.dev/*
+  X-Robots-Tag: noindex, nofollow

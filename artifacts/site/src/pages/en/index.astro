@@ -1,0 +1,68 @@
+---
+import Base from "../../layouts/Base.astro";
+import { publishedJournal } from "../../lib/content";
+import { BABYNAMING_URL, BRAND, formatDate, isoDate, KIDS_URL, SITE, SOCIAL_IMAGE } from "../../lib/site";
+
+const [latest] = await publishedJournal();
+const description = "Petit Mokus makes calm, thoughtful digital experiences for families: Petit Mokus Kids and Petit Mokus BabyNaming.";
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: BRAND,
+  url: `${SITE}/en/`,
+  logo: SOCIAL_IMAGE,
+};
+---
+<Base title={BRAND} description={description} path="/en/" jsonLd={jsonLd}>
+  <section class="hero wrap" aria-labelledby="hero-title">
+    <h1 id="hero-title">Petit Mokus</h1>
+    <p class="lead">Calm, thoughtful digital experiences for families, from choosing a name to bedtime songs.</p>
+    <p class="intro muted">A gentle digital companion for families, with calming routines, soothing sounds and simple play, wherever life takes you.</p>
+  </section>
+
+  <section class="wrap" aria-labelledby="products-title">
+    <h2 id="products-title" class="sr-only">Choose an experience</h2>
+    <div class="products">
+      <a class="card kids" href={KIDS_URL}>
+        <span class="label">Listen and play</span>
+        <h3>Petit Mokus Kids</h3>
+        <p>Sounds, lullabies and simple games to enjoy together.</p>
+        <span class="go">Open Kids <span aria-hidden="true">→</span></span>
+      </a>
+      <a class="card naming" href={BABYNAMING_URL}>
+        <span class="label">For two parents</span>
+        <h3>Petit Mokus BabyNaming</h3>
+        <p>Choose your baby's name together, as two parents.</p>
+        <span class="go">Open BabyNaming <span aria-hidden="true">→</span></span>
+        <span class="where muted">babynaming.petitmokus.com</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="section" id="our-story" aria-labelledby="story-title">
+    <div class="wrap narrow">
+      <h2 id="story-title">Our story</h2>
+      <p>Petit Mokus is multicultural at its core, crafted by a French &amp; Hungarian family in Amsterdam. Mokus means squirrel in Hungarian — a small, curious animal that thrives through play, exploration, and a love of small, meaningful moments.</p>
+      <p>Like a little squirrel gathering nuts, Petit Mokus gathers gentle interactions that help families feel more connected and secure, one small moment at a time.</p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="journal-title">
+    <div class="wrap narrow">
+      <h2 id="journal-title">From the Journal</h2>
+      <p class="muted">Guides and product stories for parents and families.</p>
+      {latest && (
+        <ul class="list">
+          <li>
+            <a class="card" href={`/en/journal/${latest.id}/`}>
+              <h3>{latest.data.title}</h3>
+              <p>{latest.data.description}</p>
+              <p class="meta muted"><time datetime={isoDate(latest.data.publishedAt)}>{formatDate(latest.data.publishedAt)}</time></p>
+            </a>
+          </li>
+        </ul>
+      )}
+      <p style="margin-top:1rem"><a class="pill" href="/en/journal/">All Journal articles</a> <a class="pill" href="/en/updates/">Product updates</a></p>
+    </div>
+  </section>
+</Base>

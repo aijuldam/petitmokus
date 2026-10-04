@@ -1,0 +1,17 @@
+---
+import Base from "../layouts/Base.astro";
+import { BABYNAMING_URL, HOME_URL, KIDS_URL } from "../lib/site";
+---
+<Base title="Page not found" description="This page does not exist on Petit Mokus." path="/404/" noindex>
+  <div class="wrap narrow">
+    <header class="page-head">
+      <h1>We could not find that page</h1>
+      <p class="muted">It may have moved, or the address may be mistyped.</p>
+    </header>
+    <ul class="list">
+      <li><a class="card" href={HOME_URL}><h2>Petit Mokus home</h2></a></li>
+      <li><a class="card" href={KIDS_URL}><h2>Petit Mokus Kids</h2></a></li>
+      <li><a class="card" href={BABYNAMING_URL}><h2>Petit Mokus BabyNaming</h2></a></li>
+    </ul>
+  </div>
+</Base>

@@ -31,16 +31,24 @@ function getLanguageFromPath(): Language {
   return 'EN';
 }
 
+/**
+ * The home of Kids for a language. English Kids lives at /en/kids/ because
+ * /en/ is the Petit Mokus parent homepage; every other language keeps its
+ * locale root.
+ */
+function kidsPathForLanguage(lang: Language): string {
+  return lang === 'EN' ? '/en/kids/' : `/${LANGUAGE_TO_PATH[lang]}/`;
+}
+
 /** Update the browser URL to reflect the active language without a page reload. */
 function syncUrlToLanguage(lang: Language) {
-  const code = LANGUAGE_TO_PATH[lang];
-  const target = `/${code}/`;
+  const target = kidsPathForLanguage(lang);
   if (!window.location.pathname.startsWith(target)) {
-    window.history.pushState(null, '', target);
-    // Update canonical link tag
-    const canonical = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
-    if (canonical) canonical.href = `https://petitmokus.com${target}`;
+    window.history.pushState(null, '', target + window.location.hash);
   }
+  // Keep the canonical link in step with the language actually shown.
+  const canonical = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+  if (canonical) canonical.href = `https://petitmokus.com${target}`;
 }
 
 function useStudioMode(): boolean {

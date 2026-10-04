@@ -1,0 +1,27 @@
+---
+import Base from "../../../layouts/Base.astro";
+import { publishedUpdates } from "../../../lib/content";
+import { formatDate, isoDate } from "../../../lib/site";
+
+const updates = await publishedUpdates();
+---
+<Base title="Updates" description="Dated release notes for Petit Mokus Kids and Petit Mokus BabyNaming." path="/en/updates/">
+  <div class="wrap narrow">
+    <header class="page-head">
+      <h1>Updates</h1>
+      <p class="muted">Short, dated notes on what has changed in our products.</p>
+    </header>
+    <ul class="list">
+      {updates.map((update) => (
+        <li>
+          <a class="card" href={`/en/updates/${update.id}/`}>
+            <p class="meta muted"><time datetime={isoDate(update.data.publishedAt)}>{formatDate(update.data.publishedAt)}</time></p>
+            <h2>{update.data.title}</h2>
+            <p>{update.data.description}</p>
+          </a>
+        </li>
+      ))}
+    </ul>
+    <p class="more"><a class="pill" href="/en/journal/">Journal</a></p>
+  </div>
+</Base>

@@ -1,0 +1,27 @@
+---
+import Base from "../../../layouts/Base.astro";
+import { publishedJournal } from "../../../lib/content";
+import { formatDate, isoDate } from "../../../lib/site";
+
+const posts = await publishedJournal();
+---
+<Base title="Journal" description="Guides and product stories from Petit Mokus for parents and families." path="/en/journal/">
+  <div class="wrap narrow">
+    <header class="page-head">
+      <h1>Journal</h1>
+      <p class="muted">Guides and product stories for parents and families.</p>
+    </header>
+    <ul class="list">
+      {posts.map((post) => (
+        <li>
+          <a class="card" href={`/en/journal/${post.id}/`}>
+            <h2>{post.data.title}</h2>
+            <p>{post.data.description}</p>
+            <p class="meta muted"><time datetime={isoDate(post.data.publishedAt)}>{formatDate(post.data.publishedAt)}</time> · {post.data.author}</p>
+          </a>
+        </li>
+      ))}
+    </ul>
+    <p class="more"><a class="pill" href="/en/updates/">Product updates</a></p>
+  </div>
+</Base>

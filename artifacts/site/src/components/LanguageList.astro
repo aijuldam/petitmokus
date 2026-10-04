@@ -1,0 +1,11 @@
+---
+import { LANGUAGES } from "../lib/site";
+---
+<p class="lang-note muted">Other languages open Petit Mokus Kids.</p>
+<ul class="lang-list">
+  {LANGUAGES.map((l) => (
+    <li>
+      <a href={l.href} lang={l.code} hreflang={l.code} aria-current={l.code === "en" ? "true" : undefined}>{l.native}</a>
+    </li>
+  ))}
+</ul>

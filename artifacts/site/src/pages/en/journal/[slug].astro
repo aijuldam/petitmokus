@@ -1,0 +1,51 @@
+---
+import { render } from "astro:content";
+import Base from "../../../layouts/Base.astro";
+import { publishedJournal } from "../../../lib/content";
+import { absolute, AUTHOR_URL, BABYNAMING_URL, BRAND, formatDate, isoDate, KIDS_URL, SOCIAL_IMAGE } from "../../../lib/site";
+
+export async function getStaticPaths() {
+  const posts = await publishedJournal();
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const path = `/en/journal/${post.id}/`;
+const published = post.data.publishedAt;
+const updated = post.data.updatedAt ?? published;
+const product =
+  post.data.relatedProduct === "babynaming"
+    ? { href: BABYNAMING_URL, label: "Petit Mokus BabyNaming" }
+    : post.data.relatedProduct === "kids"
+      ? { href: KIDS_URL, label: "Petit Mokus Kids" }
+      : null;
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  headline: post.data.title,
+  description: post.data.description,
+  datePublished: published.toISOString(),
+  dateModified: updated.toISOString(),
+  inLanguage: "en",
+  mainEntityOfPage: absolute(path),
+  image: post.data.heroImage ? absolute(post.data.heroImage.src) : SOCIAL_IMAGE,
+  author: { "@type": "Organization", name: post.data.author, url: absolute(AUTHOR_URL) },
+  publisher: { "@type": "Organization", name: BRAND, logo: { "@type": "ImageObject", url: SOCIAL_IMAGE } },
+};
+---
+<Base title={post.data.title} description={post.data.description} path={path} ogType="article" jsonLd={jsonLd}>
+  <article class="wrap narrow article">
+    <header class="page-head">
+      <p class="meta"><a href="/en/journal/">Journal</a></p>
+      <h1>{post.data.title}</h1>
+      <p class="meta muted">
+        By <a href={AUTHOR_URL}>{post.data.author}</a> ·
+        Published <time datetime={isoDate(published)}>{formatDate(published)}</time>
+        {updated.getTime() !== published.getTime() && <> · Updated <time datetime={isoDate(updated)}>{formatDate(updated)}</time></>}
+      </p>
+    </header>
+    <Content />
+    {product && <p style="margin-top:2rem"><a class="pill" href={product.href}>Open {product.label}</a></p>}
+  </article>
+</Base>

@@ -1,0 +1,33 @@
+/*
+ * Petit Mokus design tokens for the parent site. The values come from the
+ * Kids app (artifacts/petit-mokus/src/index.css) and the official brand kit.
+ *
+ * The pastels are decorative: surfaces and accents only, never a background
+ * for white text and never a text colour. Anything read or operated uses the
+ * darker functional variants below, which pass WCAG AA on these surfaces.
+ */
+:root {
+  --pm-background: #f9f6f1;
+  --pm-card: #fdfdfc;
+  --pm-card-border: #eae2d7;
+  --pm-border: #e2dacf;
+  --pm-muted: #f6ede4;
+  --pm-text: #5c4a3d;
+  --pm-rose: #d897a8;
+  --pm-sage: #a6c9b5;
+  --pm-blue: #b8cce0;
+  --pm-rose-wash: #f8e7eb;
+  --pm-sage-wash: #e1efe7;
+  --pm-blue-wash: #e4edf6;
+
+  /* Functional accessibility variants */
+  --pm-muted-text: #756357; /* readable form of the brand's #9d897b: 5.3:1 */
+  --pm-action: #b1435f; /* rose for links, buttons and focus: 5.1:1 */
+  --pm-action-text: #ffffff;
+
+  --pm-radius: 1.25rem;
+  --pm-radius-card: 1.5rem;
+  --pm-shadow-sm: 0 4px 16px rgb(153 123 102 / 0.1);
+  --pm-shadow-md: 0 8px 24px rgb(153 123 102 / 0.12);
+  --pm-font: "Nunito Variable", "Nunito", ui-rounded, system-ui, -apple-system, "Segoe UI", sans-serif;
+}

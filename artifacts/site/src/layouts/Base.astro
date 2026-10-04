@@ -1,0 +1,124 @@
+---
+import "../styles/global.css";
+import LanguageList from "../components/LanguageList.astro";
+import { absolute, BABYNAMING_URL, BRAND, HOME_URL, KIDS_URL, SOCIAL_IMAGE, TAGLINE } from "../lib/site";
+
+interface Props {
+  title: string;
+  description: string;
+  /** Site-relative path of this page, used for the canonical URL. */
+  path: string;
+  ogType?: "website" | "article";
+  /** For pages that must never be indexed, such as the 404 page. */
+  noindex?: boolean;
+  jsonLd?: Record<string, unknown>;
+}
+const { title, description, path, ogType = "website", noindex = false, jsonLd } = Astro.props;
+const canonical = absolute(path);
+const fullTitle = title === BRAND ? title : `${title} · ${BRAND}`;
+const inJournal = path.startsWith("/en/journal/") || path.startsWith("/en/updates/");
+const links = [
+  { href: KIDS_URL, label: "Kids" },
+  { href: BABYNAMING_URL, label: "BabyNaming" },
+  { href: "/en/journal/", label: "Journal", current: inJournal },
+];
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
+    <meta name="theme-color" content="#F9F6F1" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta property="og:site_name" content={BRAND} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    {!noindex && <meta property="og:url" content={canonical} />}
+    <meta property="og:image" content={SOCIAL_IMAGE} />
+    <meta name="twitter:card" content="summary" />
+    {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="wrap">
+        <a class="brand" href={HOME_URL} aria-label={`${BRAND} home`}>
+          <img src="/brand/petitmokus-logo-color.svg" alt="" width="48" height="48" />
+          <span>
+            <span class="brand-name">{BRAND}</span>
+            <span class="brand-tagline">{TAGLINE}</span>
+          </span>
+        </a>
+        <div class="header-nav">
+          <nav aria-label="Main">
+            <ul class="nav-links">
+              {links.map((l) => <li><a href={l.href} aria-current={l.current ? "page" : undefined}>{l.label}</a></li>)}
+            </ul>
+          </nav>
+          <details class="disclosure lang">
+            <summary aria-label="Language: English">EN</summary>
+            <div class="panel"><LanguageList /></div>
+          </details>
+          <details class="disclosure menu">
+            <summary>Menu</summary>
+            <nav class="panel" aria-label="Main">
+              <ul class="nav-links">
+                {links.map((l) => <li><a href={l.href} aria-current={l.current ? "page" : undefined}>{l.label}</a></li>)}
+                <li><a href="#languages">Languages</a></li>
+              </ul>
+            </nav>
+          </details>
+        </div>
+      </div>
+    </header>
+    <main id="main">
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div class="wrap">
+        <nav aria-label="Footer">
+          <ul class="footer-links">
+            <li><a href={HOME_URL}>Home</a></li>
+            <li><a href={KIDS_URL}>Kids</a></li>
+            <li><a href={BABYNAMING_URL}>BabyNaming</a></li>
+            <li><a href="/en/journal/">Journal</a></li>
+          </ul>
+        </nav>
+        <section id="languages" aria-labelledby="languages-title">
+          <h2 id="languages-title">Languages</h2>
+          <LanguageList />
+        </section>
+      </div>
+    </footer>
+    <!--
+      Header menus (navigation and languages) are plain <details> elements and
+      work without this script. It only adds what <details> lacks: Escape to
+      close with focus back on the trigger, an accurate aria-expanded, and
+      closing after a link in the panel is followed.
+    -->
+    <script is:inline>
+      for (const menu of document.querySelectorAll(".site-header details.disclosure")) {
+        const trigger = menu.querySelector("summary");
+        const sync = () => trigger.setAttribute("aria-expanded", String(menu.open));
+        sync();
+        // Observing the attribute keeps aria-expanded right as soon as the
+        // state changes; the toggle event only fires a task later.
+        new MutationObserver(sync).observe(menu, { attributes: true, attributeFilter: ["open"] });
+        menu.addEventListener("keydown", (event) => {
+          if (event.key !== "Escape" || !menu.open) return;
+          menu.open = false;
+          trigger.focus();
+        });
+        menu.addEventListener("click", (event) => {
+          if (event.target.closest(".panel a")) menu.open = false;
+        });
+      }
+    </script>
+  </body>
+</html>
