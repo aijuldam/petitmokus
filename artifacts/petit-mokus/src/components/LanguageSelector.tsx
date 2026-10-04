@@ -3,6 +3,7 @@ import { createPortal } from "react-dom";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { Globe, Check, Search, X } from "lucide-react";
 import { Language } from "../lib/i18n";
+import { trackLanguageChange } from "../lib/analytics";
 import { useIsMobile } from "../hooks/use-mobile";
 import { ALL_LANGUAGES, SUGGESTED, REST } from "../lib/languages";
 
@@ -474,10 +475,11 @@ export function LanguageSelector({ language, setLanguage }: LanguageSelectorProp
 
   const handleSelect = useCallback(
     (code: string) => {
+      trackLanguageChange(language, code);
       setLanguage(resolveLanguage(code));
       setOpen(false);
     },
-    [setLanguage],
+    [language, setLanguage],
   );
 
   return (

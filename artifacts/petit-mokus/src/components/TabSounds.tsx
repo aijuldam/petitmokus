@@ -4,6 +4,7 @@ import { Language, dictionary } from "../lib/i18n";
 import { cn } from "../lib/utils";
 import { TabIntro } from "./TabIntro";
 import { soundCategories, SoundItem } from "../lib/sounds-data";
+import { trackSoundPlay } from "../lib/analytics";
 
 interface TabSoundsProps {
   language: Language;
@@ -135,6 +136,7 @@ export function TabSounds({ language }: TabSoundsProps) {
                   setOpenFact(null);
                 } else {
                   item.playSound();
+                  trackSoundPlay(item.id, activeCategoryId);
                 }
               }}
               onInfo={(e) => {

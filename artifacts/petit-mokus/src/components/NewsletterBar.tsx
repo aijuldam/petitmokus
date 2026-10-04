@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Mail, Squirrel } from "lucide-react";
 import { Language, dictionary } from "../lib/i18n";
+import { trackNewsletterSignup, trackNewsletterDismiss } from "../lib/analytics";
 
 interface NewsletterBarProps {
   language: Language;
@@ -57,6 +58,9 @@ export function NewsletterBar({ language }: NewsletterBarProps) {
       }
 
       const json = await res.json() as { status: string };
+      if (json.status !== "already_subscribed") {
+        trackNewsletterSignup(language);
+      }
       setState(json.status === "already_subscribed" ? "already" : "success");
     } catch {
       setState("error");
@@ -81,7 +85,7 @@ export function NewsletterBar({ language }: NewsletterBarProps) {
 
           <div className="relative px-4 pt-3 pb-4">
             <button
-              onClick={() => setDismissed(true)}
+              onClick={() => { trackNewsletterDismiss(); setDismissed(true); }}
               aria-label="Dismiss"
               className="absolute top-3 right-3 text-[#5C4A3D]/30 hover:text-[#5C4A3D]/60 transition-colors"
             >

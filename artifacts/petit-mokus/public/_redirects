@@ -1,0 +1,33 @@
+# Petit Mokus — Language subfolder routing (Cloudflare Pages SPA)
+# Each language path serves index.html; the app reads the path and sets the language.
+
+/en/*  /index.html  200
+/fr/*  /index.html  200
+/hu/*  /index.html  200
+/de/*  /index.html  200
+/es/*  /index.html  200
+/pt/*  /index.html  200
+/it/*  /index.html  200
+/nl/*  /index.html  200
+/da/*  /index.html  200
+/sv/*  /index.html  200
+/nb/*  /index.html  200
+/is/*  /index.html  200
+/ga/*  /index.html  200
+/pl/*  /index.html  200
+/cs/*  /index.html  200
+/sk/*  /index.html  200
+/ro/*  /index.html  200
+/hr/*  /index.html  200
+/sr/*  /index.html  200
+/sl/*  /index.html  200
+/bs/*  /index.html  200
+/mk/*  /index.html  200
+/sq/*  /index.html  200
+/bg/*  /index.html  200
+/et/*  /index.html  200
+/lv/*  /index.html  200
+/lt/*  /index.html  200
+/el/*  /index.html  200
+/mt/*  /index.html  200
+/me/*  /index.html  200
