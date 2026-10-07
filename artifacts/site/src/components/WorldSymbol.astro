@@ -1,0 +1,41 @@
+---
+// Product symbols for the three Petit Mokus worlds. They are symbols, not
+// logos: the squirrel is the only brand mark. All three share one system:
+// a 24-unit grid, rounded strokes, one soft filled shape plus a little line
+// detail, and no enclosing badge. They are always decorative, because the
+// product name is written next to them.
+interface Props {
+  world: "babynaming" | "kids" | "cotton";
+  /** "simple" for 24px uses; "full" adds the finer lines from 48px up. */
+  detail?: "simple" | "full";
+  size?: number;
+}
+const { world, detail = "full", size = 96 } = Astro.props;
+const full = detail === "full";
+---
+<svg class:list={["world-symbol", `world-symbol-${world}`]} viewBox="0 0 24 24" width={size} height={size} aria-hidden="true" focusable="false">
+  {world === "babynaming" && (
+    <g>
+      <ellipse class="soft" cx="12" cy="9.2" rx="3.7" ry="4.7" />
+      <path class="line" d="M3.5 12.5 Q12 22 20.5 12.5" />
+      {full && <path class="line" d="M8.5 20.8 H15.5" />}
+      {full && <path class="line" d="M19.8 10.6 Q20 7.2 23.2 6.4 Q23.6 9.8 19.8 10.6 Z" />}
+    </g>
+  )}
+  {world === "kids" && (
+    <g>
+      <path class="soft" transform={full ? undefined : "translate(3 1)"} d="M9 3.5 Q10 10 16.5 11 Q10 12 9 18.5 Q8 12 1.5 11 Q8 10 9 3.5 Z" />
+      {full && <path class="line" d="M18.4 7.6 Q20.6 11 18.4 14.4" />}
+      {full && <path class="line" d="M21 5.4 Q24.6 11 21 16.6" />}
+    </g>
+  )}
+  {world === "cotton" && (
+    <g>
+      <circle class="soft" cx="8.4" cy="11.4" r="4.3" />
+      <circle class="soft" cx="15.6" cy="11.4" r="4.3" />
+      <circle class="soft" cx="12" cy="7.2" r="4.3" />
+      {full && <path class="line" d="M7.2 16.6 Q12 20.4 16.8 16.6" />}
+      {full && <path class="line" d="M12 18.6 V22" />}
+    </g>
+  )}
+</svg>

@@ -5,6 +5,8 @@ import { absolute, BABYNAMING_URL, BRAND, HOME_URL, KIDS_URL, SOCIAL_IMAGE, TAGL
 
 interface Props {
   title: string;
+  /** Used as the whole title when a page should not get the brand suffix. */
+  exactTitle?: string;
   description: string;
   /** Site-relative path of this page, used for the canonical URL. */
   path: string;
@@ -13,9 +15,9 @@ interface Props {
   noindex?: boolean;
   jsonLd?: Record<string, unknown>;
 }
-const { title, description, path, ogType = "website", noindex = false, jsonLd } = Astro.props;
+const { title, exactTitle, description, path, ogType = "website", noindex = false, jsonLd } = Astro.props;
 const canonical = absolute(path);
-const fullTitle = title === BRAND ? title : `${title} · ${BRAND}`;
+const fullTitle = exactTitle ?? (title === BRAND ? title : `${title} · ${BRAND}`);
 const inJournal = path.startsWith("/en/journal/") || path.startsWith("/en/updates/");
 const links = [
   { href: KIDS_URL, label: "Kids" },
@@ -90,20 +92,22 @@ const links = [
             <li><a href="/en/journal/">Journal</a></li>
           </ul>
         </nav>
-        <section id="languages" aria-labelledby="languages-title">
-          <h2 id="languages-title">Languages</h2>
-          <LanguageList />
-        </section>
+        <details class="disclosure footer-lang" id="languages">
+          <summary>Languages</summary>
+          <div class="panel"><LanguageList /></div>
+        </details>
       </div>
     </footer>
     <!--
-      Header menus (navigation and languages) are plain <details> elements and
-      work without this script. It only adds what <details> lacks: Escape to
-      close with focus back on the trigger, an accurate aria-expanded, and
-      closing after a link in the panel is followed.
+      The header menus and the footer language list are plain <details>
+      elements and work without this script. It only adds what <details>
+      lacks: Escape to close with focus back on the trigger, an accurate
+      aria-expanded, closing a header menu after one of its links is
+      followed, and opening the footer language list when it is the target
+      of a link.
     -->
     <script is:inline>
-      for (const menu of document.querySelectorAll(".site-header details.disclosure")) {
+      for (const menu of document.querySelectorAll("details.disclosure")) {
         const trigger = menu.querySelector("summary");
         const sync = () => trigger.setAttribute("aria-expanded", String(menu.open));
         sync();
@@ -115,10 +119,20 @@ const links = [
           menu.open = false;
           trigger.focus();
         });
-        menu.addEventListener("click", (event) => {
-          if (event.target.closest(".panel a")) menu.open = false;
-        });
+        if (menu.closest(".site-header")) {
+          menu.addEventListener("click", (event) => {
+            if (event.target.closest(".panel a")) menu.open = false;
+          });
+        }
       }
+      const languages = document.getElementById("languages");
+      const openLanguages = () => {
+        if (location.hash !== "#languages" || !languages) return;
+        languages.open = true;
+        languages.querySelector("summary").focus();
+      };
+      addEventListener("hashchange", openLanguages);
+      openLanguages();
     </script>
   </body>
 </html>

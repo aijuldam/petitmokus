@@ -19,11 +19,17 @@
   --pm-rose-wash: #f8e7eb;
   --pm-sage-wash: #e1efe7;
   --pm-blue-wash: #e4edf6;
+  --pm-oat: #e3d2b5; /* cotton and oat, decorative only */
+  --pm-oat-wash: #f4ebdb;
 
   /* Functional accessibility variants */
   --pm-muted-text: #756357; /* readable form of the brand's #9d897b: 5.3:1 */
   --pm-action: #b1435f; /* rose for links, buttons and focus: 5.1:1 */
   --pm-action-text: #ffffff;
+  /* Readable inks for text and symbol lines on the matching wash */
+  --pm-rose-ink: #7e3043;
+  --pm-sage-ink: #326748;
+  --pm-oat-ink: #6b4f2a;
 
   --pm-radius: 1.25rem;
   --pm-radius-card: 1.5rem;

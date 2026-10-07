@@ -1,10 +1,14 @@
 ---
 import Base from "../../layouts/Base.astro";
-import { publishedJournal } from "../../lib/content";
-import { BABYNAMING_URL, BRAND, formatDate, isoDate, KIDS_URL, SITE, SOCIAL_IMAGE } from "../../lib/site";
+import World from "../../components/World.astro";
+import WorldSymbol from "../../components/WorldSymbol.astro";
+import { publishedJournal, publishedUpdates } from "../../lib/content";
+import { BABYNAMING_URL, BRAND, formatDate, isoDate, KIDS_URL, SITE, SOCIAL_IMAGE, TAGLINE } from "../../lib/site";
 
-const [latest] = await publishedJournal();
-const description = "Petit Mokus makes calm, thoughtful digital experiences for families: Petit Mokus Kids and Petit Mokus BabyNaming.";
+const [article] = await publishedJournal();
+const [update] = await publishedUpdates();
+const title = `${BRAND} | ${TAGLINE}`;
+const description = "A digital companion for families, from preparing for your baby’s arrival to discovering the world together as your child grows.";
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Organization",
@@ -13,56 +17,102 @@ const jsonLd = {
   logo: SOCIAL_IMAGE,
 };
 ---
-<Base title={BRAND} description={description} path="/en/" jsonLd={jsonLd}>
+<Base title={BRAND} exactTitle={title} description={description} path="/en/" jsonLd={jsonLd}>
   <section class="hero wrap" aria-labelledby="hero-title">
-    <h1 id="hero-title">Petit Mokus</h1>
-    <p class="lead">Calm, thoughtful digital experiences for families, from choosing a name to bedtime songs.</p>
-    <p class="intro muted">A gentle digital companion for families, with calming routines, soothing sounds and simple play, wherever life takes you.</p>
+    <div class="hero-text">
+      <p class="eyebrow">{TAGLINE}</p>
+      <h1 id="hero-title">Petit Mokus is a digital companion for families, from preparing for your baby’s arrival to discovering the world together as your child grows.</h1>
+      <p class="lead">For the moments before they arrive, and all the little discoveries that follow.</p>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+      <img src="/brand/petitmokus-logo-color.svg" alt="" width="220" height="220" />
+      <svg class="hero-trail" viewBox="0 0 200 120" width="200" height="120" focusable="false">
+        <path d="M100 4 C 150 24, 160 60, 100 76 S 60 104, 100 118" />
+      </svg>
+    </div>
+    <ul class="cue" aria-label="The three Petit Mokus worlds">
+      <li>
+        <a class="tile tile-babynaming" href={BABYNAMING_URL}>
+          <WorldSymbol world="babynaming" size={72} />
+          <span class="tile-name">BabyNaming</span>
+          <span class="tile-status">Live</span>
+        </a>
+      </li>
+      <li>
+        <a class="tile tile-kids" href={KIDS_URL}>
+          <WorldSymbol world="kids" size={72} />
+          <span class="tile-name">Kids</span>
+          <span class="tile-status">Live</span>
+        </a>
+      </li>
+      <li>
+        <span class="tile tile-cotton tile-soon">
+          <WorldSymbol world="cotton" size={72} />
+          <span class="tile-name">Cotton Club</span>
+          <span class="tile-status">Coming soon</span>
+        </span>
+      </li>
+    </ul>
+    <p class="hero-more"><a class="hero-action" href="#worlds">Explore our little worlds <span aria-hidden="true">↓</span></a></p>
   </section>
 
-  <section class="wrap" aria-labelledby="products-title">
-    <h2 id="products-title" class="sr-only">Choose an experience</h2>
-    <div class="products">
-      <a class="card kids" href={KIDS_URL}>
-        <span class="label">Listen and play</span>
-        <h3>Petit Mokus Kids</h3>
-        <p>Sounds, lullabies and simple games to enjoy together.</p>
-        <span class="go">Open Kids <span aria-hidden="true">→</span></span>
-      </a>
-      <a class="card naming" href={BABYNAMING_URL}>
-        <span class="label">For two parents</span>
-        <h3>Petit Mokus BabyNaming</h3>
-        <p>Choose your baby's name together, as two parents.</p>
-        <span class="go">Open BabyNaming <span aria-hidden="true">→</span></span>
-        <span class="where muted">babynaming.petitmokus.com</span>
-      </a>
+  <section class="worlds wrap" id="worlds" aria-labelledby="worlds-title">
+    <h2 id="worlds-title">One family, three little worlds</h2>
+    <div class="path">
+      <svg class="path-line" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+        <path vector-effect="non-scaling-stroke" d="M50 0 C 96 6, 96 28, 50 34 S 4 60, 50 67 S 96 94, 50 100" />
+      </svg>
+      <ol class="stops">
+        <World world="babynaming" id="world-babynaming" label="Before they arrive" name="Petit Mokus BabyNaming" status="Live" href={BABYNAMING_URL} cta="Open BabyNaming">
+          Choose your baby’s name together, as two parents.
+        </World>
+        <World world="kids" id="world-kids" label="As they grow" name="Petit Mokus Kids" status="Live" href={KIDS_URL} cta="Open Kids">
+          Sounds, lullabies and simple games to enjoy together.
+        </World>
+        <World world="cotton" id="world-cotton" label="For everyday adventures" name="Petit Mokus Cotton Club" status="Coming soon">
+          Natural materials for little everyday adventures. A small collection is taking shape.
+        </World>
+      </ol>
     </div>
   </section>
 
-  <section class="section" id="our-story" aria-labelledby="story-title">
-    <div class="wrap narrow">
-      <h2 id="story-title">Our story</h2>
-      <p>Petit Mokus is multicultural at its core, crafted by a French &amp; Hungarian family in Amsterdam. Mokus means squirrel in Hungarian — a small, curious animal that thrives through play, exploration, and a love of small, meaningful moments.</p>
-      <p>Like a little squirrel gathering nuts, Petit Mokus gathers gentle interactions that help families feel more connected and secure, one small moment at a time.</p>
+  <section class="story" id="our-story" aria-labelledby="story-title">
+    <div class="wrap story-grid">
+      <div class="story-head">
+        <h2 id="story-title">Our story</h2>
+        <p class="story-lead">It began at home.</p>
+      </div>
+      <div class="story-text">
+        <p>Petit Mokus is multicultural at its core, crafted by a French-Hungarian family in Amsterdam.</p>
+        <p>Mokus means squirrel in Hungarian: a small, curious animal that thrives through play, exploration, and a love of small, meaningful moments.</p>
+        <p>Like a little squirrel gathering nuts, Petit Mokus brings together gentle interactions for family life, one small moment at a time.</p>
+      </div>
     </div>
   </section>
 
-  <section class="section" aria-labelledby="journal-title">
-    <div class="wrap narrow">
-      <h2 id="journal-title">From the Journal</h2>
-      <p class="muted">Guides and product stories for parents and families.</p>
-      {latest && (
-        <ul class="list">
-          <li>
-            <a class="card" href={`/en/journal/${latest.id}/`}>
-              <h3>{latest.data.title}</h3>
-              <p>{latest.data.description}</p>
-              <p class="meta muted"><time datetime={isoDate(latest.data.publishedAt)}>{formatDate(latest.data.publishedAt)}</time></p>
-            </a>
-          </li>
-        </ul>
+  <section class="journal wrap narrow" aria-labelledby="journal-title">
+    <h2 id="journal-title">From the Journal</h2>
+    <p class="muted">Guides and product stories for parents and families.</p>
+    <ul class="rows">
+      {article && (
+        <li>
+          <a class="row" href={`/en/journal/${article.id}/`}>
+            <span class="row-kind">Article</span>
+            <span class="row-title">{article.data.title}</span>
+            <time class="muted" datetime={isoDate(article.data.publishedAt)}>{formatDate(article.data.publishedAt)}</time>
+          </a>
+        </li>
       )}
-      <p style="margin-top:1rem"><a class="pill" href="/en/journal/">All Journal articles</a> <a class="pill" href="/en/updates/">Product updates</a></p>
-    </div>
+      {update && (
+        <li>
+          <a class="row" href={`/en/updates/${update.id}/`}>
+            <span class="row-kind">Update</span>
+            <span class="row-title">{update.data.title}</span>
+            <time class="muted" datetime={isoDate(update.data.publishedAt)}>{formatDate(update.data.publishedAt)}</time>
+          </a>
+        </li>
+      )}
+    </ul>
+    <p><a class="pill pill-outline" href="/en/journal/">Read the Journal</a></p>
   </section>
 </Base>
