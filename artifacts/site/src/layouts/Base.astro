@@ -2,7 +2,7 @@
 import "../styles/global.css";
 import LanguageList from "../components/LanguageList.astro";
 import { type Locale, UI } from "../lib/i18n";
-import { absolute, BABYNAMING_URL, BRAND, HOME_URL, KIDS_URL, SOCIAL_IMAGE, TAGLINE } from "../lib/site";
+import { absolute, BABYNAMING_URL, BRAND, homeUrl, kidsUrl as kidsUrlFor, SOCIAL_IMAGE, TAGLINE } from "../lib/site";
 
 interface Props {
   title: string;
@@ -15,14 +15,17 @@ interface Props {
   /** For pages that must never be indexed, such as the 404 page. */
   noindex?: boolean;
   jsonLd?: Record<string, unknown>;
-  /** English everywhere except the French and Hungarian Journal pages. */
+  /** The page language: English, or one of the other homepage languages. */
   locale?: Locale;
+  /** The same page in other languages (hreflang), when there is one. */
+  alternates?: { hreflang: string; href: string }[];
 }
-const { title, exactTitle, description, path, ogType = "website", noindex = false, jsonLd, locale = "en" } = Astro.props;
+const { title, exactTitle, description, path, ogType = "website", noindex = false, jsonLd, locale = "en", alternates = [] } = Astro.props;
 const t = UI[locale];
 const journalUrl = `/${locale}/journal/`;
-// Kids speaks every language at its locale root; English Kids lives at /en/kids/.
-const kidsUrl = locale === "en" ? KIDS_URL : `/${locale}/`;
+// Every language has its homepage at /<locale>/ and Kids at /<locale>/kids/.
+const homeHref = homeUrl(locale);
+const kidsUrl = kidsUrlFor(locale);
 const canonical = absolute(path);
 const fullTitle = exactTitle ?? (title === BRAND ? title : `${title} · ${BRAND}`);
 const inJournal = path.startsWith(journalUrl) || path.startsWith("/en/updates/");
@@ -51,13 +54,14 @@ const links = [
     {!noindex && <meta property="og:url" content={canonical} />}
     <meta property="og:image" content={SOCIAL_IMAGE} />
     <meta name="twitter:card" content="summary" />
+    {!noindex && alternates.map((a) => <link rel="alternate" hreflang={a.hreflang} href={a.href} />)}
     {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
   </head>
   <body>
     <a class="skip" href="#main">{t.skip}</a>
     <header class="site-header">
       <div class="wrap">
-        <a class="brand" href={HOME_URL} aria-label={t.brandHome}>
+        <a class="brand" href={homeHref} aria-label={t.brandHome}>
           <img src="/brand/petitmokus-logo-color.svg" alt="" width="48" height="48" />
           <span>
             <span class="brand-name">{BRAND}</span>
@@ -93,7 +97,7 @@ const links = [
       <div class="wrap">
         <nav aria-label={t.footer}>
           <ul class="footer-links">
-            <li><a href={HOME_URL}>{t.home}</a></li>
+            <li><a href={homeHref}>{t.home}</a></li>
             <li><a href={kidsUrl}>Kids</a></li>
             <li><a href={BABYNAMING_URL}>BabyNaming</a></li>
             <li><a href={journalUrl}>{t.journal}</a></li>

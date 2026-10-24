@@ -3,7 +3,7 @@ import { render } from "astro:content";
 import Base from "../../../layouts/Base.astro";
 import { publishedJournal } from "../../../lib/content";
 import { formatLocalDate, JOURNAL_LOCALES, type Locale, UI } from "../../../lib/i18n";
-import { absolute, AUTHOR_URL, BABYNAMING_URL, BRAND, isoDate, SOCIAL_IMAGE } from "../../../lib/site";
+import { absolute, authorUrl, BABYNAMING_URL, BRAND, isoDate, kidsUrl, SOCIAL_IMAGE } from "../../../lib/site";
 
 // French and Hungarian articles. Same page as /en/journal/[slug] with the
 // interface words translated; English articles never appear here.
@@ -28,7 +28,7 @@ const product =
   post.data.relatedProduct === "babynaming"
     ? { href: BABYNAMING_URL, label: "Petit Mokus BabyNaming" }
     : post.data.relatedProduct === "kids"
-      ? { href: `/${locale}/`, label: "Petit Mokus Kids" }
+      ? { href: kidsUrl(locale), label: "Petit Mokus Kids" }
       : null;
 const jsonLd = {
   "@context": "https://schema.org",
@@ -53,7 +53,7 @@ const jsonLd = {
           inLanguage: ["en", "fr", "hu"],
         }
       : undefined,
-  author: { "@type": "Organization", name: post.data.author, url: absolute(AUTHOR_URL) },
+  author: { "@type": "Organization", name: post.data.author, url: absolute(authorUrl(locale)) },
   publisher: { "@type": "Organization", name: BRAND, logo: { "@type": "ImageObject", url: SOCIAL_IMAGE } },
 };
 ---
@@ -63,7 +63,7 @@ const jsonLd = {
       <p class="meta"><a href={`/${locale}/journal/`}>{t.journal}</a></p>
       <h1>{post.data.title}</h1>
       <p class="meta muted">
-        {t.by} <a href={AUTHOR_URL}>{post.data.author}</a> ·
+        {t.by} <a href={authorUrl(locale)}>{post.data.author}</a> ·
         {t.published} <time datetime={isoDate(published)}>{formatLocalDate(published, locale)}</time>
         {updated.getTime() !== published.getTime() && <> · {t.updated} <time datetime={isoDate(updated)}>{formatLocalDate(updated, locale)}</time></>}
       </p>

@@ -7,21 +7,29 @@ export const HOME_URL = "/en/";
 export const KIDS_URL = "/en/kids/";
 export const BABYNAMING_URL = "https://babynaming.petitmokus.com";
 export const AUTHOR_URL = "/en/#our-story";
+export const authorUrl = (locale: string) => `/${locale}/#our-story`;
 /** Square brand image already shipped at the site root by the Kids build. */
 export const SOCIAL_IMAGE = `${SITE}/favicon-512x512.png`;
 
+/** Languages with a parent homepage at /<locale>/ (and a Journal). */
+export const HOME_LOCALES = ["en", "fr", "hu", "de", "it", "es", "pt"] as const;
+
+export const homeUrl = (locale: string) => `/${locale}/`;
+/** Kids, in every language it speaks, at /<locale>/kids/. */
+export const kidsUrl = (locale: string) => `/${locale}/kids/`;
+
 /**
- * Every language Kids is available in, from the Kids app's own list.
- * English leads to the parent homepage; each other language still opens
- * Kids at its locale root, because only English has a parent homepage.
+ * Every language Kids is available in, from the Kids app's own list. A
+ * language with a parent homepage leads there; any other opens Kids.
  */
 export const LANGUAGES = ALL_LANGUAGES.filter((l) => l.available).map((l) => {
   const code = l.code.toLowerCase();
-  return { code, native: l.native, english: l.english, href: code === "en" ? HOME_URL : `/${code}/` };
+  const hasHome = (HOME_LOCALES as readonly string[]).includes(code);
+  return { code, native: l.native, english: l.english, href: hasHome ? homeUrl(code) : kidsUrl(code) };
 });
 
-/** The non-English locale roots, which keep serving the Kids app. */
-export const KIDS_LOCALES = LANGUAGES.filter((l) => l.code !== "en").map((l) => l.code);
+/** Every language Kids speaks: each has Kids at /<locale>/kids/. */
+export const KIDS_LOCALES = LANGUAGES.map((l) => l.code);
 
 export function absolute(path: string): string {
   return new URL(path, SITE).toString();

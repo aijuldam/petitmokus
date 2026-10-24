@@ -1,0 +1,13 @@
+---
+// The homepage in every language with one except English (/en/ is its own page).
+import Home from "../../components/Home.astro";
+import type { Locale } from "../../lib/i18n";
+import { HOME_LOCALES } from "../../lib/site";
+
+export function getStaticPaths() {
+  return HOME_LOCALES.filter((l) => l !== "en").map((locale) => ({ params: { locale } }));
+}
+
+const locale = Astro.params.locale as Locale;
+---
+<Home locale={locale} />

@@ -1,10 +1,10 @@
 import type { APIRoute } from "astro";
 import { publishedJournal, publishedUpdates } from "../lib/content";
 import { JOURNAL_LOCALES } from "../lib/i18n";
-import { absolute, HOME_URL, isoDate, KIDS_LOCALES, KIDS_URL } from "../lib/site";
+import { absolute, HOME_LOCALES, homeUrl, isoDate, KIDS_LOCALES, kidsUrl } from "../lib/site";
 
-// Published English pages, the French and Hungarian Journal, and the locale
-// roots that serve Kids. Drafts,
+// Every homepage, the Journal in every language, and Kids in every language
+// it speaks. Drafts,
 // preview hosts and the BabyNaming app are never listed here.
 export const GET: APIRoute = async () => {
   const [posts, updates] = await Promise.all([publishedJournal(), publishedUpdates()]);
@@ -12,8 +12,7 @@ export const GET: APIRoute = async () => {
     JOURNAL_LOCALES.map(async (locale) => ({ locale, posts: await publishedJournal(locale) })),
   );
   const urls: { path: string; lastmod?: string }[] = [
-    { path: HOME_URL },
-    { path: KIDS_URL },
+    ...HOME_LOCALES.map((l) => ({ path: homeUrl(l) })),
     { path: "/en/journal/" },
     ...posts.map((p) => ({ path: `/en/journal/${p.id}/`, lastmod: isoDate(p.data.updatedAt ?? p.data.publishedAt) })),
     { path: "/en/updates/" },
@@ -26,7 +25,7 @@ export const GET: APIRoute = async () => {
             ...local.map((p) => ({ path: `/${locale}/journal/${p.id}/`, lastmod: isoDate(p.data.updatedAt ?? p.data.publishedAt) })),
           ],
     ),
-    ...KIDS_LOCALES.map((code) => ({ path: `/${code}/` })),
+    ...KIDS_LOCALES.map((code) => ({ path: kidsUrl(code) })),
   ];
   const body = [
     '<?xml version="1.0" encoding="UTF-8"?>',

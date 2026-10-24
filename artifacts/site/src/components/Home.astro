@@ -1,0 +1,133 @@
+---
+// The parent homepage, in each language that has one (/<locale>/). The
+// English page is the original; the others share this layout and their copy
+// lives in lib/home-copy.ts.
+import Base from "../layouts/Base.astro";
+import World from "./World.astro";
+import WorldSymbol from "./WorldSymbol.astro";
+import { publishedJournal, publishedUpdates } from "../lib/content";
+import { HOME } from "../lib/home-copy";
+import { formatLocalDate, type Locale, UI } from "../lib/i18n";
+import { absolute, BABYNAMING_URL, BRAND, HOME_LOCALES, homeUrl, isoDate, kidsUrl, SITE, SOCIAL_IMAGE, TAGLINE } from "../lib/site";
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const c = HOME[locale];
+const t = UI[locale];
+const [article] = await publishedJournal(locale);
+// Product updates are English only.
+const [update] = locale === "en" ? await publishedUpdates() : [];
+const kids = kidsUrl(locale);
+const title = `${BRAND} | ${TAGLINE}`;
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: BRAND,
+  url: `${SITE}${homeUrl(locale)}`,
+  logo: SOCIAL_IMAGE,
+};
+// The same page in every language, for search engines (English is the default).
+const alternates = [
+  ...HOME_LOCALES.map((l) => ({ hreflang: l, href: absolute(homeUrl(l)) })),
+  { hreflang: "x-default", href: absolute(homeUrl("en")) },
+];
+---
+<Base title={BRAND} exactTitle={title} description={c.description} path={homeUrl(locale)} jsonLd={jsonLd} locale={locale} alternates={alternates}>
+  <section class="hero wrap" aria-labelledby="hero-title">
+    <div class="hero-text">
+      <p class="eyebrow">{TAGLINE}</p>
+      <h1 id="hero-title">{c.heroTitle}</h1>
+      <p class="lead">{c.lead}</p>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+      <img src="/brand/petitmokus-logo-color.svg" alt="" width="220" height="220" />
+      <svg class="hero-trail" viewBox="0 0 200 120" width="200" height="120" focusable="false">
+        <path d="M100 4 C 150 24, 160 60, 100 76 S 60 104, 100 118" />
+      </svg>
+    </div>
+    <ul class="cue" aria-label={c.worldsLabel}>
+      <li>
+        <a class="tile tile-babynaming" href={BABYNAMING_URL}>
+          <WorldSymbol world="babynaming" size={72} />
+          <span class="tile-name">BabyNaming</span>
+          <span class="tile-status">{c.live}</span>
+        </a>
+      </li>
+      <li>
+        <a class="tile tile-kids" href={kids}>
+          <WorldSymbol world="kids" size={72} />
+          <span class="tile-name">Kids</span>
+          <span class="tile-status">{c.live}</span>
+        </a>
+      </li>
+      <li>
+        <span class="tile tile-cotton tile-soon">
+          <WorldSymbol world="cotton" size={72} />
+          <span class="tile-name">Cotton Club</span>
+          <span class="tile-status">{c.soon}</span>
+        </span>
+      </li>
+    </ul>
+    <p class="hero-more"><a class="hero-action" href="#worlds">{c.explore} <span aria-hidden="true">↓</span></a></p>
+  </section>
+
+  <section class="worlds wrap" id="worlds" aria-labelledby="worlds-title">
+    <h2 id="worlds-title">{c.worldsTitle}</h2>
+    <div class="path">
+      <svg class="path-line" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+        <path vector-effect="non-scaling-stroke" d="M50 0 C 96 6, 96 28, 50 34 S 4 60, 50 67 S 96 94, 50 100" />
+      </svg>
+      <ol class="stops">
+        <World world="babynaming" id="world-babynaming" label={c.babynaming.label} name="Petit Mokus BabyNaming" status={c.live} href={BABYNAMING_URL} cta={c.babynaming.cta}>
+          {c.babynaming.text}
+        </World>
+        <World world="kids" id="world-kids" label={c.kids.label} name="Petit Mokus Kids" status={c.live} href={kids} cta={c.kids.cta}>
+          {c.kids.text}
+        </World>
+        <World world="cotton" id="world-cotton" label={c.cotton.label} name="Petit Mokus Cotton Club" status={c.soon}>
+          {c.cotton.text}
+        </World>
+      </ol>
+    </div>
+  </section>
+
+  <section class="story" id="our-story" aria-labelledby="story-title">
+    <div class="wrap story-grid">
+      <div class="story-head">
+        <h2 id="story-title">{c.storyTitle}</h2>
+        <p class="story-lead">{c.storyLead}</p>
+      </div>
+      <div class="story-text">
+        {c.story.map((p) => <p>{p}</p>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="journal wrap narrow" aria-labelledby="journal-title">
+    <h2 id="journal-title">{c.journalTitle}</h2>
+    <p class="muted">{t.journalLead}</p>
+    <ul class="rows">
+      {article && (
+        <li>
+          <a class="row" href={`/${locale}/journal/${article.id}/`}>
+            <span class="row-kind">{c.articleKind}</span>
+            <span class="row-title">{article.data.title}</span>
+            <time class="muted" datetime={isoDate(article.data.publishedAt)}>{formatLocalDate(article.data.publishedAt, locale)}</time>
+          </a>
+        </li>
+      )}
+      {update && (
+        <li>
+          <a class="row" href={`/en/updates/${update.id}/`}>
+            <span class="row-kind">{c.updateKind}</span>
+            <span class="row-title">{update.data.title}</span>
+            <time class="muted" datetime={isoDate(update.data.publishedAt)}>{formatLocalDate(update.data.publishedAt, locale)}</time>
+          </a>
+        </li>
+      )}
+    </ul>
+    <p><a class="pill pill-outline" href={`/${locale}/journal/`}>{c.readJournal}</a></p>
+  </section>
+</Base>

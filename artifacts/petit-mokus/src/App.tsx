@@ -24,7 +24,7 @@ const LANGUAGE_TO_PATH: Record<Language, string> = Object.fromEntries(
   Object.entries(PATH_TO_LANGUAGE).map(([path, lang]) => [lang, path])
 ) as Record<Language, string>;
 
-/** Read the language from the URL path, e.g. /fr/ → 'FR'. Falls back to 'EN'. */
+/** Read the language from the URL path, e.g. /fr/kids/ → 'FR'. Falls back to 'EN'. */
 function getLanguageFromPath(): Language {
   const match = window.location.pathname.match(/^\/([a-z]{2,3})\/?/);
   if (match) return PATH_TO_LANGUAGE[match[1]] ?? 'EN';
@@ -32,12 +32,12 @@ function getLanguageFromPath(): Language {
 }
 
 /**
- * The home of Kids for a language. English Kids lives at /en/kids/ because
- * /en/ is the Petit Mokus parent homepage; every other language keeps its
- * locale root.
+ * The home of Kids for a language: /<locale>/kids/ in every language, since
+ * /<locale>/ is the Petit Mokus parent homepage (or leads to Kids where there
+ * is none).
  */
 function kidsPathForLanguage(lang: Language): string {
-  return lang === 'EN' ? '/en/kids/' : `/${LANGUAGE_TO_PATH[lang]}/`;
+  return `/${LANGUAGE_TO_PATH[lang]}/kids/`;
 }
 
 /** Update the browser URL to reflect the active language without a page reload. */
@@ -69,7 +69,7 @@ function App() {
   const [language, setLanguage] = useState<Language>(getLanguageFromPath);
   const [currentTab, setCurrentTab] = useState<TabType>('sounds');
 
-  // Sync URL on mount (covers direct navigation to /fr/ etc.)
+  // Sync URL on mount (covers direct navigation to /fr/kids/ etc.)
   useEffect(() => { syncUrlToLanguage(language); }, []);
 
   const handleLanguageChange = (lang: Language) => {
