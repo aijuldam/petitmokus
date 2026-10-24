@@ -79,7 +79,7 @@ cpSync(siteBuild, out, { recursive: true });
 //    deliberately no /en/* catch-all: unknown English paths get the 404 page.
 const locales = kidsLocales();
 
-// The French and Hungarian Journal live under locale roots that Kids
+// The Journal in other languages lives under locale roots that Kids
 // rewrites (/fr/*, /hu/*), and Cloudflare Pages applies _redirects before
 // static files. Their pages move to an internal folder and get their own
 // rewrites, listed before the Kids ones (first match wins). A rewrite to the
@@ -98,7 +98,7 @@ const redirects = [
   "",
   ...(journalLocales.length
     ? [
-        "# The French and Hungarian Journal, ahead of the Kids rewrites.",
+        "# The Journal in other languages, ahead of the Kids rewrites.",
         ...journalLocales.flatMap((code) => [
           `/${code}/journal  /${code}/journal/  301`,
           `/${code}/journal/*  /${LOCAL_JOURNAL_DIR}/${code}/journal/:splat  200`,

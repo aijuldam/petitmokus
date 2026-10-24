@@ -1,12 +1,12 @@
 import { BRAND } from "./site";
 
 /**
- * The parent site is English, with a French and a Hungarian Journal. These
+ * The parent site is English, with a Journal in six more languages. These
  * are the few interface words those Journal pages need. Kids and BabyNaming
  * keep their own translations.
  */
-export type Locale = "en" | "fr" | "hu";
-export const JOURNAL_LOCALES = ["fr", "hu"] as const;
+export type Locale = "en" | "fr" | "hu" | "de" | "it" | "es" | "pt";
+export const JOURNAL_LOCALES = ["fr", "hu", "de", "it", "es", "pt"] as const;
 
 export const UI = {
   en: {
@@ -65,6 +65,82 @@ export const UI = {
     updated: "Frissítve:",
     open: (product: string) => `${product} megnyitása`,
     dateLocale: "hu-HU",
+  },
+  de: {
+    skip: "Zum Inhalt springen",
+    brandHome: `${BRAND} Startseite`,
+    main: "Hauptmenü",
+    footer: "Fußzeile",
+    menu: "Menü",
+    home: "Startseite",
+    journal: "Journal",
+    languages: "Sprachen",
+    languageLabel: "Sprache: Deutsch",
+    languageNote: "Andere Sprachen öffnen Petit Mokus Kids.",
+    journalDescription: "Ratgeber und Geschichten von Petit Mokus für Eltern und Familien.",
+    journalLead: "Ratgeber und Geschichten für Eltern und Familien.",
+    by: "Von",
+    published: "Veröffentlicht am",
+    updated: "Aktualisiert am",
+    open: (product: string) => `${product} öffnen`,
+    dateLocale: "de-DE",
+  },
+  it: {
+    skip: "Vai al contenuto",
+    brandHome: `Home di ${BRAND}`,
+    main: "Principale",
+    footer: "Piè di pagina",
+    menu: "Menu",
+    home: "Home",
+    journal: "Diario",
+    languages: "Lingue",
+    languageLabel: "Lingua: italiano",
+    languageNote: "Le altre lingue aprono Petit Mokus Kids.",
+    journalDescription: "Guide e storie di Petit Mokus per genitori e famiglie.",
+    journalLead: "Guide e storie per genitori e famiglie.",
+    by: "Di",
+    published: "Pubblicato il",
+    updated: "Aggiornato il",
+    open: (product: string) => `Apri ${product}`,
+    dateLocale: "it-IT",
+  },
+  es: {
+    skip: "Saltar al contenido",
+    brandHome: `Inicio de ${BRAND}`,
+    main: "Principal",
+    footer: "Pie de página",
+    menu: "Menú",
+    home: "Inicio",
+    journal: "Diario",
+    languages: "Idiomas",
+    languageLabel: "Idioma: español",
+    languageNote: "Los demás idiomas abren Petit Mokus Kids.",
+    journalDescription: "Guías e historias de Petit Mokus para familias.",
+    journalLead: "Guías e historias para familias.",
+    by: "Por",
+    published: "Publicado el",
+    updated: "Actualizado el",
+    open: (product: string) => `Abrir ${product}`,
+    dateLocale: "es-ES",
+  },
+  pt: {
+    skip: "Saltar para o conteúdo",
+    brandHome: `Início ${BRAND}`,
+    main: "Principal",
+    footer: "Rodapé",
+    menu: "Menu",
+    home: "Início",
+    journal: "Diário",
+    languages: "Idiomas",
+    languageLabel: "Idioma: português",
+    languageNote: "Os outros idiomas abrem o Petit Mokus Kids.",
+    journalDescription: "Guias e histórias da Petit Mokus para pais e famílias.",
+    journalLead: "Guias e histórias para pais e famílias.",
+    by: "Por",
+    published: "Publicado a",
+    updated: "Atualizado a",
+    open: (product: string) => `Abrir ${product}`,
+    dateLocale: "pt-PT",
   },
 } satisfies Record<Locale, unknown>;
 

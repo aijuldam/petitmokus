@@ -17,9 +17,9 @@ const journal = defineCollection({
     tags: z.array(z.string()).default([]),
     heroImage: z.object({ src: z.string(), alt: z.string() }).optional(),
     draft: z.boolean().default(false),
-    // English is the main journal; French and Hungarian articles live at
-    // /fr/journal/ and /hu/journal/ (the rest of /fr/ and /hu/ is Kids).
-    locale: z.enum(["en", "fr", "hu"]),
+    // English is the main journal; other languages' articles live at
+    // /<locale>/journal/ (the rest of each locale root is Kids).
+    locale: z.enum(["en", "fr", "hu", "de", "it", "es", "pt"]),
     relatedProduct: product.optional(),
     /** A shorter <title> for search results when the headline is long. */
     seoTitle: z.string().optional(),
