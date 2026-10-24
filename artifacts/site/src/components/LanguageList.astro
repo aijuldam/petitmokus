@@ -1,11 +1,14 @@
 ---
+import { type Locale, UI } from "../lib/i18n";
 import { LANGUAGES } from "../lib/site";
+
+const { locale = "en" } = Astro.props as { locale?: Locale };
 ---
-<p class="lang-note muted">Other languages open Petit Mokus Kids.</p>
+<p class="lang-note muted">{UI[locale].languageNote}</p>
 <ul class="lang-list">
   {LANGUAGES.map((l) => (
     <li>
-      <a href={l.href} lang={l.code} hreflang={l.code} aria-current={l.code === "en" ? "true" : undefined}>{l.native}</a>
+      <a href={l.href} lang={l.code} hreflang={l.code} aria-current={l.code === locale ? "true" : undefined}>{l.native}</a>
     </li>
   ))}
 </ul>

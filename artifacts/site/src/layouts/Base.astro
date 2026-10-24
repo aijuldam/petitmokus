@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import LanguageList from "../components/LanguageList.astro";
+import { type Locale, UI } from "../lib/i18n";
 import { absolute, BABYNAMING_URL, BRAND, HOME_URL, KIDS_URL, SOCIAL_IMAGE, TAGLINE } from "../lib/site";
 
 interface Props {
@@ -14,19 +15,25 @@ interface Props {
   /** For pages that must never be indexed, such as the 404 page. */
   noindex?: boolean;
   jsonLd?: Record<string, unknown>;
+  /** English everywhere except the French and Hungarian Journal pages. */
+  locale?: Locale;
 }
-const { title, exactTitle, description, path, ogType = "website", noindex = false, jsonLd } = Astro.props;
+const { title, exactTitle, description, path, ogType = "website", noindex = false, jsonLd, locale = "en" } = Astro.props;
+const t = UI[locale];
+const journalUrl = `/${locale}/journal/`;
+// Kids speaks every language at its locale root; English Kids lives at /en/kids/.
+const kidsUrl = locale === "en" ? KIDS_URL : `/${locale}/`;
 const canonical = absolute(path);
 const fullTitle = exactTitle ?? (title === BRAND ? title : `${title} · ${BRAND}`);
-const inJournal = path.startsWith("/en/journal/") || path.startsWith("/en/updates/");
+const inJournal = path.startsWith(journalUrl) || path.startsWith("/en/updates/");
 const links = [
-  { href: KIDS_URL, label: "Kids" },
+  { href: kidsUrl, label: "Kids" },
   { href: BABYNAMING_URL, label: "BabyNaming" },
-  { href: "/en/journal/", label: "Journal", current: inJournal },
+  { href: journalUrl, label: t.journal, current: inJournal },
 ];
 ---
 <!doctype html>
-<html lang="en">
+<html lang={locale}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -47,10 +54,10 @@ const links = [
     {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
   </head>
   <body>
-    <a class="skip" href="#main">Skip to content</a>
+    <a class="skip" href="#main">{t.skip}</a>
     <header class="site-header">
       <div class="wrap">
-        <a class="brand" href={HOME_URL} aria-label={`${BRAND} home`}>
+        <a class="brand" href={HOME_URL} aria-label={t.brandHome}>
           <img src="/brand/petitmokus-logo-color.svg" alt="" width="48" height="48" />
           <span>
             <span class="brand-name">{BRAND}</span>
@@ -58,21 +65,21 @@ const links = [
           </span>
         </a>
         <div class="header-nav">
-          <nav aria-label="Main">
+          <nav aria-label={t.main}>
             <ul class="nav-links">
               {links.map((l) => <li><a href={l.href} aria-current={l.current ? "page" : undefined}>{l.label}</a></li>)}
             </ul>
           </nav>
           <details class="disclosure lang">
-            <summary aria-label="Language: English">EN</summary>
-            <div class="panel"><LanguageList /></div>
+            <summary aria-label={t.languageLabel}>{locale.toUpperCase()}</summary>
+            <div class="panel"><LanguageList locale={locale} /></div>
           </details>
           <details class="disclosure menu">
-            <summary>Menu</summary>
-            <nav class="panel" aria-label="Main">
+            <summary>{t.menu}</summary>
+            <nav class="panel" aria-label={t.main}>
               <ul class="nav-links">
                 {links.map((l) => <li><a href={l.href} aria-current={l.current ? "page" : undefined}>{l.label}</a></li>)}
-                <li><a href="#languages">Languages</a></li>
+                <li><a href="#languages">{t.languages}</a></li>
               </ul>
             </nav>
           </details>
@@ -84,17 +91,17 @@ const links = [
     </main>
     <footer class="site-footer">
       <div class="wrap">
-        <nav aria-label="Footer">
+        <nav aria-label={t.footer}>
           <ul class="footer-links">
-            <li><a href={HOME_URL}>Home</a></li>
-            <li><a href={KIDS_URL}>Kids</a></li>
+            <li><a href={HOME_URL}>{t.home}</a></li>
+            <li><a href={kidsUrl}>Kids</a></li>
             <li><a href={BABYNAMING_URL}>BabyNaming</a></li>
-            <li><a href="/en/journal/">Journal</a></li>
+            <li><a href={journalUrl}>{t.journal}</a></li>
           </ul>
         </nav>
         <details class="disclosure footer-lang" id="languages">
-          <summary>Languages</summary>
-          <div class="panel"><LanguageList /></div>
+          <summary>{t.languages}</summary>
+          <div class="panel"><LanguageList locale={locale} /></div>
         </details>
       </div>
     </footer>

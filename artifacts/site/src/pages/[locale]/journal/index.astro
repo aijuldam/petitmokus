@@ -1,0 +1,39 @@
+---
+import Base from "../../../layouts/Base.astro";
+import { publishedJournal } from "../../../lib/content";
+import { formatLocalDate, JOURNAL_LOCALES, type Locale, UI } from "../../../lib/i18n";
+import { isoDate } from "../../../lib/site";
+
+// The French and Hungarian Journal. English stays at /en/journal/; a language
+// gets a Journal page only once it has an article.
+export async function getStaticPaths() {
+  const paths = [];
+  for (const locale of JOURNAL_LOCALES) {
+    if ((await publishedJournal(locale)).length > 0) paths.push({ params: { locale } });
+  }
+  return paths;
+}
+
+const locale = Astro.params.locale as Locale;
+const t = UI[locale];
+const posts = await publishedJournal(locale);
+---
+<Base title={t.journal} description={t.journalDescription} path={`/${locale}/journal/`} locale={locale}>
+  <div class="wrap narrow">
+    <header class="page-head">
+      <h1>{t.journal}</h1>
+      <p class="muted">{t.journalLead}</p>
+    </header>
+    <ul class="list">
+      {posts.map((post) => (
+        <li>
+          <a class="card" href={`/${locale}/journal/${post.id}/`}>
+            <h2>{post.data.title}</h2>
+            <p>{post.data.description}</p>
+            <p class="meta muted"><time datetime={isoDate(post.data.publishedAt)}>{formatLocalDate(post.data.publishedAt, locale)}</time> · {post.data.author}</p>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</Base>

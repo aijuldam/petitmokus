@@ -1,0 +1,74 @@
+---
+import { render } from "astro:content";
+import Base from "../../../layouts/Base.astro";
+import { publishedJournal } from "../../../lib/content";
+import { formatLocalDate, JOURNAL_LOCALES, type Locale, UI } from "../../../lib/i18n";
+import { absolute, AUTHOR_URL, BABYNAMING_URL, BRAND, isoDate, SOCIAL_IMAGE } from "../../../lib/site";
+
+// French and Hungarian articles. Same page as /en/journal/[slug] with the
+// interface words translated; English articles never appear here.
+export async function getStaticPaths() {
+  const paths = [];
+  for (const locale of JOURNAL_LOCALES) {
+    for (const post of await publishedJournal(locale)) {
+      paths.push({ params: { locale, slug: post.id }, props: { post } });
+    }
+  }
+  return paths;
+}
+
+const locale = Astro.params.locale as Locale;
+const t = UI[locale];
+const { post } = Astro.props;
+const { Content } = await render(post);
+const path = `/${locale}/journal/${post.id}/`;
+const published = post.data.publishedAt;
+const updated = post.data.updatedAt ?? published;
+const product =
+  post.data.relatedProduct === "babynaming"
+    ? { href: BABYNAMING_URL, label: "Petit Mokus BabyNaming" }
+    : post.data.relatedProduct === "kids"
+      ? { href: `/${locale}/`, label: "Petit Mokus Kids" }
+      : null;
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  headline: post.data.title,
+  description: post.data.description,
+  datePublished: published.toISOString(),
+  dateModified: updated.toISOString(),
+  inLanguage: locale,
+  mainEntityOfPage: absolute(path),
+  image: post.data.heroImage ? absolute(post.data.heroImage.src) : SOCIAL_IMAGE,
+  keywords: post.data.tags.join(", ") || undefined,
+  // What the article is about, for search engines and AI answers.
+  about:
+    post.data.relatedProduct === "babynaming"
+      ? {
+          "@type": "SoftwareApplication",
+          name: "Petit Mokus BabyNaming",
+          url: BABYNAMING_URL,
+          applicationCategory: "LifestyleApplication",
+          operatingSystem: "Web",
+          inLanguage: ["en", "fr", "hu"],
+        }
+      : undefined,
+  author: { "@type": "Organization", name: post.data.author, url: absolute(AUTHOR_URL) },
+  publisher: { "@type": "Organization", name: BRAND, logo: { "@type": "ImageObject", url: SOCIAL_IMAGE } },
+};
+---
+<Base title={post.data.seoTitle ?? post.data.title} description={post.data.description} path={path} ogType="article" jsonLd={jsonLd} locale={locale}>
+  <article class="wrap narrow article">
+    <header class="page-head">
+      <p class="meta"><a href={`/${locale}/journal/`}>{t.journal}</a></p>
+      <h1>{post.data.title}</h1>
+      <p class="meta muted">
+        {t.by} <a href={AUTHOR_URL}>{post.data.author}</a> ·
+        {t.published} <time datetime={isoDate(published)}>{formatLocalDate(published, locale)}</time>
+        {updated.getTime() !== published.getTime() && <> · {t.updated} <time datetime={isoDate(updated)}>{formatLocalDate(updated, locale)}</time></>}
+      </p>
+    </header>
+    <Content />
+    {product && <p style="margin-top:2rem"><a class="pill" href={product.href}>{post.data.cta ?? t.open(product.label)}</a></p>}
+  </article>
+</Base>
