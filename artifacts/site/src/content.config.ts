@@ -2,7 +2,7 @@ import { defineCollection } from "astro:content";
 import { glob } from "astro/loaders";
 import { z } from "astro/zod";
 
-const product = z.enum(["kids", "babynaming", "brand"]);
+const product = z.enum(["kids", "babynaming", "wishes", "brand"]);
 
 // Evergreen guides and product stories. The file name is the URL slug.
 const journal = defineCollection({
@@ -25,6 +25,11 @@ const journal = defineCollection({
     seoTitle: z.string().optional(),
     /** Wording of the closing product button, instead of "Open …". */
     cta: z.string().optional(),
+    /**
+     * Wishes recommendations shown under the article, by slug, as published
+     * in the Wishes admin screen. Unknown or unpublished slugs are left out.
+     */
+    recommendations: z.array(z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/)).default([]),
   }),
 });
 

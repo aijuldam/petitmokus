@@ -1,0 +1,53 @@
+---
+import { recommendationsFor, textFor } from "../lib/recommendations";
+import { UI, type Locale } from "../lib/i18n";
+import { WISHES_APP_URL } from "../lib/site";
+
+/**
+ * "Our gift picks" under a Journal article: each published recommendation
+ * with a shop button (through the Wishes app, which counts the click and
+ * uses an affiliate link when there is one) and "Add to Wishes".
+ */
+interface Props {
+  slugs: string[];
+  locale: Locale;
+}
+
+const { slugs, locale } = Astro.props;
+const t = UI[locale];
+const picks = await recommendationsFor(slugs);
+const anyAffiliate = picks.some((p) => p.affiliate);
+const price = (minor: number, currency: string) =>
+  new Intl.NumberFormat(t.dateLocale, { style: "currency", currency }).format(minor / 100);
+---
+{picks.length > 0 && (
+  <section class="picks" aria-labelledby="picks-title">
+    <h2 id="picks-title">{t.picksTitle}</h2>
+    <ul class="list">
+      {picks.map((pick) => {
+        const text = textFor(pick, locale);
+        return (
+          <li class="card">
+            <h3>{text.name}</h3>
+            {pick.priceMinor !== null && pick.currency && <p><strong>{price(pick.priceMinor, pick.currency)}</strong></p>}
+            {text.description && <p class="muted">{text.description}</p>}
+            <p class="pick-actions">
+              <a
+                class="pill pill-outline"
+                href={`${WISHES_APP_URL}/go/r/${pick.slug}`}
+                target="_blank"
+                rel={`noopener noreferrer nofollow${pick.affiliate ? " sponsored" : ""}`}
+              >{t.seeInShop}</a>
+              <a class="pill pill-outline" href={`${WISHES_APP_URL}/wishes/add?rec=${pick.slug}`}>{t.addToWishes}</a>
+            </p>
+          </li>
+        );
+      })}
+    </ul>
+    {anyAffiliate && <p class="meta muted">{t.affiliateNote}</p>}
+  </section>
+)}
+<style>
+  .picks { margin-top: 2.5rem; }
+  .pick-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0; }
+</style>

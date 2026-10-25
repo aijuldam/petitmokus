@@ -6,6 +6,8 @@ export const TAGLINE = "Little Moments Matter";
 export const HOME_URL = "/en/";
 export const KIDS_URL = "/en/kids/";
 export const BABYNAMING_URL = "https://babynaming.petitmokus.com";
+/** The shared Petit Mokus app, where Wishes lives. */
+export const WISHES_APP_URL = (import.meta.env.PUBLIC_WISHES_APP_URL as string | undefined) ?? "https://app.petitmokus.com";
 export const AUTHOR_URL = "/en/#our-story";
 export const authorUrl = (locale: string) => `/${locale}/#our-story`;
 /** Square brand image already shipped at the site root by the Kids build. */
