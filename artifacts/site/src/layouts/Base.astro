@@ -2,7 +2,7 @@
 import "../styles/global.css";
 import LanguageList from "../components/LanguageList.astro";
 import { type Locale, UI } from "../lib/i18n";
-import { absolute, BABYNAMING_URL, BRAND, homeUrl, kidsUrl as kidsUrlFor, SOCIAL_IMAGE, TAGLINE } from "../lib/site";
+import { absolute, BABYNAMING_URL, BRAND, homeUrl, kidsUrl as kidsUrlFor, SOCIAL_IMAGE, TAGLINE, WISHES_LIVE, wishesUrl } from "../lib/site";
 
 interface Props {
   title: string;
@@ -32,6 +32,7 @@ const inJournal = path.startsWith(journalUrl) || path.startsWith("/en/updates/")
 const links = [
   { href: kidsUrl, label: "Kids" },
   { href: BABYNAMING_URL, label: "BabyNaming" },
+  ...(WISHES_LIVE ? [{ href: wishesUrl(locale), label: "Wishes" }] : []),
   { href: journalUrl, label: t.journal, current: inJournal },
 ];
 ---
@@ -100,6 +101,7 @@ const links = [
             <li><a href={homeHref}>{t.home}</a></li>
             <li><a href={kidsUrl}>Kids</a></li>
             <li><a href={BABYNAMING_URL}>BabyNaming</a></li>
+            {WISHES_LIVE && <li><a href={wishesUrl(locale)}>Wishes</a></li>}
             <li><a href={journalUrl}>{t.journal}</a></li>
           </ul>
         </nav>

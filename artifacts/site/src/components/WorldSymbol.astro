@@ -1,11 +1,11 @@
 ---
-// Product symbols for the three Petit Mokus worlds. They are symbols, not
-// logos: the squirrel is the only brand mark. All three share one system:
+// Product symbols for the Petit Mokus worlds. They are symbols, not
+// logos: the squirrel is the only brand mark. They all share one system:
 // a 24-unit grid, rounded strokes, one soft filled shape plus a little line
 // detail, and no enclosing badge. They are always decorative, because the
 // product name is written next to them.
 interface Props {
-  world: "babynaming" | "kids" | "cotton";
+  world: "babynaming" | "wishes" | "kids" | "cotton";
   /** "simple" for 24px uses; "full" adds the finer lines from 48px up. */
   detail?: "simple" | "full";
   size?: number;
@@ -20,6 +20,14 @@ const full = detail === "full";
       <path class="line" d="M3.5 12.5 Q12 22 20.5 12.5" />
       {full && <path class="line" d="M8.5 20.8 H15.5" />}
       {full && <path class="line" d="M19.8 10.6 Q20 7.2 23.2 6.4 Q23.6 9.8 19.8 10.6 Z" />}
+    </g>
+  )}
+  {world === "wishes" && (
+    <g>
+      <rect class="soft" x="4" y="10" width="16" height="11" rx="2.5" />
+      <path class="line" d="M12 10 V21" />
+      <path class="line" d="M12 9.5 Q7 9.5 7 6.2 Q7 3.8 9.2 4.4 Q11.2 5.2 12 9.5 Q12.8 5.2 14.8 4.4 Q17 3.8 17 6.2 Q17 9.5 12 9.5 Z" />
+      {full && <path class="line" d="M4 14.5 H20" />}
     </g>
   )}
   {world === "kids" && (

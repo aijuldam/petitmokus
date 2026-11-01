@@ -1,7 +1,7 @@
 import type { APIRoute } from "astro";
 import { publishedJournal, publishedUpdates } from "../lib/content";
 import { JOURNAL_LOCALES } from "../lib/i18n";
-import { absolute, HOME_LOCALES, homeUrl, isoDate, KIDS_LOCALES, kidsUrl } from "../lib/site";
+import { absolute, HOME_LOCALES, homeUrl, isoDate, KIDS_LOCALES, kidsUrl, WISHES_LIVE, wishesUrl } from "../lib/site";
 
 // Every homepage, the Journal in every language, and Kids in every language
 // it speaks. Drafts,
@@ -13,6 +13,7 @@ export const GET: APIRoute = async () => {
   );
   const urls: { path: string; lastmod?: string }[] = [
     ...HOME_LOCALES.map((l) => ({ path: homeUrl(l) })),
+    ...(WISHES_LIVE ? HOME_LOCALES.map((l) => ({ path: wishesUrl(l) })) : []),
     { path: "/en/journal/" },
     ...posts.map((p) => ({ path: `/en/journal/${p.id}/`, lastmod: isoDate(p.data.updatedAt ?? p.data.publishedAt) })),
     { path: "/en/updates/" },

@@ -1,0 +1,65 @@
+---
+// The public Wishes page, in every language with a homepage. It stays out of
+// the build until launch, so it cannot go live ahead of the privacy notice.
+import WorldSymbol from "../../../components/WorldSymbol.astro";
+import Base from "../../../layouts/Base.astro";
+import type { Locale } from "../../../lib/i18n";
+import { absolute, BRAND, HOME_LOCALES, wishesAppHref, wishesUrl, WISHES_LIVE } from "../../../lib/site";
+import { WISHES } from "../../../lib/wishes-copy";
+
+export function getStaticPaths() {
+  return WISHES_LIVE ? HOME_LOCALES.map((locale) => ({ params: { locale } })) : [];
+}
+
+const locale = Astro.params.locale as Locale;
+const c = WISHES[locale];
+const path = wishesUrl(locale);
+const signUp = wishesAppHref("/signup", locale);
+const signIn = wishesAppHref("/login", locale);
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  name: `${BRAND} Wishes`,
+  url: absolute(path),
+  applicationCategory: "LifestyleApplication",
+  operatingSystem: "Web",
+  offers: { "@type": "Offer", price: "0", priceCurrency: "EUR" },
+};
+const alternates = [
+  ...HOME_LOCALES.map((l) => ({ hreflang: l, href: absolute(wishesUrl(l)) })),
+  { hreflang: "x-default", href: absolute(wishesUrl("en")) },
+];
+---
+<Base title={`Wishes: ${c.title}`} description={c.description} path={path} jsonLd={jsonLd} locale={locale} alternates={alternates}>
+  <section class="wishes-hero wrap narrow" aria-labelledby="wishes-title">
+    <WorldSymbol world="wishes" size={96} />
+    <p class="eyebrow">{BRAND} Wishes</p>
+    <h1 id="wishes-title">{c.title}</h1>
+    <p class="lead">{c.lead}</p>
+    <p class="wishes-actions">
+      <a class="pill pill-primary" href={signUp}>{c.start}</a>
+      <a class="pill pill-outline" href={signIn}>{c.signIn}</a>
+    </p>
+    <p class="status">{c.free}</p>
+  </section>
+
+  <section class="wrap narrow" aria-labelledby="wishes-steps">
+    <h2 id="wishes-steps">{c.stepsTitle}</h2>
+    <ol class="list wishes-steps">
+      {c.steps.map((step) => (
+        <li class="card">
+          <h3>{step.title}</h3>
+          <p class="muted">{step.text}</p>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <section class="wishes-close wrap narrow" aria-labelledby="wishes-close">
+    <h2 id="wishes-close">{c.closeTitle}</h2>
+    <p class="muted">{c.closeText}</p>
+    <p class="wishes-actions">
+      <a class="pill pill-primary" href={signUp}>{c.start}</a>
+    </p>
+  </section>
+</Base>

@@ -7,14 +7,16 @@ import World from "./World.astro";
 import WorldSymbol from "./WorldSymbol.astro";
 import { publishedJournal, publishedUpdates } from "../lib/content";
 import { HOME } from "../lib/home-copy";
+import { WISHES } from "../lib/wishes-copy";
 import { formatLocalDate, type Locale, UI } from "../lib/i18n";
-import { absolute, BABYNAMING_URL, BRAND, HOME_LOCALES, homeUrl, isoDate, kidsUrl, SITE, SOCIAL_IMAGE, TAGLINE } from "../lib/site";
+import { absolute, BABYNAMING_URL, BRAND, HOME_LOCALES, homeUrl, isoDate, kidsUrl, SITE, SOCIAL_IMAGE, TAGLINE, WISHES_LIVE, wishesUrl } from "../lib/site";
 
 interface Props {
   locale: Locale;
 }
 const { locale } = Astro.props;
 const c = HOME[locale];
+const w = WISHES[locale];
 const t = UI[locale];
 const [article] = await publishedJournal(locale);
 // Product updates are English only.
@@ -47,7 +49,7 @@ const alternates = [
         <path d="M100 4 C 150 24, 160 60, 100 76 S 60 104, 100 118" />
       </svg>
     </div>
-    <ul class="cue" aria-label={c.worldsLabel}>
+    <ul class:list={["cue", { "cue-four": WISHES_LIVE }]} aria-label={WISHES_LIVE ? w.worldsLabel : c.worldsLabel}>
       <li>
         <a class="tile tile-babynaming" href={BABYNAMING_URL}>
           <WorldSymbol world="babynaming" size={72} />
@@ -55,6 +57,15 @@ const alternates = [
           <span class="tile-status">{c.live}</span>
         </a>
       </li>
+      {WISHES_LIVE && (
+        <li>
+          <a class="tile tile-wishes" href={wishesUrl(locale)}>
+            <WorldSymbol world="wishes" size={72} />
+            <span class="tile-name">Wishes</span>
+            <span class="tile-status">{c.live}</span>
+          </a>
+        </li>
+      )}
       <li>
         <a class="tile tile-kids" href={kids}>
           <WorldSymbol world="kids" size={72} />
@@ -74,15 +85,20 @@ const alternates = [
   </section>
 
   <section class="worlds wrap" id="worlds" aria-labelledby="worlds-title">
-    <h2 id="worlds-title">{c.worldsTitle}</h2>
+    <h2 id="worlds-title">{WISHES_LIVE ? w.worldsTitle : c.worldsTitle}</h2>
     <div class="path">
       <svg class="path-line" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-        <path vector-effect="non-scaling-stroke" d="M50 0 C 96 6, 96 28, 50 34 S 4 60, 50 67 S 96 94, 50 100" />
+        <path vector-effect="non-scaling-stroke" d={WISHES_LIVE ? "M50 0 C 96 5, 96 20, 50 25 S 4 45, 50 50 S 96 70, 50 75 S 4 95, 50 100" : "M50 0 C 96 6, 96 28, 50 34 S 4 60, 50 67 S 96 94, 50 100"} />
       </svg>
       <ol class="stops">
         <World world="babynaming" id="world-babynaming" label={c.babynaming.label} name="Petit Mokus BabyNaming" status={c.live} href={BABYNAMING_URL} cta={c.babynaming.cta}>
           {c.babynaming.text}
         </World>
+        {WISHES_LIVE && (
+          <World world="wishes" id="world-wishes" label={w.label} name="Petit Mokus Wishes" status={c.live} href={wishesUrl(locale)} cta={w.cta}>
+            {w.text}
+          </World>
+        )}
         <World world="kids" id="world-kids" label={c.kids.label} name="Petit Mokus Kids" status={c.live} href={kids} cta={c.kids.cta}>
           {c.kids.text}
         </World>
