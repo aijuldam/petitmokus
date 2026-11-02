@@ -4,7 +4,7 @@ import Recommendations from "../../../components/Recommendations.astro";
 import Base from "../../../layouts/Base.astro";
 import { publishedJournal } from "../../../lib/content";
 import { formatLocalDate, JOURNAL_LOCALES, type Locale, UI } from "../../../lib/i18n";
-import { absolute, authorUrl, BABYNAMING_URL, BRAND, isoDate, kidsUrl, SOCIAL_IMAGE, WISHES_APP_URL } from "../../../lib/site";
+import { absolute, authorUrl, BABYNAMING_URL, BRAND, isoDate, kidsUrl, SOCIAL_IMAGE, wishesAppHref } from "../../../lib/site";
 
 // French and Hungarian articles. Same page as /en/journal/[slug] with the
 // interface words translated; English articles never appear here.
@@ -31,7 +31,7 @@ const product =
     : post.data.relatedProduct === "kids"
       ? { href: kidsUrl(locale), label: "Petit Mokus Kids" }
       : post.data.relatedProduct === "wishes"
-        ? { href: `${WISHES_APP_URL}/account/wishes`, label: "Petit Mokus Wishes" }
+        ? { href: wishesAppHref("/signup", locale), label: "Petit Mokus Wishes" }
         : null;
 const jsonLd = {
   "@context": "https://schema.org",

@@ -3,7 +3,7 @@ import { render } from "astro:content";
 import Recommendations from "../../../components/Recommendations.astro";
 import Base from "../../../layouts/Base.astro";
 import { publishedJournal } from "../../../lib/content";
-import { absolute, AUTHOR_URL, BABYNAMING_URL, BRAND, formatDate, isoDate, KIDS_URL, SOCIAL_IMAGE, WISHES_APP_URL } from "../../../lib/site";
+import { absolute, AUTHOR_URL, BABYNAMING_URL, BRAND, formatDate, isoDate, KIDS_URL, SOCIAL_IMAGE, wishesAppHref } from "../../../lib/site";
 
 export async function getStaticPaths() {
   const posts = await publishedJournal();
@@ -21,7 +21,7 @@ const product =
     : post.data.relatedProduct === "kids"
       ? { href: KIDS_URL, label: "Petit Mokus Kids" }
       : post.data.relatedProduct === "wishes"
-        ? { href: `${WISHES_APP_URL}/account/wishes`, label: "Petit Mokus Wishes" }
+        ? { href: wishesAppHref("/signup", "en"), label: "Petit Mokus Wishes" }
         : null;
 const jsonLd = {
   "@context": "https://schema.org",
@@ -50,6 +50,6 @@ const jsonLd = {
     </header>
     <Content />
     <Recommendations slugs={post.data.recommendations} locale="en" />
-    {product && <p style="margin-top:2rem"><a class="pill" href={product.href}>Open {product.label}</a></p>}
+    {product && <p style="margin-top:2rem"><a class="pill" href={product.href}>{post.data.cta ?? `Open ${product.label}`}</a></p>}
   </article>
 </Base>
