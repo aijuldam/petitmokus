@@ -1,17 +1,13 @@
 import type { Locale } from "./i18n";
 
 /**
- * The Wishes public page and its place on the homepage, in every language
- * with a homepage. Each language speaks in the voice of the Wishes app: "vous"
- * in French, "te" in Hungarian, "du" in German, "tu" in Italian, Spanish and
- * European Portuguese.
+ * The Wishes public page, in every language with a homepage. Its homepage
+ * tile and world stop read the registry (data/products.json). Each language
+ * speaks in the voice of the Wishes app: "vous" in French, "te" in
+ * Hungarian, "du" in German, "tu" in Italian, Spanish and European
+ * Portuguese.
  */
 export interface WishesCopy {
-  worldsLabel: string;
-  worldsTitle: string;
-  label: string;
-  cta: string;
-  text: string;
   title: string;
   description: string;
   lead: string;
@@ -31,11 +27,6 @@ interface Step {
 
 export const WISHES: Record<Locale, WishesCopy> = {
   en: {
-    worldsLabel: "The four Petit Mokus worlds",
-    worldsTitle: "One family, four little worlds",
-    label: "For your celebrations",
-    cta: "Open Wishes",
-    text: "Make a wish list and share it with your loved ones.",
     title: "A wish list for every celebration",
     description:
       "Create a free wish list for a birth, a birthday, a baptism or any other celebration, and share it with your loved ones.",
@@ -53,11 +44,6 @@ export const WISHES: Record<Locale, WishesCopy> = {
     closeText: "It only takes a moment.",
   },
   fr: {
-    worldsLabel: "Les quatre univers Petit Mokus",
-    worldsTitle: "Une famille, quatre petits univers",
-    label: "Pour vos célébrations",
-    cta: "Ouvrir Wishes",
-    text: "Créez une liste d’envies et partagez-la avec vos proches.",
     title: "Une liste d’envies pour chaque célébration",
     description:
       "Créez gratuitement une liste d’envies pour une naissance, un anniversaire, un baptême ou toute autre célébration, et partagez-la avec vos proches.",
@@ -75,11 +61,6 @@ export const WISHES: Record<Locale, WishesCopy> = {
     closeText: "Cela ne prend qu’un instant.",
   },
   hu: {
-    worldsLabel: "A Petit Mokus négy világa",
-    worldsTitle: "Egy család, négy kis világ",
-    label: "Az ünnepeidhez",
-    cta: "Wishes megnyitása",
-    text: "Készíts kívánságlistát, és oszd meg a szeretteiddel.",
     title: "Kívánságlista minden ünnepre",
     description:
       "Készíts ingyen kívánságlistát születésre, születésnapra, keresztelőre vagy bármilyen más ünnepre, és oszd meg a szeretteiddel.",
@@ -97,11 +78,6 @@ export const WISHES: Record<Locale, WishesCopy> = {
     closeText: "Csak egy pillanat az egész.",
   },
   de: {
-    worldsLabel: "Die vier Welten von Petit Mokus",
-    worldsTitle: "Eine Familie, vier kleine Welten",
-    label: "Für deine Feste",
-    cta: "Wishes öffnen",
-    text: "Erstelle eine Wunschliste und teile sie mit deinen Liebsten.",
     title: "Eine Wunschliste für jedes Fest",
     description:
       "Erstelle kostenlos eine Wunschliste für eine Geburt, einen Geburtstag, eine Taufe oder ein anderes Fest und teile sie mit deinen Liebsten.",
@@ -119,11 +95,6 @@ export const WISHES: Record<Locale, WishesCopy> = {
     closeText: "Es dauert nur einen Moment.",
   },
   it: {
-    worldsLabel: "I quattro mondi di Petit Mokus",
-    worldsTitle: "Una famiglia, quattro piccoli mondi",
-    label: "Per le tue feste",
-    cta: "Apri Wishes",
-    text: "Crea una lista dei desideri e condividila con le persone care.",
     title: "Una lista dei desideri per ogni festa",
     description:
       "Crea gratis una lista dei desideri per una nascita, un compleanno, un battesimo o un’altra festa, e condividila con le persone care.",
@@ -141,11 +112,6 @@ export const WISHES: Record<Locale, WishesCopy> = {
     closeText: "Basta un momento.",
   },
   es: {
-    worldsLabel: "Los cuatro mundos de Petit Mokus",
-    worldsTitle: "Una familia, cuatro pequeños mundos",
-    label: "Para tus celebraciones",
-    cta: "Abrir Wishes",
-    text: "Crea una lista de deseos y compártela con tus seres queridos.",
     title: "Una lista de deseos para cada celebración",
     description:
       "Crea gratis una lista de deseos para un nacimiento, un cumpleaños, un bautizo u otra celebración, y compártela con tus seres queridos.",
@@ -163,11 +129,6 @@ export const WISHES: Record<Locale, WishesCopy> = {
     closeText: "Solo lleva un momento.",
   },
   pt: {
-    worldsLabel: "Os quatro mundos Petit Mokus",
-    worldsTitle: "Uma família, quatro pequenos mundos",
-    label: "Para as tuas celebrações",
-    cta: "Abrir Wishes",
-    text: "Cria uma lista de desejos e partilha-a com quem mais gostas.",
     title: "Uma lista de desejos para cada celebração",
     description:
       "Cria gratuitamente uma lista de desejos para um nascimento, um aniversário, um batizado ou outra celebração, e partilha-a com quem mais gostas.",

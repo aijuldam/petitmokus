@@ -2,17 +2,20 @@
 // One stop on the family path. A live world is a single full-area link; a
 // world that is not open yet is plain content with no link and no button.
 import WorldSymbol from "./WorldSymbol.astro";
+import type { SymbolId } from "../lib/symbols";
 
 interface Props {
-  world: "babynaming" | "wishes" | "kids" | "cotton";
+  world: SymbolId;
   id: string;
   label: string;
   name: string;
   status: string;
   href?: string;
   cta?: string;
+  /** A short line under the text, such as the languages a product speaks. */
+  note?: string;
 }
-const { world, id, label, name, status, href, cta } = Astro.props;
+const { world, id, label, name, status, href, cta, note } = Astro.props;
 const live = Boolean(href);
 const Tag = live ? "a" : "div";
 ---
@@ -23,6 +26,7 @@ const Tag = live ? "a" : "div";
       <span class="world-label">{label}</span>
       <h3>{name}</h3>
       <span class="world-text"><slot /></span>
+      {note && <span class="world-note">{note}</span>}
       <span class="world-foot">
         <span class:list={["status", { "status-soon": !live }]}>{status}</span>
         {live && <span class="go">{cta} <span aria-hidden="true">→</span></span>}

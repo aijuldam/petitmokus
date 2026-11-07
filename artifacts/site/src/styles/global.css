@@ -58,7 +58,7 @@ img { max-width: 100%; height: auto; }
 /* Hero: the story comes first */
 .hero { display: grid; gap: 1.5rem 3rem; align-items: center; padding-block: 3.5rem 2.5rem; }
 .eyebrow { font-size: 0.95rem; font-weight: 700; letter-spacing: 0.02em; color: var(--pm-rose-ink); }
-.hero h1 { margin-top: 0.75rem; font-size: clamp(1.2rem, 2.3vw, 1.85rem); line-height: 1.3; text-wrap: balance; }
+.hero h1 { margin-top: 0.75rem; font-size: clamp(2rem, 5vw, 3.1rem); line-height: 1.12; letter-spacing: -0.01em; text-wrap: balance; }
 .hero .lead { max-width: 34rem; margin-top: 1rem; font-size: 1.15rem; color: var(--pm-muted-text); }
 .hero-action { display: inline-flex; align-items: center; gap: 0.5rem; min-height: 44px; font-weight: 700; color: var(--pm-action); text-decoration: none; }
 .hero-action:hover { text-decoration: underline; }
@@ -67,9 +67,10 @@ img { max-width: 100%; height: auto; }
 .hero-trail { display: block; margin: -0.5rem auto 0; overflow: visible; }
 .hero-trail path, .path-line path { fill: none; stroke: var(--pm-oat); stroke-width: 4; stroke-linecap: round; stroke-dasharray: 0.1 14; }
 
-/* The worlds as the main choice: always side by side, also on phones */
-.cue { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.5rem; margin: 0; padding: 0; list-style: none; }
-.cue-four { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+/* The worlds as the main choice: two per row on phones (the last one
+   centred), three then two on tablets, all five in one row from 1024px. */
+.cue { --cue-gap: 0.5rem; --cue-cols: 2; display: flex; flex-wrap: wrap; justify-content: center; gap: var(--cue-gap); margin: 0; padding: 0; list-style: none; }
+.cue > li { flex: 0 0 calc((100% - (var(--cue-cols) - 1) * var(--cue-gap)) / var(--cue-cols)); min-width: 0; }
 .tile { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.3rem; height: 100%; min-height: 44px; padding: 1rem 0.25rem 0.9rem; border-radius: 1.5rem; background: var(--tile-wash); color: var(--pm-text); text-align: center; text-decoration: none; }
 a.tile { box-shadow: var(--pm-shadow-sm); transition: box-shadow 0.2s, transform 0.2s; }
 a.tile:hover { box-shadow: var(--pm-shadow-md); transform: translateY(-2px); }
@@ -79,7 +80,9 @@ a.tile:hover { box-shadow: var(--pm-shadow-md); transform: translateY(-2px); }
 .tile-babynaming { --tile-wash: var(--pm-rose-wash); --tile-ink: var(--pm-rose-ink); }
 .tile-wishes { --tile-wash: var(--pm-blue-wash); --tile-ink: var(--pm-blue-ink); }
 .tile-kids { --tile-wash: var(--pm-sage-wash); --tile-ink: var(--pm-sage-ink); }
+.tile-planit { --tile-wash: var(--pm-apricot-wash); --tile-ink: var(--pm-apricot-ink); }
 .tile-cotton { --tile-wash: transparent; --tile-ink: var(--pm-oat-ink); border: 2px dashed var(--pm-oat); }
+.one-account { text-align: center; color: var(--pm-muted-text); font-weight: 600; }
 .hero-more { text-align: center; }
 
 /* Product symbols: one soft shape plus a little line, in the world's own colours */
@@ -88,10 +91,19 @@ a.tile:hover { box-shadow: var(--pm-shadow-md); transform: translateY(-2px); }
 .world-symbol .line { fill: none; stroke: var(--sym-ink); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
 .world-symbol-babynaming { --sym-soft: var(--pm-rose); --sym-ink: var(--pm-rose-ink); }
 .world-symbol-wishes { --sym-soft: var(--pm-blue); --sym-ink: var(--pm-blue-ink); }
+.world-symbol-planit { --sym-soft: var(--pm-apricot); --sym-ink: var(--pm-apricot-ink); }
 .world-symbol-kids { --sym-soft: var(--pm-sage); --sym-ink: var(--pm-sage-ink); }
 .world-symbol-cotton { --sym-soft: var(--pm-card); --sym-ink: var(--pm-oat-ink); }
 
-/* The little path: three worlds as stops on one family journey */
+/* How it fits together: three short points between the hero and the path */
+.fits { padding-block: 1rem 1.5rem; }
+.fits-title { font-size: 1rem; font-weight: 700; letter-spacing: 0.02em; color: var(--pm-rose-ink); text-align: center; }
+.fits-list { display: grid; gap: 0.75rem; margin: 1rem 0 0; padding: 0; list-style: none; }
+.fits-list li { display: flex; flex-direction: column; gap: 0.2rem; padding: 1rem 1.25rem; border-radius: var(--pm-radius); background: var(--pm-card); border: 1px solid var(--pm-card-border); }
+.fits-list strong { font-size: 1.05rem; }
+.fits-list span { color: var(--pm-muted-text); }
+
+/* The little path: the worlds as stops on one family journey */
 .worlds { padding-block: 2.5rem 4rem; }
 .worlds > h2 { font-size: clamp(1.6rem, 3vw, 2.1rem); text-align: center; }
 .path { position: relative; margin-top: 2.5rem; }
@@ -101,6 +113,7 @@ a.tile:hover { box-shadow: var(--pm-shadow-md); transform: translateY(-2px); }
 .stop::before { content: ""; position: absolute; left: calc(-1.5rem - 11px); top: 2.25rem; width: 18px; height: 18px; border-radius: 50%; background: var(--pm-background); border: 4px solid var(--stop-ink); }
 .stop-babynaming { --stop-ink: var(--pm-rose-ink); --stop-wash: var(--pm-rose-wash); }
 .stop-wishes { --stop-ink: var(--pm-blue-ink); --stop-wash: var(--pm-blue-wash); }
+.stop-planit { --stop-ink: var(--pm-apricot-ink); --stop-wash: var(--pm-apricot-wash); }
 .stop-kids { --stop-ink: var(--pm-sage-ink); --stop-wash: var(--pm-sage-wash); }
 .stop-cotton { --stop-ink: var(--pm-oat-ink); --stop-wash: var(--pm-oat-wash); }
 .world { display: flex; flex-direction: column; gap: 1rem; padding: 1.5rem; border-radius: 2rem; background: var(--stop-wash); color: var(--pm-text); text-decoration: none; }
@@ -113,6 +126,7 @@ a.world:hover { box-shadow: var(--pm-shadow-md); transform: translateY(-2px); }
 .world-label { font-size: 0.9rem; font-weight: 700; color: var(--stop-ink); }
 .world h3 { font-size: 1.5rem; }
 .world-text { max-width: 28rem; }
+.world-note { font-size: 0.9rem; font-weight: 600; color: var(--pm-muted-text); }
 .world-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1rem; margin-top: 0.4rem; }
 .status { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.2rem 0.75rem; border-radius: 999px; background: var(--pm-card); font-size: 0.85rem; font-weight: 700; color: var(--stop-ink); }
 .status::before { content: ""; width: 0.55rem; height: 0.55rem; border-radius: 50%; background: currentColor; }
@@ -174,13 +188,13 @@ a.card:hover { box-shadow: var(--pm-shadow-md); transform: translateY(-2px); }
 @media (min-width: 48rem) {
   .hero { grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); padding-block: 4.5rem 3rem; }
   .hero-art { display: block; }
-  .cue { grid-column: 1 / -1; gap: 1.5rem; }
-  .cue-four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .cue { grid-column: 1 / -1; }
   .tile { gap: 0.5rem; padding: 2rem 1rem 1.75rem; border-radius: 2.25rem; }
   .tile .world-symbol { width: 96px; height: 96px; }
   .tile-name { font-size: 1.5rem; }
   .tile-status { font-size: 0.95rem; }
-  .hero-more { grid-column: 1 / -1; }
+  .hero-more, .one-account { grid-column: 1 / -1; }
+  .fits-list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 
   .path-line { display: block; }
   .stops { gap: 3rem; padding: 2rem 0; border-left: 0; }
@@ -208,6 +222,17 @@ a.card:hover { box-shadow: var(--pm-shadow-md); transform: translateY(-2px); }
   .worlds { padding-block: 2rem 3rem; }
   .path { margin-top: 1.5rem; }
   .story { padding-block: 2.5rem; }
+}
+
+/* Tiles: 3 + 2 on tablets, one row of five from 1024px */
+@media (min-width: 40rem) {
+  .cue { --cue-gap: 1rem; --cue-cols: 3; }
+}
+@media (min-width: 64rem) {
+  .cue { --cue-gap: 1.25rem; --cue-cols: 5; }
+  .tile { padding: 1.75rem 0.5rem 1.5rem; border-radius: 2rem; }
+  .tile .world-symbol { width: 80px; height: 80px; }
+  .tile-name { font-size: 1.25rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {

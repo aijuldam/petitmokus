@@ -1,0 +1,182 @@
+{
+  "version": 1,
+  "products": [
+    {
+      "id": "babynaming",
+      "name": "BabyNaming",
+      "fullName": "Petit Mokus BabyNaming",
+      "status": "live",
+      "url": "https://babynaming.petitmokus.com/",
+      "locales": ["en", "fr", "hu", "de", "it", "es", "pt"],
+      "symbol": "babynaming",
+      "momentLabel": {
+        "en": "Before they arrive",
+        "fr": "Avant son arrivée",
+        "hu": "Mielőtt megérkezik",
+        "de": "Bevor es da ist",
+        "it": "Prima del suo arrivo",
+        "es": "Antes de su llegada",
+        "pt": "Antes de chegar"
+      },
+      "oneLiner": {
+        "en": "Choose your baby’s name together, as two parents.",
+        "fr": "Choisissez à deux le prénom de votre bébé.",
+        "hu": "Válasszatok együtt, kettesben nevet a babátoknak.",
+        "de": "Wählt als Eltern gemeinsam den Namen für euer Baby.",
+        "it": "Scegliete insieme, in due, il nome del vostro bebè.",
+        "es": "Elegid juntos, en pareja, el nombre de vuestro bebé.",
+        "pt": "Escolham juntos, a dois, o nome do vosso bebé."
+      },
+      "cta": {
+        "en": "Open BabyNaming",
+        "fr": "Ouvrir BabyNaming",
+        "hu": "BabyNaming megnyitása",
+        "de": "BabyNaming öffnen",
+        "it": "Apri BabyNaming",
+        "es": "Abrir BabyNaming",
+        "pt": "Abrir o BabyNaming"
+      }
+    },
+    {
+      "id": "wishes",
+      "name": "Wishes",
+      "fullName": "Petit Mokus Wishes",
+      "status": "live",
+      "url": "https://petitmokus.com/{locale}/wishes/",
+      "locales": ["en", "fr", "hu", "de", "it", "es", "pt"],
+      "symbol": "wishes",
+      "momentLabel": {
+        "en": "For your celebrations",
+        "fr": "Pour vos célébrations",
+        "hu": "Az ünnepeidhez",
+        "de": "Für deine Feste",
+        "it": "Per le tue feste",
+        "es": "Para tus celebraciones",
+        "pt": "Para as tuas celebrações"
+      },
+      "oneLiner": {
+        "en": "Make a wish list and share it with your loved ones.",
+        "fr": "Créez une liste d’envies et partagez-la avec vos proches.",
+        "hu": "Készíts kívánságlistát, és oszd meg a szeretteiddel.",
+        "de": "Erstelle eine Wunschliste und teile sie mit deinen Liebsten.",
+        "it": "Crea una lista dei desideri e condividila con le persone care.",
+        "es": "Crea una lista de deseos y compártela con tus seres queridos.",
+        "pt": "Cria uma lista de desejos e partilha-a com quem mais gostas."
+      },
+      "cta": {
+        "en": "Open Wishes",
+        "fr": "Ouvrir Wishes",
+        "hu": "Wishes megnyitása",
+        "de": "Wishes öffnen",
+        "it": "Apri Wishes",
+        "es": "Abrir Wishes",
+        "pt": "Abrir Wishes"
+      }
+    },
+    {
+      "id": "planit",
+      "name": "PlanIt",
+      "fullName": "Petit Mokus PlanIt",
+      "status": "live",
+      "url": "https://planit.petitmokus.com/",
+      "locales": ["en", "fr", "hu"],
+      "symbol": "planit",
+      "momentLabel": {
+        "en": "When you get together",
+        "fr": "Quand vous vous retrouvez",
+        "hu": "Amikor összejöttök",
+        "de": "Wenn ihr zusammenkommt",
+        "it": "Quando vi ritrovate",
+        "es": "Cuando os reunís",
+        "pt": "Quando se juntam"
+      },
+      "oneLiner": {
+        "en": "More shared moments, together. Plan a get-together without endless messages or chasing replies.",
+        "fr": "Plus de moments partagés, ensemble. Organisez des retrouvailles sans messages à n’en plus finir ni relances.",
+        "hu": "Több közös pillanat, együtt. Tervezzetek közös programot végtelen üzenetváltás és utánajárás nélkül.",
+        "de": "Mehr gemeinsame Momente, zusammen. Plant ein Treffen ohne endlose Nachrichten und ohne allen hinterherzulaufen.",
+        "it": "Più momenti condivisi, insieme. Organizzate un ritrovo senza messaggi infiniti né risposte da rincorrere.",
+        "es": "Más momentos compartidos, juntos. Organizad un encuentro sin mensajes interminables ni respuestas que perseguir.",
+        "pt": "Mais momentos partilhados, juntos. Organizem um encontro sem mensagens intermináveis nem andar atrás de respostas."
+      },
+      "cta": {
+        "en": "Plan a get-together",
+        "fr": "Organiser des retrouvailles",
+        "hu": "Közös program tervezése",
+        "de": "Ein Treffen planen",
+        "it": "Organizza un ritrovo",
+        "es": "Organizar un encuentro",
+        "pt": "Organizar um encontro"
+      },
+      "languageNote": {
+        "de": "Verfügbar auf Englisch, Französisch und Ungarisch",
+        "it": "Disponibile in inglese, francese e ungherese",
+        "es": "Disponible en inglés, francés y húngaro",
+        "pt": "Disponível em inglês, francês e húngaro"
+      }
+    },
+    {
+      "id": "kids",
+      "name": "Kids",
+      "fullName": "Petit Mokus Kids",
+      "status": "live",
+      "url": "https://petitmokus.com/{locale}/kids/",
+      "locales": ["en", "fr", "hu", "de", "it", "es", "pt"],
+      "symbol": "kids",
+      "momentLabel": {
+        "en": "As they grow",
+        "fr": "Pendant qu’il grandit",
+        "hu": "Ahogy nő",
+        "de": "Während es wächst",
+        "it": "Mentre cresce",
+        "es": "Mientras crece",
+        "pt": "À medida que cresce"
+      },
+      "oneLiner": {
+        "en": "Sounds, lullabies and simple games to enjoy together.",
+        "fr": "Des sons, des berceuses et des jeux simples à partager.",
+        "hu": "Hangok, altatódalok és egyszerű játékok a közös örömhöz.",
+        "de": "Klänge, Schlaflieder und einfache Spiele für gemeinsame Momente.",
+        "it": "Suoni, ninne nanne e giochi semplici da condividere.",
+        "es": "Sonidos, nanas y juegos sencillos para disfrutar juntos.",
+        "pt": "Sons, canções de embalar e jogos simples para partilhar."
+      },
+      "cta": {
+        "en": "Open Kids",
+        "fr": "Ouvrir Kids",
+        "hu": "Kids megnyitása",
+        "de": "Kids öffnen",
+        "it": "Apri Kids",
+        "es": "Abrir Kids",
+        "pt": "Abrir o Kids"
+      }
+    },
+    {
+      "id": "cottonclub",
+      "name": "Cotton Club",
+      "fullName": "Petit Mokus Cotton Club",
+      "status": "soon",
+      "url": null,
+      "locales": [],
+      "symbol": "cotton",
+      "momentLabel": {
+        "en": "For everyday adventures",
+        "fr": "Pour les aventures du quotidien",
+        "hu": "A mindennapi kalandokhoz",
+        "de": "Für die kleinen Abenteuer im Alltag",
+        "it": "Per le avventure di ogni giorno",
+        "es": "Para las aventuras de cada día",
+        "pt": "Para as aventuras do dia a dia"
+      },
+      "oneLiner": {
+        "en": "Natural materials for little everyday adventures. A small collection is taking shape.",
+        "fr": "Des matières naturelles pour les petites aventures du quotidien. Une petite collection prend forme.",
+        "hu": "Természetes anyagok a mindennapok apró kalandjaihoz. Egy kis kollekció van készülőben.",
+        "de": "Natürliche Materialien für kleine Alltagsabenteuer. Eine kleine Kollektion entsteht.",
+        "it": "Materiali naturali per le piccole avventure di ogni giorno. Una piccola collezione sta prendendo forma.",
+        "es": "Materiales naturales para las pequeñas aventuras de cada día. Una pequeña colección está tomando forma.",
+        "pt": "Materiais naturais para as pequenas aventuras do dia a dia. Uma pequena coleção está a ganhar forma."
+      }
+    }
+  ]
+}

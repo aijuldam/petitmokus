@@ -21,6 +21,8 @@
   --pm-blue-wash: #e4edf6;
   --pm-oat: #e3d2b5; /* cotton and oat, decorative only */
   --pm-oat-wash: #f4ebdb;
+  --pm-apricot: #f2c49b; /* PlanIt, decorative only */
+  --pm-apricot-wash: #fcefe2;
 
   /* Functional accessibility variants */
   --pm-muted-text: #756357; /* readable form of the brand's #9d897b: 5.3:1 */
@@ -31,6 +33,7 @@
   --pm-sage-ink: #326748;
   --pm-blue-ink: #2f5578;
   --pm-oat-ink: #6b4f2a;
+  --pm-apricot-ink: #8c4a1f; /* 6.0:1 on its wash */
 
   --pm-radius: 1.25rem;
   --pm-radius-card: 1.5rem;
