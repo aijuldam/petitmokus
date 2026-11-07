@@ -66,16 +66,23 @@ export function productUrl(p: Product, locale: Locale): string | null {
   return p.url ? p.url.replace("{locale}", locale) : null;
 }
 
+/** Live products, in registry order: the site header and footer links. */
+export function navProducts(): Product[] {
+  return visibleProducts().filter(isLive);
+}
+
 /**
- * Where a homepage link to a product goes. Pages on petitmokus.com itself
- * get a plain relative path (no UTM, so Cloudflare page grouping stays
- * clean). Other hosts get `lang` and the site's UTM pattern.
+ * Where a link to a product goes. Pages on petitmokus.com itself get a plain
+ * relative path (no UTM, so Cloudflare page grouping stays clean). Other
+ * hosts get `lang`, and homepage tiles and stops also get the site's UTM
+ * pattern; header and footer links carry no UTM.
  */
-export function productHref(p: Product, locale: Locale, placement: "tile" | "world"): string | null {
+export function productHref(p: Product, locale: Locale, placement: "tile" | "world" | "nav"): string | null {
   if (!p.url) return null;
   const url = new URL(p.url.replace("{locale}", locale));
   if (url.origin === SITE) return url.pathname;
   url.searchParams.set("lang", productLang(p, locale));
+  if (placement === "nav") return url.toString();
   url.searchParams.set("utm_source", "petitmokus");
   url.searchParams.set("utm_medium", "site");
   url.searchParams.set("utm_campaign", "homepage");

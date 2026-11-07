@@ -1,8 +1,11 @@
 ---
 import "../styles/global.css";
 import LanguageList from "../components/LanguageList.astro";
+import WorldSymbol from "../components/WorldSymbol.astro";
 import { type Locale, UI } from "../lib/i18n";
-import { absolute, BABYNAMING_URL, BRAND, homeUrl, kidsUrl as kidsUrlFor, SOCIAL_IMAGE, TAGLINE, WISHES_LIVE, wishesUrl } from "../lib/site";
+import { navProducts, productHref } from "../lib/products";
+import { absolute, BRAND, homeUrl, SOCIAL_IMAGE, TAGLINE } from "../lib/site";
+import type { SymbolId } from "../lib/symbols";
 
 interface Props {
   title: string;
@@ -25,14 +28,16 @@ const t = UI[locale];
 const journalUrl = `/${locale}/journal/`;
 // Every language has its homepage at /<locale>/ and Kids at /<locale>/kids/.
 const homeHref = homeUrl(locale);
-const kidsUrl = kidsUrlFor(locale);
 const canonical = absolute(path);
 const fullTitle = exactTitle ?? (title === BRAND ? title : `${title} · ${BRAND}`);
 const inJournal = path.startsWith(journalUrl) || path.startsWith("/en/updates/");
-const links = [
-  { href: kidsUrl, label: "Kids" },
-  { href: BABYNAMING_URL, label: "BabyNaming" },
-  ...(WISHES_LIVE ? [{ href: wishesUrl(locale), label: "Wishes" }] : []),
+// Header and footer links: the live products in registry order (NAV-1),
+// then the Journal. A product page on this site marks its own link.
+const links: { href: string; label: string; current?: boolean; symbol?: SymbolId }[] = [
+  ...navProducts().map((p) => {
+    const href = productHref(p, locale, "nav")!;
+    return { href, label: p.name, symbol: p.symbol, current: href.startsWith("/") && path.startsWith(href) };
+  }),
   { href: journalUrl, label: t.journal, current: inJournal },
 ];
 ---
@@ -83,7 +88,14 @@ const links = [
             <summary>{t.menu}</summary>
             <nav class="panel" aria-label={t.main}>
               <ul class="nav-links">
-                {links.map((l) => <li><a href={l.href} aria-current={l.current ? "page" : undefined}>{l.label}</a></li>)}
+                {links.map((l) => (
+                  <li>
+                    <a href={l.href} aria-current={l.current ? "page" : undefined}>
+                      {l.symbol && <WorldSymbol world={l.symbol} detail="simple" size={28} />}
+                      {l.label}
+                    </a>
+                  </li>
+                ))}
                 <li><a href="#languages">{t.languages}</a></li>
               </ul>
             </nav>
@@ -99,10 +111,7 @@ const links = [
         <nav aria-label={t.footer}>
           <ul class="footer-links">
             <li><a href={homeHref}>{t.home}</a></li>
-            <li><a href={kidsUrl}>Kids</a></li>
-            <li><a href={BABYNAMING_URL}>BabyNaming</a></li>
-            {WISHES_LIVE && <li><a href={wishesUrl(locale)}>Wishes</a></li>}
-            <li><a href={journalUrl}>{t.journal}</a></li>
+            {links.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
           </ul>
         </nav>
         <details class="disclosure footer-lang" id="languages">
