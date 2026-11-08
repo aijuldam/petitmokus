@@ -10,6 +10,15 @@ interface TabSoundsProps {
   language: Language;
 }
 
+/**
+ * How wide a card photo is drawn: half the grid (max-w-md, 448 px) less its
+ * px-6 padding, gap-4 and the card's p-4, so 160 px at most.
+ * The srcset widths name each photo's short side, since the photos are cropped
+ * to a square, so the browser picks the copy whose short side covers the card.
+ * Kept in step with the preload links in index.html.
+ */
+const CARD_IMAGE_SIZES = "(min-width: 448px) 160px, calc(50vw - 64px)";
+
 /** The first two rows of the two-column grid, which are on screen at load. */
 const EAGER_CARDS = 4;
 
@@ -39,6 +48,8 @@ function SoundCard({ item, language, isOpen, eager, priority, onTap, onInfo }: {
       )}>
         <img
           src={item.image}
+          srcSet={item.imageSmall ? `${item.imageSmall} 280w, ${item.image} 480w` : undefined}
+          sizes={item.imageSmall ? CARD_IMAGE_SIZES : undefined}
           alt={item.getName(language)}
           loading={eager ? "eager" : "lazy"}
           decoding="async"

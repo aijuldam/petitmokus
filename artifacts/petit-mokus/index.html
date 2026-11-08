@@ -17,6 +17,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- The first row of the Sounds tab (the largest paint), fetched before the app script runs.
+         The srcset and sizes match the cards in TabSounds.tsx. -->
+    <link rel="preload" as="image" href="/src/assets/animals/dog.jpg" imagesrcset="/src/assets/animals/dog-sm.jpg 280w, /src/assets/animals/dog.jpg 480w" imagesizes="(min-width: 448px) 160px, calc(50vw - 64px)" fetchpriority="high">
+    <link rel="preload" as="image" href="/src/assets/animals/cat.jpg" imagesrcset="/src/assets/animals/cat-sm.jpg 280w, /src/assets/animals/cat.jpg 480w" imagesizes="(min-width: 448px) 160px, calc(50vw - 64px)" fetchpriority="high">
 
     <!-- Canonical + hreflang (set dynamically per language via JS in App.tsx) -->
     <link rel="canonical" href="https://petitmokus.com/en/kids/">

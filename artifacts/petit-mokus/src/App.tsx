@@ -3,7 +3,7 @@ import { Header } from "./components/Header";
 import { BottomNav, TabType } from "./components/BottomNav";
 import { TabSounds } from "./components/TabSounds";
 import { NewsletterBar } from "./components/NewsletterBar";
-import { Language } from "./lib/i18n";
+import { Language, loadLanguage } from "./lib/i18n";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { trackTabView } from "./lib/analytics";
 import { stopAllAudio } from "./lib/audio";
@@ -41,7 +41,7 @@ const LANGUAGE_TO_PATH: Record<Language, string> = Object.fromEntries(
 ) as Record<Language, string>;
 
 /** Read the language from the URL path, e.g. /fr/kids/ → 'FR'. Falls back to 'EN'. */
-function getLanguageFromPath(): Language {
+export function getLanguageFromPath(): Language {
   const match = window.location.pathname.match(/^\/([a-z]{2,3})\/?/);
   if (match) return PATH_TO_LANGUAGE[match[1]] ?? 'EN';
   return 'EN';
@@ -101,9 +101,12 @@ function App() {
     return () => window.removeEventListener("pagehide", stopAllAudio);
   }, []);
 
+  // The new language's strings are fetched before it is shown.
   const handleLanguageChange = (lang: Language) => {
-    setLanguage(lang);
-    syncUrlToLanguage(lang);
+    loadLanguage(lang).then(() => {
+      setLanguage(lang);
+      syncUrlToLanguage(lang);
+    });
   };
 
   const handleTabChange = (tab: TabType) => {
