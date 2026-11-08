@@ -11,6 +11,7 @@ import { StudioApp } from "./components/Studio/StudioApp";
 import { Language } from "./lib/i18n";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { trackTabView } from "./lib/analytics";
+import { stopAllAudio } from "./lib/audio";
 
 // ── Language ↔ URL path mapping ───────────────────────────────────────────
 const PATH_TO_LANGUAGE: Record<string, Language> = {
@@ -71,6 +72,13 @@ function App() {
 
   // Sync URL on mount (covers direct navigation to /fr/kids/ etc.)
   useEffect(() => { syncUrlToLanguage(language); }, []);
+
+  // No sound carries on after leaving Kids (NAV-6). pagehide, not unload, so
+  // the back/forward cache keeps working.
+  useEffect(() => {
+    window.addEventListener("pagehide", stopAllAudio);
+    return () => window.removeEventListener("pagehide", stopAllAudio);
+  }, []);
 
   const handleLanguageChange = (lang: Language) => {
     setLanguage(lang);

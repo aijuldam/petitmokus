@@ -221,3 +221,18 @@ export const stopSong = () => {
     }, 100);
   }
 };
+
+// ── Leaving Kids (suite NAV-6) ────────────────────────────────────────────────
+
+/**
+ * Stops everything that can make a sound: the shared sound slot, the lullaby
+ * loop, the music players and spoken words. Called when the visitor leaves
+ * Kids through the header, and on pagehide as a backstop (pagehide, not
+ * unload, so the back/forward cache keeps working).
+ */
+export const stopAllAudio = () => {
+  stopCurrentSound();
+  if (isPlaying) stopSong();
+  document.querySelectorAll<HTMLMediaElement>("audio, video").forEach((media) => media.pause());
+  if (typeof window !== "undefined" && window.speechSynthesis) window.speechSynthesis.cancel();
+};
