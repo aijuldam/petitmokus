@@ -146,7 +146,8 @@ export function SuiteSwitcher({ language }: { language: Language }) {
                           </span>
                         ) : null}
                       </span>
-                      <span className="text-sm text-muted-foreground">{item.text}</span>
+                      {/* Kids' muted colour is too pale on the card (WCAG 1.4.3). */}
+                      <span className="text-sm text-foreground/85">{item.text}</span>
                     </span>
                   </>
                 );
@@ -165,7 +166,7 @@ export function SuiteSwitcher({ language }: { language: Language }) {
                         {body}
                       </a>
                     ) : (
-                      <div aria-disabled="true" className={cn(row, "opacity-80")}>
+                      <div aria-disabled="true" className={row}>
                         {body}
                       </div>
                     )}
