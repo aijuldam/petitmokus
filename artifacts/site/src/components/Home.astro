@@ -77,12 +77,14 @@ const alternates = [
               <a class:list={["tile", `tile-${p.symbol}`]} href={href}>
                 <WorldSymbol world={p.symbol} size={72} />
                 <span class="tile-name">{p.name}</span>
+                <span class="tile-subtitle">{text(p.tileSubtitle, locale)}</span>
                 <span class="tile-status">{c.live}</span>
               </a>
             ) : (
               <span class:list={["tile", `tile-${p.symbol}`, "tile-soon"]} aria-disabled="true">
                 <WorldSymbol world={p.symbol} size={72} />
                 <span class="tile-name">{p.name}</span>
+                <span class="tile-subtitle">{text(p.tileSubtitle, locale)}</span>
                 <span class="tile-status">{c.soon}</span>
               </span>
             )}

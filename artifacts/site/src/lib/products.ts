@@ -22,6 +22,8 @@ export interface Product {
   locales: string[];
   symbol: SymbolId;
   momentLabel: Translated;
+  /** Short line under the name on the homepage tiles. */
+  tileSubtitle: Translated;
   oneLiner: Translated;
   cta?: Translated;
   /** Shown where the visitor's language is not one of `locales`. */

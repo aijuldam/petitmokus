@@ -9,6 +9,15 @@
       "url": "https://babynaming.petitmokus.com/",
       "locales": ["en", "fr", "hu", "de", "it", "es", "pt"],
       "symbol": "babynaming",
+      "tileSubtitle": {
+        "en": "Choosing a name",
+        "fr": "Choisir un prénom",
+        "hu": "Névválasztás",
+        "de": "Einen Namen finden",
+        "it": "Scegliere un nome",
+        "es": "Elegir un nombre",
+        "pt": "Escolher um nome"
+      },
       "momentLabel": {
         "en": "Before they arrive",
         "fr": "Avant son arrivée",
@@ -45,6 +54,15 @@
       "url": "https://petitmokus.com/{locale}/wishes/",
       "locales": ["en", "fr", "hu", "de", "it", "es", "pt"],
       "symbol": "wishes",
+      "tileSubtitle": {
+        "en": "Sharing wish lists",
+        "fr": "Partager ses listes d’envies",
+        "hu": "Kívánságlisták megosztása",
+        "de": "Wunschlisten teilen",
+        "it": "Condividere liste dei desideri",
+        "es": "Compartir listas de deseos",
+        "pt": "Partilhar listas de desejos"
+      },
       "momentLabel": {
         "en": "For your celebrations",
         "fr": "Pour vos célébrations",
@@ -81,6 +99,15 @@
       "url": "https://planit.petitmokus.com/",
       "locales": ["en", "fr", "hu"],
       "symbol": "planit",
+      "tileSubtitle": {
+        "en": "Planning a get together",
+        "fr": "Organiser des retrouvailles",
+        "hu": "Közös program szervezése",
+        "de": "Ein Treffen planen",
+        "it": "Organizzare un ritrovo",
+        "es": "Organizar un encuentro",
+        "pt": "Organizar um encontro"
+      },
       "momentLabel": {
         "en": "When you get together",
         "fr": "Quand vous vous retrouvez",
@@ -123,6 +150,15 @@
       "url": "https://petitmokus.com/{locale}/kids/",
       "locales": ["en", "fr", "hu", "de", "it", "es", "pt"],
       "symbol": "kids",
+      "tileSubtitle": {
+        "en": "Play & learn",
+        "fr": "Jouer et apprendre",
+        "hu": "Játék és tanulás",
+        "de": "Spielen & lernen",
+        "it": "Giocare e imparare",
+        "es": "Jugar y aprender",
+        "pt": "Brincar e aprender"
+      },
       "momentLabel": {
         "en": "As they grow",
         "fr": "Pendant qu’il grandit",
@@ -159,6 +195,15 @@
       "url": null,
       "locales": [],
       "symbol": "cotton",
+      "tileSubtitle": {
+        "en": "Natural products only",
+        "fr": "Uniquement des produits naturels",
+        "hu": "Csak természetes termékek",
+        "de": "Nur natürliche Produkte",
+        "it": "Solo prodotti naturali",
+        "es": "Solo productos naturales",
+        "pt": "Apenas produtos naturais"
+      },
       "momentLabel": {
         "en": "For everyday adventures",
         "fr": "Pour les aventures du quotidien",

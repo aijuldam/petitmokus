@@ -79,6 +79,7 @@ a.tile { box-shadow: var(--pm-shadow-sm); transition: box-shadow 0.2s, transform
 a.tile:hover { box-shadow: var(--pm-shadow-md); transform: translateY(-2px); }
 .tile .world-symbol { width: 52px; height: 52px; }
 .tile-name { font-size: 0.95rem; font-weight: 700; line-height: 1.2; }
+.tile-subtitle { font-size: 0.85rem; font-weight: 500; line-height: 1.3; color: var(--pm-text); overflow-wrap: break-word; hyphens: auto; }
 .tile-status { font-size: 0.8rem; font-weight: 700; color: var(--tile-ink); }
 .tile-babynaming { --tile-wash: var(--pm-rose-wash); --tile-ink: var(--pm-rose-ink); }
 .tile-wishes { --tile-wash: var(--pm-blue-wash); --tile-ink: var(--pm-blue-ink); }
@@ -195,6 +196,7 @@ a.card:hover { box-shadow: var(--pm-shadow-md); transform: translateY(-2px); }
   .tile { gap: 0.5rem; padding: 2rem 1rem 1.75rem; border-radius: 2.25rem; }
   .tile .world-symbol { width: 96px; height: 96px; }
   .tile-name { font-size: 1.5rem; }
+  .tile-subtitle { font-size: 1rem; }
   .tile-status { font-size: 0.95rem; }
   .hero-more, .one-account { grid-column: 1 / -1; }
   .fits-list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
@@ -241,6 +243,7 @@ a.card:hover { box-shadow: var(--pm-shadow-md); transform: translateY(-2px); }
   .tile { padding: 1.75rem 0.5rem 1.5rem; border-radius: 2rem; }
   .tile .world-symbol { width: 80px; height: 80px; }
   .tile-name { font-size: 1.25rem; }
+  .tile-subtitle { font-size: 0.9rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {
