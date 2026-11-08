@@ -74,13 +74,13 @@ img { max-width: 100%; height: auto; }
    centred), three then two on tablets, all five in one row from 1024px. */
 .cue { --cue-gap: 0.5rem; --cue-cols: 2; display: flex; flex-wrap: wrap; justify-content: center; gap: var(--cue-gap); margin: 0; padding: 0; list-style: none; }
 .cue > li { flex: 0 0 calc((100% - (var(--cue-cols) - 1) * var(--cue-gap)) / var(--cue-cols)); min-width: 0; }
-.tile { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.3rem; height: 100%; min-height: 44px; padding: 1rem 0.25rem 0.9rem; border-radius: 1.5rem; background: var(--tile-wash); color: var(--pm-text); text-align: center; text-decoration: none; }
+.tile { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 0.3rem; height: 100%; min-height: 44px; padding: 1rem 0.25rem 0.9rem; border-radius: 1.5rem; background: var(--tile-wash); color: var(--pm-text); text-align: center; text-decoration: none; }
 a.tile { box-shadow: var(--pm-shadow-sm); transition: box-shadow 0.2s, transform 0.2s; }
 a.tile:hover { box-shadow: var(--pm-shadow-md); transform: translateY(-2px); }
 .tile .world-symbol { width: 52px; height: 52px; }
 .tile-name { font-size: 0.95rem; font-weight: 700; line-height: 1.2; }
 .tile-subtitle { font-size: 0.85rem; font-weight: 500; line-height: 1.3; color: var(--pm-text); overflow-wrap: break-word; hyphens: auto; }
-.tile-status { font-size: 0.8rem; font-weight: 700; color: var(--tile-ink); }
+.tile-status { margin-top: auto; font-size: 0.8rem; font-weight: 700; color: var(--tile-ink); }
 .tile-babynaming { --tile-wash: var(--pm-rose-wash); --tile-ink: var(--pm-rose-ink); }
 .tile-wishes { --tile-wash: var(--pm-blue-wash); --tile-ink: var(--pm-blue-ink); }
 .tile-kids { --tile-wash: var(--pm-sage-wash); --tile-ink: var(--pm-sage-ink); }
