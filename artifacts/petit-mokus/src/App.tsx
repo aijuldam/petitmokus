@@ -1,17 +1,32 @@
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { Header } from "./components/Header";
 import { BottomNav, TabType } from "./components/BottomNav";
 import { TabSounds } from "./components/TabSounds";
-import { TabMusic } from "./components/TabMusic";
-import { TabStories } from "./components/TabStories";
-import { TabGames } from "./components/TabGames";
-import { TabAbout } from "./components/TabAbout";
 import { NewsletterBar } from "./components/NewsletterBar";
-import { StudioApp } from "./components/Studio/StudioApp";
 import { Language } from "./lib/i18n";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { trackTabView } from "./lib/analytics";
 import { stopAllAudio } from "./lib/audio";
+
+// ── Code splitting ────────────────────────────────────────────────────────
+// Sounds is the first tab and ships in the main bundle. The other tabs and the
+// Studio load as separate chunks, fetched once the page is idle so that a tab
+// switch is still instant.
+const loadMusic = () => import("./components/TabMusic");
+const loadStories = () => import("./components/TabStories");
+const loadGames = () => import("./components/TabGames");
+const loadAbout = () => import("./components/TabAbout");
+const TabMusic = lazy(() => loadMusic().then((m) => ({ default: m.TabMusic })));
+const TabStories = lazy(() => loadStories().then((m) => ({ default: m.TabStories })));
+const TabGames = lazy(() => loadGames().then((m) => ({ default: m.TabGames })));
+const TabAbout = lazy(() => loadAbout().then((m) => ({ default: m.TabAbout })));
+const StudioApp = lazy(() => import("./components/Studio/StudioApp").then((m) => ({ default: m.StudioApp })));
+
+function prefetchTabs() {
+  const run = () => { loadMusic(); loadStories(); loadGames(); loadAbout(); };
+  if ("requestIdleCallback" in window) window.requestIdleCallback(run, { timeout: 4000 });
+  else setTimeout(run, 2000);
+}
 
 // ── Language ↔ URL path mapping ───────────────────────────────────────────
 const PATH_TO_LANGUAGE: Record<string, Language> = {
@@ -73,6 +88,12 @@ function App() {
   // Sync URL on mount (covers direct navigation to /fr/kids/ etc.)
   useEffect(() => { syncUrlToLanguage(language); }, []);
 
+  // Fetch the other tabs' code after the first paint, once the load event has passed.
+  useEffect(() => {
+    if (document.readyState === "complete") prefetchTabs();
+    else window.addEventListener("load", prefetchTabs, { once: true });
+  }, []);
+
   // No sound carries on after leaving Kids (NAV-6). pagehide, not unload, so
   // the back/forward cache keeps working.
   useEffect(() => {
@@ -94,7 +115,9 @@ function App() {
   if (isStudio) {
     return (
       <TooltipProvider>
-        <StudioApp />
+        <Suspense fallback={null}>
+          <StudioApp />
+        </Suspense>
       </TooltipProvider>
     );
   }
@@ -106,10 +129,12 @@ function App() {
         
         <main className="flex-1 overflow-y-auto">
           {currentTab === 'sounds' && <TabSounds language={language} />}
-          {currentTab === 'music' && <TabMusic language={language} />}
-          {currentTab === 'stories' && <TabStories language={language} />}
-          {currentTab === 'games' && <TabGames language={language} />}
-          {currentTab === 'about' && <TabAbout language={language} />}
+          <Suspense fallback={null}>
+            {currentTab === 'music' && <TabMusic language={language} />}
+            {currentTab === 'stories' && <TabStories language={language} />}
+            {currentTab === 'games' && <TabGames language={language} />}
+            {currentTab === 'about' && <TabAbout language={language} />}
+          </Suspense>
         </main>
 
         <BottomNav currentTab={currentTab} setTab={handleTabChange} language={language} />

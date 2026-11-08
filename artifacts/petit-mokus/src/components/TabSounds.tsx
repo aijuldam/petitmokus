@@ -10,12 +10,19 @@ interface TabSoundsProps {
   language: Language;
 }
 
+/** The first two rows of the two-column grid, which are on screen at load. */
+const EAGER_CARDS = 4;
+
 // ── Single sound card ─────────────────────────────────────────────────────────
 
-function SoundCard({ item, language, isOpen, onTap, onInfo }: {
+function SoundCard({ item, language, isOpen, eager, priority, onTap, onInfo }: {
   item: SoundItem;
   language: Language;
   isOpen: boolean;
+  /** Cards in the first rows load at once; the rest wait until scrolled near. */
+  eager: boolean;
+  /** The first row holds the largest paint, so it is fetched ahead of the rest. */
+  priority: boolean;
   onTap: () => void;
   onInfo: (e: React.MouseEvent) => void;
 }) {
@@ -33,6 +40,9 @@ function SoundCard({ item, language, isOpen, onTap, onInfo }: {
         <img
           src={item.image}
           alt={item.getName(language)}
+          loading={eager ? "eager" : "lazy"}
+          decoding="async"
+          fetchPriority={priority ? "high" : "auto"}
           className="w-full h-full object-cover"
           style={{ objectPosition: item.objectPosition ?? 'center' }}
         />
@@ -123,7 +133,7 @@ export function TabSounds({ language }: TabSoundsProps) {
       </div>
 
       <div className="grid grid-cols-2 gap-4 px-6 pb-36 pt-4 max-w-md mx-auto">
-        {activeCategory.items.map((item) => {
+        {activeCategory.items.map((item, index) => {
           const isOpen = openFact === item.id;
           return (
             <SoundCard
@@ -131,6 +141,8 @@ export function TabSounds({ language }: TabSoundsProps) {
               item={item}
               language={language}
               isOpen={isOpen}
+              eager={index < EAGER_CARDS}
+              priority={index < 2}
               onTap={() => {
                 if (isOpen) {
                   setOpenFact(null);

@@ -4,16 +4,20 @@ import { Star, Volume2 } from "lucide-react";
 import { Language, dictionary } from "../lib/i18n";
 import { playAnimalSound } from "../lib/audio";
 
-import dogPhoto      from "@assets/fran-taylor-3VhTw1T0WwI-unsplash_1777220813646.jpg";
-import catPhoto      from "@assets/animal-face_W8CE6CC9MP_1777221156438.jpg";
-import horsePhoto    from "@assets/luisa-peter-Olt577JtPM0-unsplash_(1)_1777223739525.jpg";
-import cowPhoto      from "@assets/thomas-oldenburger-1SQFd9_zNW4-unsplash_(1)_1777221618899.jpg";
-import foxPhoto      from "@assets/alex-glebov-Y9mp8VnyreQ-unsplash_1777225879484.jpg";
-import wolfPhoto     from "@assets/reyk-odinson-mk2chAKaZR4-unsplash_1777225751422.jpg";
-import squirrelPhoto from "@assets/richard-sagredo-VKe5EyWv8PA-unsplash_1777226655987.jpg";
-import pigPhoto      from "@assets/pascal-debrunner-b-zyMn_e_R4-unsplash_1777226794867.jpg";
-import sheepPhoto    from "@assets/benjamin-sander-bergum-Bpkdz8nkufU-unsplash_1777226933706.jpg";
-import roosterPhoto  from "@assets/alberto-rodriguez-santana-2coVy1szQK4-unsplash_1777227006297.jpg";
+import { animalPhotos } from "../lib/animal-photos";
+
+const {
+  dog: dogPhoto,
+  cat: catPhoto,
+  horse: horsePhoto,
+  cow: cowPhoto,
+  fox: foxPhoto,
+  wolf: wolfPhoto,
+  squirrel: squirrelPhoto,
+  pig: pigPhoto,
+  sheep: sheepPhoto,
+  rooster: roosterPhoto,
+} = animalPhotos;
 
 type AgeMode = 1 | 2 | 3 | 5;
 
