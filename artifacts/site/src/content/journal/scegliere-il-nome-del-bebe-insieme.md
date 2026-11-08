@@ -9,6 +9,7 @@ tags: [nomi per bambini, scegliere insieme, famiglie multiculturali, nomi più d
 draft: false
 locale: it
 relatedProduct: babynaming
+translationKey: choosing-a-name-together
 cta: "Trovate insieme il nome del vostro bebè con Petit Mokus BabyNaming"
 ---
 

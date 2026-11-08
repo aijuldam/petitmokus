@@ -1,18 +1,29 @@
 ---
 import { render } from "astro:content";
+import Faq from "../../../components/Faq.astro";
 import Recommendations from "../../../components/Recommendations.astro";
 import Base from "../../../layouts/Base.astro";
 import { publishedJournal } from "../../../lib/content";
 import { formatLocalDate, JOURNAL_LOCALES, type Locale, UI } from "../../../lib/i18n";
+import { alternatesFor, appHref, languageHrefsFor, structuredData, versionsOf } from "../../../lib/journal";
 import { absolute, authorUrl, BABYNAMING_URL, BRAND, isoDate, kidsUrl, SOCIAL_IMAGE, wishesAppHref } from "../../../lib/site";
 
-// French and Hungarian articles. Same page as /en/journal/[slug] with the
-// interface words translated; English articles never appear here.
+// Articles in every Journal language except English. Same page as
+// /en/journal/[slug] with the interface words translated.
+//
+// Where an English article has no version in a language yet, that language
+// gets the English text at /<locale>/journal/<english-slug>/ with a notice,
+// unindexed, instead of a 404. scripts/check-journal.mjs still fails the
+// build for the missing version.
 export async function getStaticPaths() {
+  const english = await publishedJournal("en");
   const paths = [];
   for (const locale of JOURNAL_LOCALES) {
-    for (const post of await publishedJournal(locale)) {
-      paths.push({ params: { locale, slug: post.id }, props: { post } });
+    const local = await publishedJournal(locale);
+    for (const post of local) paths.push({ params: { locale, slug: post.id }, props: { post, fallback: false } });
+    const translated = new Set(local.map((p) => p.data.translationKey));
+    for (const post of english) {
+      if (!translated.has(post.data.translationKey)) paths.push({ params: { locale, slug: post.id }, props: { post, fallback: true } });
     }
   }
   return paths;
@@ -20,11 +31,14 @@ export async function getStaticPaths() {
 
 const locale = Astro.params.locale as Locale;
 const t = UI[locale];
-const { post } = Astro.props;
+const { post, fallback } = Astro.props;
+// The text's own language: the page's, or English on a fallback page.
+const textLocale = post.data.locale as Locale;
 const { Content } = await render(post);
 const path = `/${locale}/journal/${post.id}/`;
 const published = post.data.publishedAt;
 const updated = post.data.updatedAt ?? published;
+const versions = await versionsOf(post.data.translationKey);
 const product =
   post.data.relatedProduct === "babynaming"
     ? { href: BABYNAMING_URL, label: "Petit Mokus BabyNaming" }
@@ -32,15 +46,17 @@ const product =
       ? { href: kidsUrl(locale), label: "Petit Mokus Kids" }
       : post.data.relatedProduct === "wishes"
         ? { href: wishesAppHref("/signup", locale), label: "Petit Mokus Wishes" }
-        : null;
-const jsonLd = {
+        : post.data.relatedProduct === "planit"
+          ? { href: appHref("planit", locale)!, label: "Petit Mokus PlanIt" }
+          : null;
+const jsonLd = structuredData(post, {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
   headline: post.data.title,
   description: post.data.description,
   datePublished: published.toISOString(),
   dateModified: updated.toISOString(),
-  inLanguage: locale,
+  inLanguage: textLocale,
   mainEntityOfPage: absolute(path),
   image: post.data.heroImage ? absolute(post.data.heroImage.src) : SOCIAL_IMAGE,
   keywords: post.data.tags.join(", ") || undefined,
@@ -58,21 +74,34 @@ const jsonLd = {
       : undefined,
   author: { "@type": "Organization", name: post.data.author, url: absolute(authorUrl(locale)) },
   publisher: { "@type": "Organization", name: BRAND, logo: { "@type": "ImageObject", url: SOCIAL_IMAGE } },
-};
+});
 ---
-<Base title={post.data.seoTitle ?? post.data.title} description={post.data.description} path={path} ogType="article" jsonLd={jsonLd} locale={locale}>
+<Base
+  title={post.data.seoTitle ?? post.data.title}
+  exactTitle={post.data.htmlTitle}
+  description={post.data.description}
+  path={path}
+  ogType="article"
+  noindex={fallback}
+  jsonLd={fallback ? undefined : jsonLd}
+  locale={locale}
+  alternates={fallback ? [] : alternatesFor(versions)}
+  languageHrefs={languageHrefsFor(versions)}
+>
   <article class="wrap narrow article">
-    <header class="page-head">
-      <p class="meta"><a href={`/${locale}/journal/`}>{t.journal}</a></p>
+    {fallback && <p class="notice" role="note">{t.fallbackNotice}</p>}
+    <header class="page-head" lang={fallback ? textLocale : undefined}>
+      <p class="meta"><a href={`/${locale}/journal/`} lang={fallback ? locale : undefined}>{t.journal}</a></p>
       <h1>{post.data.title}</h1>
-      <p class="meta muted">
+      <p class="meta muted" lang={fallback ? locale : undefined}>
         {t.by} <a href={authorUrl(locale)}>{post.data.author}</a> ·
         {t.published} <time datetime={isoDate(published)}>{formatLocalDate(published, locale)}</time>
         {updated.getTime() !== published.getTime() && <> · {t.updated} <time datetime={isoDate(updated)}>{formatLocalDate(updated, locale)}</time></>}
       </p>
     </header>
-    <Content />
+    {fallback ? <div lang={textLocale}><Content /></div> : <Content />}
     <Recommendations slugs={post.data.recommendations} locale={locale} />
-    {product && <p style="margin-top:2rem"><a class="pill pill-outline" href={product.href}>{post.data.cta ?? t.open(product.label)}</a></p>}
+    {product && <p style="margin-top:2rem"><a class="pill pill-outline" href={product.href}>{fallback ? t.open(product.label) : (post.data.cta ?? t.open(product.label))}</a></p>}
+    <Faq title={UI[textLocale].faqTitle} items={post.data.faq} lang={fallback ? textLocale : undefined} />
   </article>
 </Base>

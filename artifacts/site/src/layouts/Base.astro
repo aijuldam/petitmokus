@@ -22,8 +22,10 @@ interface Props {
   locale?: Locale;
   /** The same page in other languages (hreflang), when there is one. */
   alternates?: { hreflang: string; href: string }[];
+  /** Language switcher targets for this page, by language code (others go to the homepage or Kids). */
+  languageHrefs?: Record<string, string>;
 }
-const { title, exactTitle, description, path, ogType = "website", noindex = false, jsonLd, locale = "en", alternates = [] } = Astro.props;
+const { title, exactTitle, description, path, ogType = "website", noindex = false, jsonLd, locale = "en", alternates = [], languageHrefs } = Astro.props;
 const t = UI[locale];
 const journalUrl = `/${locale}/journal/`;
 // Every language has its homepage at /<locale>/ and Kids at /<locale>/kids/.
@@ -82,7 +84,7 @@ const links: { href: string; label: string; current?: boolean; symbol?: SymbolId
           </nav>
           <details class="disclosure lang">
             <summary aria-label={t.languageLabel}>{locale.toUpperCase()}</summary>
-            <div class="panel"><LanguageList locale={locale} /></div>
+            <div class="panel"><LanguageList locale={locale} hrefs={languageHrefs} /></div>
           </details>
           <details class="disclosure menu">
             <summary>{t.menu}</summary>
@@ -116,7 +118,7 @@ const links: { href: string; label: string; current?: boolean; symbol?: SymbolId
         </nav>
         <details class="disclosure footer-lang" id="languages">
           <summary>{t.languages}</summary>
-          <div class="panel"><LanguageList locale={locale} /></div>
+          <div class="panel"><LanguageList locale={locale} hrefs={languageHrefs} /></div>
         </details>
       </div>
     </footer>

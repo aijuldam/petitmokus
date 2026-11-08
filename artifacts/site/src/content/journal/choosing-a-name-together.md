@@ -8,6 +8,7 @@ tags: [baby names, deciding together]
 draft: false
 locale: en
 relatedProduct: babynaming
+translationKey: choosing-a-name-together
 ---
 
 Choosing a name is one of the first decisions two parents make together, and it is easy for it to turn into one person proposing and the other vetoing. A little structure helps.

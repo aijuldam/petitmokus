@@ -5,8 +5,17 @@ import { BRAND } from "./site";
  * are the few interface words those Journal pages need. Kids and BabyNaming
  * keep their own translations.
  */
-export type Locale = "en" | "fr" | "hu" | "de" | "it" | "es" | "pt";
-export const JOURNAL_LOCALES = ["fr", "hu", "de", "it", "es", "pt"] as const;
+/**
+ * Every language the parent site and its Journal support. English is the
+ * default (x-default). This list is the single source: the content schema,
+ * the routes and scripts/check-journal.mjs all read it. Adding a language
+ * starts here (see docs/journal-localization.md).
+ */
+export const LOCALES = ["en", "fr", "hu", "de", "it", "es", "pt"] as const;
+export type Locale = (typeof LOCALES)[number];
+export const DEFAULT_LOCALE = "en" satisfies Locale;
+/** Languages whose Journal lives at /<locale>/journal/ (English has its own pages). */
+export const JOURNAL_LOCALES = LOCALES.filter((l) => l !== DEFAULT_LOCALE) as Exclude<Locale, "en">[];
 
 export const UI = {
   en: {
@@ -30,6 +39,9 @@ export const UI = {
     seeInShop: "See it in the shop",
     addToWishes: "Add to Wishes",
     affiliateNote: "Some shop links earn Petit Mokus a small commission, at no extra cost to you.",
+    faqTitle: "Frequently asked questions",
+    /** Shown above an English article served in place of a missing translation. */
+    fallbackNotice: "This article is not available in your language yet, so here is the English version.",
     dateLocale: "en-GB",
   },
   fr: {
@@ -53,6 +65,9 @@ export const UI = {
     seeInShop: "Voir dans la boutique",
     addToWishes: "Ajouter à Wishes",
     affiliateNote: "Certains liens vers des boutiques rapportent une petite commission à Petit Mokus, sans surcoût pour vous.",
+    faqTitle: "Questions fréquentes",
+    /** Shown above an English article served in place of a missing translation. */
+    fallbackNotice: "Cet article n’est pas encore disponible en français : voici la version anglaise.",
     dateLocale: "fr-FR",
   },
   hu: {
@@ -76,6 +91,9 @@ export const UI = {
     seeInShop: "Megnézem a boltban",
     addToWishes: "Hozzáadás a Wisheshez",
     affiliateNote: "Egyes bolti linkek után a Petit Mokus kis jutalékot kap, neked ez nem kerül többe.",
+    faqTitle: "Gyakori kérdések",
+    /** Shown above an English article served in place of a missing translation. */
+    fallbackNotice: "Ez a cikk még nem olvasható magyarul, ezért az angol változatot mutatjuk.",
     dateLocale: "hu-HU",
   },
   de: {
@@ -99,6 +117,9 @@ export const UI = {
     seeInShop: "Im Shop ansehen",
     addToWishes: "Zu Wishes hinzufügen",
     affiliateNote: "Für manche Shoplinks erhält Petit Mokus eine kleine Provision, für dich ohne Mehrkosten.",
+    faqTitle: "Häufige Fragen",
+    /** Shown above an English article served in place of a missing translation. */
+    fallbackNotice: "Diesen Artikel gibt es noch nicht auf Deutsch, deshalb siehst du die englische Fassung.",
     dateLocale: "de-DE",
   },
   it: {
@@ -122,6 +143,9 @@ export const UI = {
     seeInShop: "Vedi nel negozio",
     addToWishes: "Aggiungi a Wishes",
     affiliateNote: "Alcuni link ai negozi fanno guadagnare a Petit Mokus una piccola commissione, senza costi in più per te.",
+    faqTitle: "Domande frequenti",
+    /** Shown above an English article served in place of a missing translation. */
+    fallbackNotice: "Questo articolo non è ancora disponibile in italiano: ecco la versione inglese.",
     dateLocale: "it-IT",
   },
   es: {
@@ -145,6 +169,9 @@ export const UI = {
     seeInShop: "Ver en la tienda",
     addToWishes: "Añadir a Wishes",
     affiliateNote: "Algunos enlaces a tiendas generan una pequeña comisión para Petit Mokus, sin coste extra para ti.",
+    faqTitle: "Preguntas frecuentes",
+    /** Shown above an English article served in place of a missing translation. */
+    fallbackNotice: "Este artículo aún no está disponible en español, así que te mostramos la versión en inglés.",
     dateLocale: "es-ES",
   },
   pt: {
@@ -168,6 +195,9 @@ export const UI = {
     seeInShop: "Ver na loja",
     addToWishes: "Adicionar ao Wishes",
     affiliateNote: "Algumas ligações para lojas dão uma pequena comissão à Petit Mokus, sem custo extra para ti.",
+    faqTitle: "Perguntas frequentes",
+    /** Shown above an English article served in place of a missing translation. */
+    fallbackNotice: "Este artigo ainda não está disponível em português, por isso mostramos a versão em inglês.",
     dateLocale: "pt-PT",
   },
 } satisfies Record<Locale, unknown>;

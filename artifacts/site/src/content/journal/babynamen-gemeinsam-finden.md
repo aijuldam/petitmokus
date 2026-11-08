@@ -9,6 +9,7 @@ tags: [Babynamen, gemeinsam entscheiden, mehrsprachige Familien, beliebte Vornam
 draft: false
 locale: de
 relatedProduct: babynaming
+translationKey: choosing-a-name-together
 cta: "Findet gemeinsam den Namen für euer Baby mit Petit Mokus BabyNaming"
 ---
 

@@ -1,8 +1,9 @@
 import { defineCollection } from "astro:content";
 import { glob } from "astro/loaders";
 import { z } from "astro/zod";
+import { LOCALES } from "./lib/i18n";
 
-const product = z.enum(["kids", "babynaming", "wishes", "brand"]);
+const product = z.enum(["kids", "babynaming", "wishes", "planit", "brand"]);
 
 // Evergreen guides and product stories. The file name is the URL slug.
 const journal = defineCollection({
@@ -19,12 +20,25 @@ const journal = defineCollection({
     draft: z.boolean().default(false),
     // English is the main journal; other languages' articles live at
     // /<locale>/journal/ (the rest of each locale root is Kids).
-    locale: z.enum(["en", "fr", "hu", "de", "it", "es", "pt"]),
+    locale: z.enum(LOCALES),
+    /**
+     * The same article in every language shares this key (the English file
+     * name). It links the versions for hreflang and the language switcher,
+     * and scripts/check-journal.mjs fails the build when a language is missing.
+     */
+    translationKey: z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/),
     relatedProduct: product.optional(),
     /** A shorter <title> for search results when the headline is long. */
     seoTitle: z.string().optional(),
+    /** The whole <title>, used as is (no " · Petit Mokus" suffix), when it already names the brand. */
+    htmlTitle: z.string().max(70).optional(),
     /** Wording of the closing product button, instead of "Open …". */
     cta: z.string().optional(),
+    /**
+     * Questions and answers shown at the end of the article and published as
+     * FAQPage structured data. Answers may hold [text](url) links.
+     */
+    faq: z.array(z.object({ q: z.string(), a: z.string() })).default([]),
     /**
      * Wishes recommendations shown under the article, by slug, as published
      * in the Wishes admin screen. Unknown or unpublished slugs are left out.

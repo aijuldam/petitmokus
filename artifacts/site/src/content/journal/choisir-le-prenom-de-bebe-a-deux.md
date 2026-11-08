@@ -9,6 +9,7 @@ tags: [prénoms de bébé, choisir à deux, familles multiculturelles, popularit
 draft: false
 locale: fr
 relatedProduct: babynaming
+translationKey: choosing-a-name-together
 cta: "Trouvez le prénom de votre bébé à deux avec Petit Mokus BabyNaming"
 ---
 

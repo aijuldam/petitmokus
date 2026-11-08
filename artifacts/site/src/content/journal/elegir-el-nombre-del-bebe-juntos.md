@@ -9,6 +9,7 @@ tags: [nombres de bebé, elegir en pareja, familias multiculturales, nombres má
 draft: false
 locale: es
 relatedProduct: babynaming
+translationKey: choosing-a-name-together
 cta: "Encontrad juntos el nombre de vuestro bebé con Petit Mokus BabyNaming"
 ---
 

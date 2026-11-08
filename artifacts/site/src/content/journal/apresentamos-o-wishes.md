@@ -9,6 +9,7 @@ tags: [lista de desejos, ideias de presentes, aniversários, nascimento, celebra
 draft: false
 locale: pt
 relatedProduct: wishes
+translationKey: introducing-wishes
 cta: "Cria a tua lista de desejos gratuita"
 ---
 

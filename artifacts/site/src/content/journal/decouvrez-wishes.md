@@ -9,6 +9,7 @@ tags: [liste d’envies, idées de cadeaux, anniversaires, naissance, fêtes]
 draft: false
 locale: fr
 relatedProduct: wishes
+translationKey: introducing-wishes
 cta: "Créez votre liste d’envies gratuite"
 ---
 

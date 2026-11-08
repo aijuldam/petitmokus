@@ -9,6 +9,7 @@ tags: [babanevek, közös névválasztás, többnyelvű családok, névstatiszti
 draft: false
 locale: hu
 relatedProduct: babynaming
+translationKey: choosing-a-name-together
 cta: "Találjátok meg együtt kisbabátok nevét a Petit Mokus BabyNaminggel!"
 ---
 

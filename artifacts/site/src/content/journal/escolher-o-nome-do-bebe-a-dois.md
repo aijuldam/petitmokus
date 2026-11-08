@@ -9,6 +9,7 @@ tags: [nomes de bebé, escolher a dois, famílias multiculturais, nomes mais pop
 draft: false
 locale: pt
 relatedProduct: babynaming
+translationKey: choosing-a-name-together
 cta: "Encontrem juntos o nome do vosso bebé com o Petit Mokus BabyNaming"
 ---
 

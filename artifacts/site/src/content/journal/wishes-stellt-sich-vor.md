@@ -9,6 +9,7 @@ tags: [Wunschliste, Geschenkideen, Geburtstage, Baby, Feste]
 draft: false
 locale: de
 relatedProduct: wishes
+translationKey: introducing-wishes
 cta: "Erstelle deine kostenlose Wunschliste"
 ---
 

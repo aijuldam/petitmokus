@@ -1,0 +1,24 @@
+---
+// An article's questions and answers, shown on the page. The same list is
+// published as FAQPage structured data (lib/journal.ts).
+import { answerHtml } from "../lib/journal";
+
+interface Props {
+  title: string;
+  items: { q: string; a: string }[];
+  /** Set when the text is not in the page language (an English fallback page). */
+  lang?: string;
+}
+const { title, items, lang } = Astro.props;
+---
+{items.length > 0 && (
+  <section class="faq" aria-labelledby="faq-title" lang={lang}>
+    <h2 id="faq-title">{title}</h2>
+    {items.map(({ q, a }) => (
+      <>
+        <h3>{q}</h3>
+        <p set:html={answerHtml(a)} />
+      </>
+    ))}
+  </section>
+)}

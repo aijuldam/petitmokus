@@ -179,6 +179,8 @@ a.card:hover { box-shadow: var(--pm-shadow-md); transform: translateY(-2px); }
 .article { padding-bottom: 3rem; }
 .article h2 { margin: 2rem 0 0.6rem; font-size: 1.4rem; }
 .article p { margin-top: 0.9rem; }
+.article h3 { margin: 1.5rem 0 0.4rem; font-size: 1.15rem; }
+.article .notice { margin-bottom: 1.5rem; padding: 0.75rem 1rem; border: 1px solid var(--pm-border); border-radius: 1rem; background: var(--pm-apricot-wash); }
 
 /* Footer */
 .site-footer { margin-top: 2rem; padding-block: 1.5rem 2rem; border-top: 1px solid var(--pm-border); background: var(--pm-card); }

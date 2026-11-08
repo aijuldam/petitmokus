@@ -9,6 +9,7 @@ tags: [kívánságlista, ajándékötletek, születésnap, babaváró, ünnepek]
 draft: false
 locale: hu
 relatedProduct: wishes
+translationKey: introducing-wishes
 cta: "Készítsd el az ingyenes kívánságlistádat"
 ---
 

@@ -1,8 +1,11 @@
 ---
 import { render } from "astro:content";
+import Faq from "../../../components/Faq.astro";
 import Recommendations from "../../../components/Recommendations.astro";
 import Base from "../../../layouts/Base.astro";
 import { publishedJournal } from "../../../lib/content";
+import { UI } from "../../../lib/i18n";
+import { alternatesFor, appHref, languageHrefsFor, structuredData, versionsOf } from "../../../lib/journal";
 import { absolute, AUTHOR_URL, BABYNAMING_URL, BRAND, formatDate, isoDate, KIDS_URL, SOCIAL_IMAGE, wishesAppHref } from "../../../lib/site";
 
 export async function getStaticPaths() {
@@ -15,6 +18,7 @@ const { Content } = await render(post);
 const path = `/en/journal/${post.id}/`;
 const published = post.data.publishedAt;
 const updated = post.data.updatedAt ?? published;
+const versions = await versionsOf(post.data.translationKey);
 const product =
   post.data.relatedProduct === "babynaming"
     ? { href: BABYNAMING_URL, label: "Petit Mokus BabyNaming" }
@@ -22,8 +26,10 @@ const product =
       ? { href: KIDS_URL, label: "Petit Mokus Kids" }
       : post.data.relatedProduct === "wishes"
         ? { href: wishesAppHref("/signup", "en"), label: "Petit Mokus Wishes" }
-        : null;
-const jsonLd = {
+        : post.data.relatedProduct === "planit"
+          ? { href: appHref("planit", "en")!, label: "Petit Mokus PlanIt" }
+          : null;
+const jsonLd = structuredData(post, {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
   headline: post.data.title,
@@ -35,9 +41,9 @@ const jsonLd = {
   image: post.data.heroImage ? absolute(post.data.heroImage.src) : SOCIAL_IMAGE,
   author: { "@type": "Organization", name: post.data.author, url: absolute(AUTHOR_URL) },
   publisher: { "@type": "Organization", name: BRAND, logo: { "@type": "ImageObject", url: SOCIAL_IMAGE } },
-};
+});
 ---
-<Base title={post.data.title} description={post.data.description} path={path} ogType="article" jsonLd={jsonLd}>
+<Base title={post.data.title} exactTitle={post.data.htmlTitle} description={post.data.description} path={path} ogType="article" jsonLd={jsonLd} alternates={alternatesFor(versions)} languageHrefs={languageHrefsFor(versions)}>
   <article class="wrap narrow article">
     <header class="page-head">
       <p class="meta"><a href="/en/journal/">Journal</a></p>
@@ -51,5 +57,6 @@ const jsonLd = {
     <Content />
     <Recommendations slugs={post.data.recommendations} locale="en" />
     {product && <p style="margin-top:2rem"><a class="pill" href={product.href}>{post.data.cta ?? `Open ${product.label}`}</a></p>}
+    <Faq title={UI.en.faqTitle} items={post.data.faq} />
   </article>
 </Base>
