@@ -1,11 +1,11 @@
 import { useRef, useState } from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
-import { LayoutGrid, X } from "lucide-react";
+import { LayoutGrid, UserRound, X } from "lucide-react";
 import logoSrc from "@assets/petitmokus-logo-128_1777320029918.png";
 import { cn } from "@/lib/utils";
 import { stopAllAudio } from "../lib/audio";
 import { Language } from "../lib/i18n";
-import { suiteCopy, suiteHomeHref, suiteItems } from "../lib/suite";
+import { accountHref, suiteCopy, suiteHomeHref, suiteItems } from "../lib/suite";
 
 /** A product symbol from the main site's sprite (/suite/symbols.svg). */
 function SuiteSymbol({ symbol }: { symbol: string }) {
@@ -181,6 +181,20 @@ export function SuiteSwitcher({ language }: { language: Language }) {
                 >
                   <img src={logoSrc} alt="" width={32} height={32} className="size-8 rounded-full" />
                   {copy.home}
+                </a>
+              </li>
+              {/* The one Petit Mokus account page (PRD 2 R4.4b). Phones reach
+                  it here; wider screens also have it in the header. */}
+              <li>
+                <a
+                  href={accountHref(language)}
+                  onClick={stopAllAudio}
+                  className={cn(row, "font-bold hover:bg-muted focus-visible:bg-muted focus-visible:outline-none")}
+                >
+                  <span aria-hidden className="grid size-8 place-items-center">
+                    <UserRound className="size-6" />
+                  </span>
+                  {copy.account}
                 </a>
               </li>
             </ul>
