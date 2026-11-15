@@ -2,7 +2,8 @@ import { Language, dictionary } from "../lib/i18n";
 import { LanguageSelector } from "./LanguageSelector";
 import { SuiteSwitcher } from "./SuiteSwitcher";
 import { stopAllAudio } from "../lib/audio";
-import { suiteCopy, suiteHomeHref } from "../lib/suite";
+import { accountHref, suiteCopy, suiteHomeHref } from "../lib/suite";
+import { UserRound } from "lucide-react";
 import logoSrc from "@assets/petitmokus-logo-128_1777320029918.png";
 
 interface HeaderProps {
@@ -37,6 +38,18 @@ export function Header({ language, setLanguage }: HeaderProps) {
 
         <div className="flex shrink-0 items-center gap-1 max-[359px]:gap-0">
           <SuiteSwitcher language={language} />
+          {/* The one Petit Mokus account page (PRD 2 R4.4b): a plain link,
+              Kids keeps no sign-in of its own. Phones have no room for it
+              here; they reach it in the Products panel. */}
+          <a
+            href={accountHref(language)}
+            aria-label={suiteCopy(language).account}
+            title={suiteCopy(language).account}
+            onClick={stopAllAudio}
+            className="hidden sm:inline-flex h-11 min-w-11 shrink-0 items-center justify-center rounded-full text-foreground/60 transition-colors hover:bg-muted/60 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          >
+            <UserRound aria-hidden className="size-5" />
+          </a>
           <LanguageSelector language={language} setLanguage={setLanguage} />
         </div>
       </div>
