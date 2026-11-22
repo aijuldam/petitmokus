@@ -4,8 +4,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "astro build && node scripts/check-journal.mjs",
-    "check:journal": "node scripts/check-journal.mjs"
+    "build": "astro build && node scripts/check-journal.mjs && node ../atelier/build-theme.mjs --check",
+    "check:journal": "node scripts/check-journal.mjs",
+    "atelier:theme": "node ../atelier/build-theme.mjs",
+    "atelier:live": "node ../atelier/build-theme.mjs --live"
   },
   "dependencies": {
     "@fontsource-variable/nunito": "^5.3.0",

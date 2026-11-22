@@ -188,21 +188,22 @@
       }
     },
     {
-      "id": "cottonclub",
-      "name": "Cotton Club",
-      "fullName": "Petit Mokus Cotton Club",
-      "status": "soon",
-      "url": null,
-      "locales": [],
+      "id": "atelier",
+      "name": "Atelier",
+      "fullName": "Petit Mokus Atelier",
+      "status": "live",
+      "url": "https://atelier.petitmokus.com/",
+      "locales": ["en"],
       "symbol": "cotton",
+      "tagNav": true,
       "tileSubtitle": {
-        "en": "Natural products only",
-        "fr": "Uniquement des produits naturels",
-        "hu": "Csak természetes termékek",
-        "de": "Nur natürliche Produkte",
-        "it": "Solo prodotti naturali",
-        "es": "Solo productos naturales",
-        "pt": "Apenas produtos naturais"
+        "en": "Little things for families",
+        "fr": "Petites choses pour la famille",
+        "hu": "Apróságok családoknak",
+        "de": "Kleine Dinge für Familien",
+        "it": "Piccole cose per la famiglia",
+        "es": "Pequeñas cosas para la familia",
+        "pt": "Pequenas coisas para a família"
       },
       "momentLabel": {
         "en": "For everyday adventures",
@@ -214,13 +215,30 @@
         "pt": "Para as aventuras do dia a dia"
       },
       "oneLiner": {
-        "en": "Natural materials for little everyday adventures. A small collection is taking shape.",
-        "fr": "Des matières naturelles pour les petites aventures du quotidien. Une petite collection prend forme.",
-        "hu": "Természetes anyagok a mindennapok apró kalandjaihoz. Egy kis kollekció van készülőben.",
-        "de": "Natürliche Materialien für kleine Alltagsabenteuer. Eine kleine Kollektion entsteht.",
-        "it": "Materiali naturali per le piccole avventure di ogni giorno. Una piccola collezione sta prendendo forma.",
-        "es": "Materiales naturales para las pequeñas aventuras de cada día. Una pequeña colección está tomando forma.",
-        "pt": "Materiais naturais para as pequenas aventuras do dia a dia. Uma pequena coleção está a ganhar forma."
+        "en": "Everyday things with our squirrel, made to order for your family.",
+        "fr": "Des objets du quotidien avec notre écureuil, fabriqués à la commande pour votre famille.",
+        "hu": "Hétköznapi tárgyak a mókusunkkal, rendelésre készítve a családodnak.",
+        "de": "Dinge für jeden Tag mit unserem Eichhörnchen, auf Bestellung für deine Familie gefertigt.",
+        "it": "Oggetti di tutti i giorni con il nostro scoiattolo, realizzati su ordinazione per la tua famiglia.",
+        "es": "Cosas para cada día con nuestra ardilla, hechas por encargo para tu familia.",
+        "pt": "Coisas para o dia a dia com o nosso esquilo, feitas por encomenda para a tua família."
+      },
+      "cta": {
+        "en": "Visit the Atelier",
+        "fr": "Découvrir l’Atelier",
+        "hu": "Irány az Atelier",
+        "de": "Zum Atelier",
+        "it": "Visita l’Atelier",
+        "es": "Visitar el Atelier",
+        "pt": "Visitar o Atelier"
+      },
+      "languageNote": {
+        "fr": "Boutique en anglais",
+        "hu": "Angol nyelvű bolt",
+        "de": "Shop auf Englisch",
+        "it": "Negozio in inglese",
+        "es": "Tienda en inglés",
+        "pt": "Loja em inglês"
       }
     }
   ]

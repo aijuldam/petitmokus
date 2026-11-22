@@ -23,7 +23,7 @@ const [article] = await publishedJournal(locale);
 const [update] = locale === "en" ? await publishedUpdates() : [];
 const products = visibleProducts();
 const title = `${BRAND} | ${c.pageTitle}`;
-// The organisation and its products (HP-4). Cotton Club has no address yet.
+// The organisation and its products (HP-4).
 const jsonLd = {
   "@context": "https://schema.org",
   "@graph": [

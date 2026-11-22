@@ -85,7 +85,7 @@ a.tile:hover { box-shadow: var(--pm-shadow-md); transform: translateY(-2px); }
 .tile-wishes { --tile-wash: var(--pm-blue-wash); --tile-ink: var(--pm-blue-ink); }
 .tile-kids { --tile-wash: var(--pm-sage-wash); --tile-ink: var(--pm-sage-ink); }
 .tile-planit { --tile-wash: var(--pm-apricot-wash); --tile-ink: var(--pm-apricot-ink); }
-.tile-cotton { --tile-wash: transparent; --tile-ink: var(--pm-oat-ink); border: 2px dashed var(--pm-oat); }
+.tile-cotton { --tile-wash: var(--pm-oat-wash); --tile-ink: var(--pm-oat-ink); }
 .one-account { text-align: center; color: var(--pm-muted-text); font-weight: 600; }
 .hero-more { text-align: center; }
 
@@ -218,9 +218,9 @@ a.card:hover { box-shadow: var(--pm-shadow-md); transform: translateY(-2px); }
   .row { grid-template-columns: 5rem 1fr auto; align-items: baseline; }
 }
 
-/* Below 800px the five header links move into the Menu (they need about
-   755px in every language). */
-@media (max-width: 49.99rem) {
+/* Below 840px the six header links move into the Menu (they need about
+   820px in every language). */
+@media (max-width: 52.49rem) {
   .header-nav > nav, .header-nav .lang { display: none; }
   .menu { display: block; }
 }

@@ -28,6 +28,11 @@ export interface Product {
   cta?: Translated;
   /** Shown where the visitor's language is not one of `locales`. */
   languageNote?: Partial<Record<Locale, string>>;
+  /**
+   * Header and footer links to this product carry UTM too. For a product
+   * whose own analytics can only see campaign tags (the Fourthwall shop).
+   */
+  tagNav?: boolean;
 }
 
 export const REGISTRY = registry as { version: number; products: Product[] };
@@ -77,17 +82,18 @@ export function navProducts(): Product[] {
  * Where a link to a product goes. Pages on petitmokus.com itself get a plain
  * relative path (no UTM, so Cloudflare page grouping stays clean). Other
  * hosts get `lang`, and homepage tiles and stops also get the site's UTM
- * pattern; header and footer links carry no UTM.
+ * pattern; header and footer links carry no UTM, unless the product sets
+ * `tagNav` (then campaign "nav").
  */
 export function productHref(p: Product, locale: Locale, placement: "tile" | "world" | "nav"): string | null {
   if (!p.url) return null;
   const url = new URL(p.url.replace("{locale}", locale));
   if (url.origin === SITE) return url.pathname;
   url.searchParams.set("lang", productLang(p, locale));
-  if (placement === "nav") return url.toString();
+  if (placement === "nav" && !p.tagNav) return url.toString();
   url.searchParams.set("utm_source", "petitmokus");
   url.searchParams.set("utm_medium", "site");
-  url.searchParams.set("utm_campaign", "homepage");
+  url.searchParams.set("utm_campaign", placement === "nav" ? "nav" : "homepage");
   url.searchParams.set("utm_content", `${p.id}_${placement}`);
   return url.toString();
 }
